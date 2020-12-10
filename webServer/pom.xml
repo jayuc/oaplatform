@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>top.jayu</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>oa</artifactId>
 	<version>0.0.1</version>
-	<name>demo</name>
+	<name>oa</name>
 	<description></description>
 
 	<properties>
