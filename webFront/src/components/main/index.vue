@@ -1,13 +1,14 @@
 <template>
   <div>
-
+    <h1>main index</h1>
+    <router-link to="/">to main</router-link>
   </div>
 </template>
 
 <script>
 
   export default {
-      name: ''
+      name: 'main'
   }
 </script>
 
