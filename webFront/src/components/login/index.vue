@@ -12,7 +12,7 @@
 
   export default {
       components: {ElButton},
-      name: 'login',
+      name: 'alogin',
       methods: {
           select(){
               RestUtil.get('user/getUserById', {id: 1}).then((result) => {
