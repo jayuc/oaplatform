@@ -3,24 +3,24 @@ package top.jayu.oa.entity;
 import lombok.Data;
 
 @Data
-public class User {
+public class Employ {
     private Integer id;
+
+    private String name;
 
     private String loginName;
 
     private String password;
 
-    private String name;
-
-    private Integer employId;
+    private String position;
 
     private Integer orgId;
-
-    private Integer roleId;
 
     private String tel;
 
     private String mobileTel;
 
     private Integer age;
+
+    private String address;
 }
