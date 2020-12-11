@@ -1,6 +1,6 @@
 <template>
   <div :style="backgroudStyle">
-      <div style="height: 320px;"></div>
+      <div style="height: 300px;"></div>
       <div style="color: #ffffff;font-size: 30px;">合肥烟草专卖局OA系统</div>
       <div style="height: 50px;"></div>
       <div style="width: 340px;margin: 0 auto;">
@@ -44,13 +44,28 @@
           }
       },
       methods: {
+          showError(message){
+              this.$message.error(message);
+          },
           submit(){
               let formData = {
                   loginName: this.ruleForm.loginName,
                   password: Md5Util.encode(this.ruleForm.password)
               };
               console.log(formData);
-              RestUtil.get('/', {});
+              RestUtil.post('/user/login', {}).then((result) => {
+                  console.log(result);
+              }, (error) => {
+                  console.error(error);
+                  if(error.responseJSON && error.responseJSON.errors instanceof Array){
+                      let errorArr = error.responseJSON.errors;
+                      let errorStr = '';
+                      for(let i=0;i<errorArr.length; i++){
+                          errorStr += errorArr[i].defaultMessage + "；";
+                      }
+                      this.showError(errorStr);
+                  }
+              });
           }
       }
   }

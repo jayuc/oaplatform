@@ -55,6 +55,5 @@ INSERT t_sys_org (id,parent_id,name,code,address) VALUE (2,1,'交通一大队','
 INSERT t_sys_org (id,parent_id,name,code,address) VALUE (3,1,'交通二大队','011002','临安区繁华大道1号');
 INSERT t_sys_org (id,parent_id,name,code,address) VALUE (4,1,'交通三大队','011003','临安区东都大道21号');
 
-INSERT t_sys_user (name,org_id,role_id,tel,age) values ('刘军',2,1,'18823747865',32);
-INSERT t_sys_user (name,org_id,role_id,tel,age) values ('张小东',3,1,'18323744864',22);
-INSERT t_sys_user (name,org_id,role_id,tel,age) values ('石前',4,1,'18523447845',25);
+INSERT t_sys_user (name,login_name,password,org_id,role_id,tel,age)
+values ('超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',2,1,'18823747865',32);
