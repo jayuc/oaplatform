@@ -1,7 +1,7 @@
 <template>
   <div :style="backgroudStyle">
       <div style="height: 300px;"></div>
-      <div style="color: #ffffff;font-size: 30px;">合肥烟草专卖局OA系统</div>
+      <div style="color: #ffffff;font-size: 30px;">{{loginTitle}}</div>
       <div style="height: 50px;"></div>
       <div style="width: 340px;margin: 0 auto;">
           <el-form :model="ruleForm" label-width="100px" class="loginForm">
@@ -12,7 +12,8 @@
                   <el-input type="password" v-model="ruleForm.password"></el-input>
               </el-form-item>
               <el-form-item>
-                  <el-button type="success" style="width: 324px;margin-left: -80px;margin-top: 20px;" @click="submit">登 录</el-button>
+                  <el-button type="success" :disabled="loading"
+                             style="width: 324px;margin-left: -80px;margin-top: 20px;" @click="submit">登 录</el-button>
               </el-form-item>
           </el-form>
       </div>
@@ -25,6 +26,8 @@
   import Md5Util from '@/utils/Md5Util';
   import TipUtil from '@/utils/TipUtil';
   import StringUtil from '@/utils/StringUtil';
+  import Config from '@/config';
+  import handler from './handler';
 
   export default {
       components: {
@@ -33,6 +36,7 @@
       name: 'alogin',
       data() {
           return {
+              loginTitle: Config.get('loginTitle'),
               backgroudStyle: {
                   height: '100%',
                   background: '#409EFF',
@@ -42,7 +46,8 @@
               ruleForm: {
                   loginName: '',
                   password: ''
-              }
+              },
+              loading: false
           }
       },
       methods: {
@@ -51,12 +56,23 @@
                   loginName: this.ruleForm.loginName,
                   password: Md5Util.encode(this.ruleForm.password)
               };
-              RestUtil.post('/user/login', formData).then((result) => {
+              RestUtil.post('user/login', formData, {
+                  enableLoading: true,       // 启动请求期间的正在加载
+                  loadingStartFun: () => {   // 请求开始前执行
+                      this.loading = true;
+                  },
+                  loadingEndFun: () => {     // 请求开始后执行
+                      this.loading = false;
+                  }
+              }).then((result) => {
+//                  console.log(result);
                   if(!StringUtil.isBlank(result.error)){
                       TipUtil.error(result.error);
                       return;
                   }
                   this.$router.push("/main");
+                  // 登录成功后处理
+                  handler.afterLoginSuccess(result.properties.user);
               }, (error) => {
                   console.error(error.responseJSON.message);
                   if(error.responseJSON && error.responseJSON.errors instanceof Array){

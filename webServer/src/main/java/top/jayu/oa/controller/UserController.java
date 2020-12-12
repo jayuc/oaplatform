@@ -31,9 +31,11 @@ public class UserController {
     public Map<String, Object> login(@Valid LoginUser user){
         log.info(user.toString());
         ResultUtil.Result result = ResultUtil.build();
-        String password = userMapper.getPasswordByLoginName(user.getLoginName());
-        if(!user.getPassword().equals(password)){
+        User candidateUser = userMapper.getPasswordByLoginName(user.getLoginName());
+        if(!user.getPassword().equals(candidateUser.getPassword())){
             result.error("用户名或密码错误！");
+        }else {
+            result.property("user", candidateUser);
         }
         return result.getResult();
     }

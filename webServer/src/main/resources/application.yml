@@ -12,4 +12,10 @@ spring:
       # 注意：只有在开发模式下才能开启 跨域访问，
     active: dev
 
+    # mybatis 驼峰转换
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+
 

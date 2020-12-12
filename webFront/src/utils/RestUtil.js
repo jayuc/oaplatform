@@ -2,7 +2,7 @@
 import $ from 'jquery';
 import Config from '@/config';
 import User from '@/user';
-import InnerConfig from '@/config/innerConfig';
+import LoadingUtil from '@/utils/LoadingUtil';
 
 const restRoot = Config.restRoot;
 
@@ -46,7 +46,9 @@ function typeAjax(_options, _data, _opt, type) {
  * 使用promise方式处理
  * @param _url rest接口
  * @param _data ajax参数
- * @param _options 方法选项
+ * @param _options 方法选项  enableLoading: 是否开启正在加载
+ *                          loadingStartFun: 正在加载开始时执行方法
+ *                          loadingEndFun: 正在加载结束时执行方法
  * @returns {Promise<any>}
  */
 function doAjaxByPromise(_url, _data, _options) {
@@ -59,6 +61,13 @@ function doAjaxByPromise(_url, _data, _options) {
     options.data = _data;
   }
   handleOptions(options, _options);
+  let loadingInstance;
+  if(options.enableLoading){
+      loadingInstance = LoadingUtil.start();
+  }
+  if(typeof options.loadingStartFun === 'function'){
+      options.loadingStartFun();
+  }
   return new Promise((resolve, reject) => {
     $.ajax({
       url: handleUrl(options),
@@ -68,10 +77,17 @@ function doAjaxByPromise(_url, _data, _options) {
       success: function (data) {
         resolve(data);
       },
-      error: function (errmsg, status) {
+      error: function (errmsg) {
         reject(errmsg);
-        //forceRefresh(status);
-      }
+      },
+        complete: function () {
+            if(typeof options.loadingEndFun === 'function'){
+                options.loadingEndFun();
+            }
+            if(loadingInstance){
+                loadingInstance.close();
+            }
+        }
     });
   });
 }
@@ -88,9 +104,9 @@ function doAjax(_options) {
     url: '',
     data: {},
     type: 'get',
-    success: function (data) {
+    success: function () {
     },
-    error: function (data) {
+    error: function () {
     }
   };
   handleOptions(options, _options);
@@ -100,9 +116,8 @@ function doAjax(_options) {
     data: options.data,
     timeout: 1000000,
     success: options.success,
-    error: (err, status) => {
+    error: (err) => {
       options.error(err);
-      //forceRefresh(status);
     }
   });
 }
@@ -111,7 +126,10 @@ function doAjax(_options) {
 // 处理公用部分参数
 function handleOptions(options, _options){
   $.extend(options, _options);
-  options.data.dbId = User.get("id");
+  options.data.userId = User.get("id");
+    options.data.orgId = User.get("orgId");
+    options.data.roleId = User.get("roleId");
+    options.data.employId = User.get("employId");
   options.data.token = "";
 }
 
