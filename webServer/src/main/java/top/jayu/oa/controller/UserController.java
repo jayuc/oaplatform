@@ -1,5 +1,6 @@
 package top.jayu.oa.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import top.jayu.oa.util.ResultUtil;
 import javax.validation.Valid;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -27,7 +29,12 @@ public class UserController {
 
     @PostMapping("/login")
     public Map<String, Object> login(@Valid LoginUser user){
+        log.info(user.toString());
         ResultUtil.Result result = ResultUtil.build();
+        String password = userMapper.getPasswordByLoginName(user.getLoginName());
+        if(!user.getPassword().equals(password)){
+            result.error("用户名或密码错误！");
+        }
         return result.getResult();
     }
 

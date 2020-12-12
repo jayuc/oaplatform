@@ -6,7 +6,10 @@ import md5 from 'js-md5';
 
 // 加密
 function encode(str) {
-  return md5(str);
+  if(typeof str === 'string' && str.length > 0){
+      return md5(str);
+  }
+  return str;
 }
 
 // 解密

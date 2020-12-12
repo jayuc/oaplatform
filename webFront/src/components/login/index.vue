@@ -23,6 +23,8 @@
 
   import RestUtil from '@/utils/RestUtil';
   import Md5Util from '@/utils/Md5Util';
+  import TipUtil from '@/utils/TipUtil';
+  import StringUtil from '@/utils/StringUtil';
 
   export default {
       components: {
@@ -44,26 +46,26 @@
           }
       },
       methods: {
-          showError(message){
-              this.$message.error(message);
-          },
           submit(){
               let formData = {
                   loginName: this.ruleForm.loginName,
                   password: Md5Util.encode(this.ruleForm.password)
               };
-              console.log(formData);
-              RestUtil.post('/user/login', {}).then((result) => {
-                  console.log(result);
+              RestUtil.post('/user/login', formData).then((result) => {
+                  if(!StringUtil.isBlank(result.error)){
+                      TipUtil.error(result.error);
+                      return;
+                  }
+                  this.$router.push("/main");
               }, (error) => {
-                  console.error(error);
+                  console.error(error.responseJSON.message);
                   if(error.responseJSON && error.responseJSON.errors instanceof Array){
                       let errorArr = error.responseJSON.errors;
                       let errorStr = '';
                       for(let i=0;i<errorArr.length; i++){
                           errorStr += errorArr[i].defaultMessage + "；";
                       }
-                      this.showError(errorStr);
+                      TipUtil.error(errorStr);
                   }
               });
           }

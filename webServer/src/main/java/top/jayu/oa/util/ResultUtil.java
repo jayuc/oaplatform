@@ -12,7 +12,7 @@ public class ResultUtil {
         public Result build() {
             map.put("result", result);
             map.put("properties", properties);
-            map.put("errorInfo", "");
+            map.put("error", "");
             return this;
         }
         public Result rows(Object rows){
@@ -23,8 +23,8 @@ public class ResultUtil {
             result.put("total", total);
             return this;
         }
-        public Result errorInfo(Object error){
-            map.put("errorInfo", error);
+        public Result error(Object error){
+            map.put("error", error);
             return this;
         }
         public Result property(String key, Object value){

@@ -1,7 +1,9 @@
 package top.jayu.oa.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
+@ToString
 @Data
 public class User {
     private Integer id;

@@ -3,19 +3,12 @@
     <el-container style="border: 1px solid #eee;height: 100%;">
 
       <el-header style="text-align: right; font-size: 12px">
-        <div style="font-size: 24px;margin-left: 10px;float: left;">合肥市烟草专卖局</div>
+        <div style="font-size: 24px;margin-left: 10px;float: left;">{{mainTitle}}</div>
           <router-link to="/">
-              <i class="el-icon-circle-close" title="退出" style="margin-right: 15px;color: #ffffff;cursor: pointer;"></i>
+              <i class="el-icon-circle-close" title="退出"
+                 style="margin-right: 15px;color: #ffffff;cursor: pointer;font-size: 16px;"></i>
           </router-link>
-        <el-dropdown>
-          <i class="el-icon-setting" style="margin-right: 15px;color: #ffffff;cursor: pointer;"></i>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <span>王小虎</span>
+          <span>王小虎</span>
       </el-header>
 
       <el-container>
@@ -68,16 +61,19 @@
 </template>
 
 <script>
+    import Config from '@/config';
 
-  export default {
+    export default {
       name: 'the-main',
       data() {
-          return {};
+          return {
+              mainTitle: Config.get('mainTitle')
+          };
       },
       methods: {
 
       }
-  }
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

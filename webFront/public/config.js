@@ -4,10 +4,19 @@
 
 var $rootScope = {
 
-  // rest 根路径
-  restRoot: 'http://127.0.0.1:8056/',
+    // rest 根路径
+    restRoot: 'http://127.0.0.1:8056/',
 
-  //用户信息
-  userInfo: {}
+    // 登录页标题
+    loginTitle: '合肥烟草专卖局OA系统',
+
+    // 系统名称
+    systemName: '合肥市烟草专卖局',
+
+    // 主页标题
+    mainTitle: '合肥市烟草专卖局',
+
+    //用户信息
+    userInfo: {},
 
 };
