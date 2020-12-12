@@ -14,70 +14,30 @@ a {
   text-decoration: none;
 }
 
-.hide{
-  display: none;
+.form-search-container{
+    margin: 0 20px;
+    border-radius: 5px;
+    border: 1px solid #DCDFE6;
+    padding: 20px 20px 0 20px;
+    text-align: left;
+    position: relative;
 }
 
-.inline_show{
-  display: inline;
+.form-search-container span.form-search-title{
+    position: absolute;
+    left: 20px;
+    top: -10px;
+    display: block;
+    width: 56px;
+    height: 16px;
+    background: #ffffff;
+    text-align: center;
 }
 
-.inline_block_show{
-  display: inline-block;
+.form-table-container{
+    margin: 20px;
 }
 
-.block_show{
-  display: block;
-}
-
-.el-dialog__body{
-  padding: 10px 20px;
-}
-
-.h5{
-  height: 5px;
-}
-
-.h10{
-  height: 10px;
-}
-
-.h20{
-  height: 20px;
-}
-
-.h30{
-  height: 30px;
-}
-
-.h40{
-  height: 40px;
-}
-
-.h50{
-  height: 50px;
-}
-
-.h100{
-  height: 100px;
-}
-
-.blue{
-  color: blue;
-}
-
-.green{
-  color: green;
-}
-
-.red6c{
-  color: #F56C6C;
-}
-
-.brown{
-  color: brown;
-}
-
-.red{
-  color: red;
+.form-table-container .form-table-header-cell{
+    background: #f5f7fa;
 }

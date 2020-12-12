@@ -26,7 +26,7 @@
             </el-submenu>
             <el-submenu index="2">
                 <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
-                <router-link to="/main/errand">
+                <router-link to="/main/userManage">
                     <el-menu-item>用户管理</el-menu-item>
                 </router-link>
             </el-submenu>
