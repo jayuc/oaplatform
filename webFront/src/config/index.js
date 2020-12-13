@@ -2,6 +2,8 @@
  * Created by yujie on 2019/4/17 11:34
  */
 
+import $ from 'jquery';
+
 // 根对象
 const root = window.$rootScope ? window.$rootScope : {};
 
@@ -20,6 +22,11 @@ const set = (key, value) => {
   }
 };
 
+let globalPageHeight = $(document).height();
+// 页面高度
+set('globalPageHeight', globalPageHeight);
+// 内部页面高度
+set('mainBodyHeight', globalPageHeight - 102);
 
 export default {
   root,

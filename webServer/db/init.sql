@@ -66,7 +66,7 @@ CREATE TABLE `t_oa_bill` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(32) UNIQUE DEFAULT NULL COMMENT '编号',
   `type` tinyint NOT NULL COMMENT '表单类别,数据字典：1',
-  `status` tinyint NOT NULL COMMENT '表单状态',
+  `current_step` varchar(32) NOT NULL COMMENT '表单当前步骤，可以动态调整',
   `stop_flag` tinyint DEFAULT NULL COMMENT '终止标记，1表示终止',
   `employ_id` int(11) DEFAULT NULL COMMENT '申请人id',
   `next_employ_id` int(11) DEFAULT NULL COMMENT '审批人',
@@ -89,6 +89,19 @@ CREATE TABLE `t_oa_bill` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `mark` varchar(256) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+# 流程单操作记录
+CREATE TABLE `t_oa_bill_opera` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_id` int(11) NOT NULL COMMENT '流程单id',
+  `step` varchar(32) NOT NULL COMMENT '流程的步骤',
+  `approve_employ_id` int(11) DEFAULT NULL COMMENT '审批人',
+  `approve_org_id` int(11) DEFAULT NULL COMMENT '审批机构',
+  `pass_flag` tinyint NOT NULL COMMENT '是否同意 1同意，2不同意',
+  `content` varchar(1024) DEFAULT NULL COMMENT '审批意见',
+  `create_time` datetime DEFAULT NULL COMMENT '审批时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

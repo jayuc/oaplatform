@@ -35,9 +35,31 @@ a {
 }
 
 .form-table-container{
-    margin: 20px;
+    padding: 20px;
 }
 
 .form-table-container .form-table-header-cell{
     background: #f5f7fa;
+}
+
+.el-pagination .btn-prev{
+    float: left;
+}
+.el-pagination .el-pager{
+    float: left;
+}
+.el-pagination .btn-next{
+    float: left;
+}
+
+.el-pagination .el-pagination__jump{
+    float: left;
+}
+
+.el-pagination .el-pagination__total{
+    float: right;
+}
+
+.el-pagination .el-pagination__sizes{
+    float: right;
 }

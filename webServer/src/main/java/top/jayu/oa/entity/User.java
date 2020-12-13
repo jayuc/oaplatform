@@ -2,10 +2,11 @@ package top.jayu.oa.entity;
 
 import lombok.Data;
 import lombok.ToString;
+import top.jayu.oa.param.BaseParam;
 
 @ToString
 @Data
-public class User {
+public class User extends BaseParam {
     private Integer id;
 
     private String loginName;
