@@ -67,7 +67,7 @@ CREATE TABLE `t_oa_bill` (
   `code` varchar(32) UNIQUE DEFAULT NULL COMMENT '编号',
   `type` tinyint NOT NULL COMMENT '表单类别,数据字典：1',
   `current_step` varchar(32) NOT NULL COMMENT '表单当前步骤，可以动态调整',
-  `stop_flag` tinyint DEFAULT NULL COMMENT '终止标记，1表示终止',
+  `stop_flag` tinyint DEFAULT NULL COMMENT '终止标记，1表示终止 2表示未终止',
   `employ_id` int(11) DEFAULT NULL COMMENT '申请人id',
   `next_employ_id` int(11) DEFAULT NULL COMMENT '审批人',
   `next_org_id` int(11) DEFAULT NULL COMMENT '审批机构',
@@ -76,6 +76,7 @@ CREATE TABLE `t_oa_bill` (
   `start_time` datetime DEFAULT NULL COMMENT '开始日期',
   `end_time` datetime DEFAULT NULL COMMENT '结束日期',
   `work_age` tinyint DEFAULT NULL COMMENT '工龄',
+  `holiday_type` tinyint DEFAULT NULL COMMENT '休假标准',
   `days` smallint DEFAULT NULL COMMENT '天数',
   `people_number` smallint DEFAULT NULL COMMENT '人数',
   `content` varchar(1024) DEFAULT NULL COMMENT '内容（比如出差内容）',
@@ -115,10 +116,15 @@ INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,2,'汽车',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,3,'飞机',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,4,'轮船',1);
 
+INSERT t_sys_employ (name,login_name,password,position) VALUE ('张三','zs','e10adc3949ba59abbe56e057f20f883e','科员');
+INSERT t_sys_employ (name,login_name,password,position) VALUE ('李部门负责人','zy','e10adc3949ba59abbe56e057f20f883e','部门负责人');
+INSERT t_sys_employ (name,login_name,password,position) VALUE ('王市局分管领导','zr','e10adc3949ba59abbe56e057f20f883e','市局分管领导');
+INSERT t_sys_employ (name,login_name,password,position) VALUE ('夏市局分管领导','zp','e10adc3949ba59abbe56e057f20f883e','市局负责人');
+
 INSERT t_sys_org (id,parent_id,name,code,address) VALUE (1,0,'交通支队','0110','临安区人民路83号');
 INSERT t_sys_org (id,parent_id,name,code,address) VALUE (2,1,'交通一大队','011001','临安区抢滩路56号');
 INSERT t_sys_org (id,parent_id,name,code,address) VALUE (3,1,'交通二大队','011002','临安区繁华大道1号');
 INSERT t_sys_org (id,parent_id,name,code,address) VALUE (4,1,'交通三大队','011003','临安区东都大道21号');
 
-INSERT t_sys_user (name,login_name,password,org_id,role_id,tel,age)
-values ('超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',2,1,'18823747865',32);
+INSERT t_sys_user (id,name,login_name,password,org_id,role_id,tel,age)
+values (-1,'超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',2,1,'18823747865',32);

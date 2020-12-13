@@ -63,3 +63,11 @@ a {
 .el-pagination .el-pagination__sizes{
     float: right;
 }
+
+.el-radio{
+    margin-right: 10px;
+}
+
+.el-dialog{
+    text-align: left;
+}

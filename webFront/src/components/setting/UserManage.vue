@@ -4,7 +4,7 @@
       <div class="form-search-container">
           <span class="form-search-title">查询条件</span>
           <el-form :inline="true" :model="formData" class="demo-form-inline">
-              <el-form-item label="用户名">
+              <el-form-item label="用户名：">
                   <el-input v-model="formData.userName" placeholder="请输入用户名"></el-input>
               </el-form-item>
               <el-form-item>

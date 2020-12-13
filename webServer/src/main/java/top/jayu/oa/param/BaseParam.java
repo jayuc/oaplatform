@@ -6,4 +6,5 @@ import lombok.Data;
 public class BaseParam {
     private Integer pageNumber;
     private Integer pageSize;
+    private Integer userId;
 }
