@@ -26,7 +26,7 @@ public interface OaBillMapper {
             "      current_step, stop_flag, employ_id, \n" +
             "      next_employ_id, next_org_id, org_id, \n" +
             "      org_oa_type, start_time, end_time, \n" +
-            "      work_age, days, people_number, \n" +
+            "      work_age, days, holiday_type, people_number, \n" +
             "      content, address, travel_tool, \n" +
             "      amount, file_url1, file_url2, \n" +
             "      file_url3, extend_content, create_time, \n" +
@@ -35,7 +35,7 @@ public interface OaBillMapper {
             "      #{currentStep,jdbcType=VARCHAR}, #{stopFlag,jdbcType=TINYINT}, #{employId,jdbcType=INTEGER}, \n" +
             "      #{nextEmployId,jdbcType=INTEGER}, #{nextOrgId,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, \n" +
             "      #{orgOaType,jdbcType=TINYINT}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, \n" +
-            "      #{workAge,jdbcType=TINYINT}, #{days,jdbcType=SMALLINT}, #{peopleNumber,jdbcType=SMALLINT}, \n" +
+            "      #{workAge,jdbcType=TINYINT}, #{days,jdbcType=SMALLINT}, #{holidayType,jdbcType=SMALLINT}, #{peopleNumber,jdbcType=SMALLINT}, \n" +
             "      #{content,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{travelTool,jdbcType=TINYINT}, \n" +
             "      #{amount,jdbcType=INTEGER}, #{fileUrl1,jdbcType=VARCHAR}, #{fileUrl2,jdbcType=VARCHAR}, \n" +
             "      #{fileUrl3,jdbcType=VARCHAR}, #{extendContent,jdbcType=VARCHAR}, now(), \n" +
@@ -59,6 +59,7 @@ public interface OaBillMapper {
             "      end_time = #{endTime,jdbcType=TIMESTAMP},\n" +
             "      work_age = #{workAge,jdbcType=TINYINT},\n" +
             "      days = #{days,jdbcType=SMALLINT},\n" +
+            "      holiday_type = #{holidayType,jdbcType=SMALLINT},\n" +
             "      people_number = #{peopleNumber,jdbcType=SMALLINT},\n" +
             "      content = #{content,jdbcType=VARCHAR},\n" +
             "      address = #{address,jdbcType=VARCHAR},\n" +

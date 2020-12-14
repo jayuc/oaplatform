@@ -129,6 +129,10 @@ INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,2,'汽车',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,3,'飞机',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,4,'轮船',1);
 
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,1,'5',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,2,'10',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,3,'15',1);
+
 INSERT t_sys_employ (name,login_name,password,position) VALUE ('张三','zs','e10adc3949ba59abbe56e057f20f883e','科员');
 INSERT t_sys_employ (name,login_name,password,position) VALUE ('李部门负责人','zy','e10adc3949ba59abbe56e057f20f883e','部门负责人');
 INSERT t_sys_employ (name,login_name,password,position) VALUE ('王市局分管领导','zr','e10adc3949ba59abbe56e057f20f883e','市局分管领导');

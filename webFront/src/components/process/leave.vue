@@ -42,7 +42,7 @@
                       prop="workAge"
                       align="center"
                       width="180"
-                      label="工龄">
+                      label="工龄（年）">
               </el-table-column>
               <el-table-column
                       prop="holidayType"
@@ -98,7 +98,7 @@
                  :visible.sync="approveDialogVisible"
                  width="700px"
       >
-          <el-form :model="addForm">
+          <el-form>
               <el-row>
                   <el-col :span="12">
                       <el-form-item label="申请人：" :label-width="formLabelWidth">
@@ -208,10 +208,6 @@
                     pageNumber: 1,
                     pageSize: 15,
                 },
-                addForm: {
-                    type: 1,
-                    currentStep: user.get('id') + 1
-                },
                 approveForm: {},
                 formLabelWidth: '110px',
                 stopFlag: '0',
@@ -249,16 +245,7 @@
                 });
             },
             openAddLeave(){
-                this.addForm.employName = '雄霸';
-                this.$refs.addLeave.open();
-
-            },
-            add(){
-
-                this.addForm.code = new Date().getTime();
-                RestUtil.post('oa/bill/insert', this.addForm).then(() => {
-                    this.submit();
-                });
+                this.$refs.addLeave.open({}, 'oa/bill/insert', 'add');
             },
             approve(){
                 console.log(this.approveForm);

@@ -38,6 +38,8 @@ public class OaBill extends BaseParam {
 
     private Short days;
 
+    private Short holidayType;
+
     private Short peopleNumber;
 
     private String content;
