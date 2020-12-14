@@ -61,6 +61,19 @@ CREATE TABLE `t_sys_code` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+# 流程表
+CREATE TABLE `t_sys_process` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` smallint NOT NULL COMMENT '表单类别',
+  `prev_step` varchar(32) NOT NULL COMMENT '表单步骤，start为第一个步骤',
+  `next_step` varchar(32) NOT NULL COMMENT '表单步骤，end为最后一个步骤',
+  `approve_org_id` int(11) DEFAULT NULL COMMENT '审批机构',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `mark` varchar(128) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 # 流程单表
 CREATE TABLE `t_oa_bill` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

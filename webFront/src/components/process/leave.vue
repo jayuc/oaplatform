@@ -13,7 +13,7 @@
                   <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
               </el-form-item>
               <el-form-item style="margin-left: 10px;">
-                  <el-button type="success" @click="addDialogVisible = true" :disabled="searchBtnStatus">新 增</el-button>
+                  <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">新 增</el-button>
               </el-form-item>
           </el-form>
       </div>
@@ -92,71 +92,7 @@
           </el-pagination>
       </div>
 
-      <el-dialog title="新增"
-                 :visible.sync="addDialogVisible"
-                 width="700px"
-      >
-          <el-form :model="addForm">
-              <el-row>
-                  <el-col :span="12">
-                      <el-form-item label="申请人：" :label-width="formLabelWidth">
-                          {{userName}}
-                      </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                      <el-form-item label="所属部门：" :label-width="formLabelWidth">
-                          办公室
-                      </el-form-item>
-                  </el-col>
-              </el-row>
-              <el-row>
-                  <el-col :span="12">
-                      <el-form-item label="工龄：" :label-width="formLabelWidth">
-                          <el-input v-model="addForm.workAge" autocomplete="off"></el-input>
-                      </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                      <el-form-item label="休假标准：" :label-width="formLabelWidth">
-                          <el-input v-model="addForm.holidayType" autocomplete="off"></el-input>
-                      </el-form-item>
-                  </el-col>
-              </el-row>
-              <el-row>
-                  <el-col :span="12">
-                      <el-form-item label="开始日期：" :label-width="formLabelWidth">
-                          <el-date-picker
-                                  v-model="addForm.startTime"
-                                  type="date"
-                                  placeholder="选择日期">
-                          </el-date-picker>
-                      </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                      <el-form-item label="结束日期：" :label-width="formLabelWidth">
-                          <el-date-picker
-                                  v-model="addForm.endTime"
-                                  type="date"
-                                  placeholder="选择日期">
-                          </el-date-picker>
-                      </el-form-item>
-                  </el-col>
-              </el-row>
-              <el-row>
-                  <el-col :span="12">
-                      <el-form-item label="天数：" :label-width="formLabelWidth">
-                          <el-input v-model="addForm.days" autocomplete="off"></el-input>
-                      </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-
-                  </el-col>
-              </el-row>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-              <el-button @click="addDialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="add">确 定</el-button>
-          </div>
-      </el-dialog>
+      <AddLeave ref="addLeave" />
 
       <el-dialog title="审批"
                  :visible.sync="approveDialogVisible"
@@ -231,6 +167,7 @@
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
     import user from '@/user';
+    import AddLeave from './addLeave.vue';
 
     function stringToDate(str){
 
@@ -260,6 +197,9 @@
 
     export default {
         name: 'user-setting',
+        components: {
+            AddLeave
+        },
         data(){
             return {
                 tableContainerStyle: '',
@@ -276,7 +216,6 @@
                 formLabelWidth: '110px',
                 stopFlag: '0',
                 searchBtnStatus: false,
-                addDialogVisible: false,
                 approveDialogVisible: false,
                 total: 0,
                 userName: user.get('name'),
@@ -309,8 +248,13 @@
 
                 });
             },
+            openAddLeave(){
+                this.addForm.employName = '雄霸';
+                this.$refs.addLeave.open();
+
+            },
             add(){
-                this.addDialogVisible = false;
+
                 this.addForm.code = new Date().getTime();
                 RestUtil.post('oa/bill/insert', this.addForm).then(() => {
                     this.submit();
