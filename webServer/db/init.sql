@@ -8,15 +8,19 @@ SET NAMES utf8mb4;
 
 # 机构表
 CREATE TABLE `t_sys_org` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `org_id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) COMMENT '父机构主键ID',
-  `name` varchar(64) DEFAULT NULL COMMENT '机构名',
-  `code` varchar(32) UNIQUE DEFAULT NULL COMMENT '机构编号',
-  `code_priv` varchar(32) DEFAULT NULL COMMENT '机构权限编码',
-  `org_oa_type` tinyint DEFAULT NULL COMMENT '机构流程类型（根据不同机构走不通流程）',
+  `org_name` varchar(128) DEFAULT NULL COMMENT '机构名',
+  `short_org_name` varchar(64) DEFAULT NULL COMMENT '机构简称',
+  `org_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '机构编号',
+  `org_code_priv` varchar(32) DEFAULT NULL COMMENT '机构权限编码',
+  `yes_office` tinyint DEFAULT NULL COMMENT '是否是机关',
+  `leader_id` int(11) DEFAULT NULL COMMENT '负责人id',
+  `deputy_id` int(11) DEFAULT NULL COMMENT '分管领导id',
   `address` varchar(255) DEFAULT NULL COMMENT '机构地址',
   `tel` varchar(16) DEFAULT NULL COMMENT '联系方式',
-  PRIMARY KEY (`id`)
+  `sort` tinyint DEFAULT NULL COMMENT '排序',
+  PRIMARY KEY (`org_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 # 职员表
