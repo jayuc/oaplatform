@@ -1,10 +1,10 @@
 <template>
-    <el-select v-model="value" placeholder="请选择">
+    <el-select v-model="val" placeholder="请选择" @change="afterChange">
         <el-option
                 v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+                :key="item.codeNo"
+                :label="item.name"
+                :value="item.codeNo">
         </el-option>
     </el-select>
 </template>
@@ -17,24 +17,31 @@
         data(){
             return {
                 options: [{
-                    value: 1,
-                    label: '黄金糕'
+                    codeNo: 1,
+                    name: '黄金糕'
                 }, {
-                    value: 2,
-                    label: '双皮奶'
+                    codeNo: 2,
+                    name: '双皮奶'
                 }],
-                value: null
+                val: null
             }
         },
-        model: {
-            event: 'change',
-            prop: 'value'
-        },
         props: {
-//            value1: Number
+            code: Number
         },
-        mounted(){
-
+        created(){
+            let code = this.$props.code;
+            if(code){
+                this.val = code;
+            }
+        },
+        methods: {
+            afterChange(key){
+                this.$emit('change', key);
+            },
+            reset(){  // 复位
+                this.val = null;
+            }
         }
     }
 </script>

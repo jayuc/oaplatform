@@ -24,8 +24,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="休假标准：" :label-width="formLabelWidth">
-                        <!--<el-input v-model="formData.holidayType" autocomplete="off"></el-input>-->
-                        <yu-code-radio v-model="formData.holidayType"></yu-code-radio>
+                        <yu-code-radio @change="holidayTypeChange" ref="holidayTypeSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -95,6 +94,10 @@
                     type: 1,
                     currentStep: 'start'
                 };
+                // 休假标准下拉框复位
+                if(this.$refs.holidayTypeSelect){
+                    this.$refs.holidayTypeSelect.reset();
+                }
             },
             open(data, url, titleType){
                 this.initFormData();
@@ -105,6 +108,9 @@
             },
             close(){
                 this.visible = false;
+            },
+            holidayTypeChange(key){
+                this.formData.holidayType = key;
             },
             add(){
                 this.formData.code = new Date().getTime();
