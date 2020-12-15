@@ -9,7 +9,7 @@
                   <el-input type="loginName" v-model="ruleForm.loginName"></el-input>
               </el-form-item>
               <el-form-item label="确认密码：" style="color: #ffffff;">
-                  <el-input type="password" v-model="ruleForm.password"></el-input>
+                  <el-input type="password" v-model="ruleForm.password" show-password></el-input>
               </el-form-item>
               <el-form-item>
                   <el-button type="success" :disabled="loading"

@@ -54,6 +54,15 @@ CREATE TABLE `t_sys_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+# 数据字典名称表
+CREATE TABLE `t_sys_code_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` smallint NOT NULL COMMENT '字段编号',
+  `name` varchar(16) DEFAULT NULL COMMENT '字段名称',
+  `mark` varchar(128) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 # 数据字典表
 CREATE TABLE `t_sys_code` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -125,6 +134,10 @@ CREATE TABLE `t_oa_bill_opera` (
 
 
 # 模拟数据
+INSERT t_sys_code_type (code,name) VALUE (1,'流程类型');
+INSERT t_sys_code_type (code,name) VALUE (2,'交通工具');
+INSERT t_sys_code_type (code,name) VALUE (3,'休假标准');
+
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,1,'公休假',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,2,'出差',1);
 
@@ -133,9 +146,9 @@ INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,2,'汽车',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,3,'飞机',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,4,'轮船',1);
 
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,1,'5',1);
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,2,'10',1);
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,3,'15',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,1,'5天',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,2,'10天',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,3,'15天',1);
 
 INSERT t_sys_employ (name,login_name,password,position) VALUE ('张三','zs','e10adc3949ba59abbe56e057f20f883e','科员');
 INSERT t_sys_employ (name,login_name,password,position) VALUE ('李部门负责人','zy','e10adc3949ba59abbe56e057f20f883e','部门负责人');

@@ -48,6 +48,7 @@
                       prop="holidayType"
                       align="center"
                       width="180"
+                      :formatter="handleHolidayType"
                       label="休假标准">
               </el-table-column>
               <el-table-column
@@ -168,6 +169,7 @@
     import Config from '@/config';
     import user from '@/user';
     import AddLeave from './addLeave.vue';
+    import CodeUtil from '@/utils/CodeUtil';
 
     function stringToDate(str){
 
@@ -273,11 +275,13 @@
                 this.approveForm = row;
                 this.approveDialogVisible = true;
             },
-            handleDate(a, b, c){
-                console.log(a);
-                console.log(b);
-                console.log(c);
-                return c.split('T')[0];
+            handleDate(row, column, cellValue){
+                if(cellValue){
+                    return cellValue.split('T')[0];
+                }
+            },
+            handleHolidayType(row, column, cellValue){
+                return CodeUtil.getName(3, cellValue);
             },
             handleSizeChange(currentPageSize) {
                 this.formData.pageSize = currentPageSize;

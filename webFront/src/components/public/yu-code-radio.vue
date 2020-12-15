@@ -10,29 +10,29 @@
 </template>
 
 <script>
+    import Config from '@/config';
 
     // 数据字典组件
     export default {
         name: 'yu-code-radio',
         data(){
             return {
-                options: [{
-                    codeNo: 1,
-                    name: '黄金糕'
-                }, {
-                    codeNo: 2,
-                    name: '双皮奶'
-                }],
+                options: [],
                 val: null
             }
         },
         props: {
-            code: Number
+            code: Number,
+            initValue: Number
         },
         created(){
             let code = this.$props.code;
+            let initValue = this.$props.initValue;
             if(code){
-                this.val = code;
+                this.options = Config.get('$code')[code];
+            }
+            if(initValue){
+                this.val = initValue;
             }
         },
         methods: {
