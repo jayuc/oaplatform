@@ -1,11 +1,13 @@
 
 import Config from '@/config';
 
-const $codes = Config.get('$code');
+const getCodes = (codeType) => {
+    return Config.get('$code')[codeType];
+};
 
 // 获取数据字典名
 const getName = (codeType, code) => {
-    let codes = $codes[codeType];
+    let codes = getCodes(codeType);
     if(codes instanceof Array){
         for(let i=0;i<codes.length;i++){
             let item = codes[i];

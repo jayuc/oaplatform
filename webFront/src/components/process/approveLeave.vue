@@ -1,0 +1,124 @@
+<template>
+    <el-dialog title="审批"
+               :visible.sync="visible"
+               width="700px"
+    >
+        <el-form :model="formData" ref="formData">
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="申请人：" :label-width="formLabelWidth">
+                        {{formData.employName}}
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="所属部门：" :label-width="formLabelWidth">
+                        {{formData.orgName}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="工龄：" :label-width="formLabelWidth">
+                        {{formData.workAge}}
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
+                        {{formData.holidayType}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="开始日期：" :label-width="formLabelWidth">
+                        {{formData.startTime ? formData.startTime.split('T')[0] : ''}}
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="结束日期：" :label-width="formLabelWidth">
+                        {{formData.endTime ? formData.endTime.split('T')[0] : ''}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="天数：" :label-width="formLabelWidth">
+                        {{formData.days}}
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="审批意见：" :label-width="formLabelWidth">
+                        <el-input v-model="formData.content" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="close">不同意</el-button>
+            <el-button type="primary" :disabled="submitBtnDisabled" @click="submit">同 意</el-button>
+        </div>
+    </el-dialog>
+</template>
+
+<script>
+
+    import RestUtil from '@/utils/RestUtil';
+
+    export default {
+        name: 'process-approve-leave',
+        data(){
+            return {
+                visible: false,
+                submitBtnDisabled: false,
+                formLabelWidth: '110px',
+                formData: {},
+                url: '',
+            }
+        },
+        methods: {
+            initFormData(){
+                this.formData = {
+                    content: ''
+                };
+            },
+            open(data, url){
+                this.initFormData();
+                this.visible = true;
+                Object.assign(this.formData, data);
+                this.url = url;
+            },
+            close(){
+                this.visible = false;
+            },
+            submit(){
+                this.$refs['formData'].validate((valid) => {
+                    if (valid) {
+                        RestUtil.post(this.url, this.formData, {
+                            enableLoading: true,       // 启动请求期间的正在加载
+                            loadingStartFun: () => {   // 请求开始前执行
+                                this.submitBtnDisabled = true;
+                            },
+                            loadingEndFun: () => {     // 请求开始后执行
+                                this.submitBtnDisabled = false;
+                            }
+                        }).then(() => {
+                            this.$parent.submit();
+                            this.close();
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>

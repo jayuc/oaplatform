@@ -61,7 +61,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
-            <el-button :disabled="submitBtnDisabled" type="primary" @click="add">确 定</el-button>
+            <el-button :disabled="submitBtnDisabled" type="primary" @click="submit">确 定</el-button>
         </div>
     </el-dialog>
 </template>
@@ -146,7 +146,7 @@
             holidayTypeChange(key){
                 this.formData.holidayType = key;
             },
-            add(){
+            submit(){
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
                         this.formData.code = new Date().getTime();
@@ -166,13 +166,11 @@
                         return false;
                     }
                 });
-
             }
         }
     }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 </style>

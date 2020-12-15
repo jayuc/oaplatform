@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.jayu.oa.entity.OaBill;
 import top.jayu.oa.mapper.OaBillMapper;
+import top.jayu.oa.param.OaBillParam;
 import top.jayu.oa.util.ResultUtil;
 
 import java.util.List;
@@ -50,6 +51,11 @@ public class OaBillController {
     @PostMapping("/update")
     public int update(OaBill dto){
         return oaBillMapper.update(dto);
+    }
+
+    @PostMapping("/approve")
+    public int approve(OaBillParam dto){
+        return oaBillMapper.approve(dto);
     }
 
 }

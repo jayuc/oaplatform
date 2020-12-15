@@ -2,6 +2,7 @@ package top.jayu.oa.mapper;
 
 import org.apache.ibatis.annotations.*;
 import top.jayu.oa.entity.OaBill;
+import top.jayu.oa.param.OaBillParam;
 
 import java.util.List;
 
@@ -73,5 +74,17 @@ public interface OaBillMapper {
             "      mark = #{mark,jdbcType=VARCHAR}\n" +
             "    where id = #{id,jdbcType=INTEGER}")
     int update(OaBill record);
+
+    @Update("update t_oa_bill\n" +
+            "    set current_step = #{currentStep,jdbcType=VARCHAR},\n" +
+            "      stop_flag = #{stopFlag,jdbcType=TINYINT},\n" +
+            "      next_employ_id = #{nextEmployId,jdbcType=INTEGER},\n" +
+            "      next_org_id = #{nextOrgId,jdbcType=INTEGER},\n" +
+            "      content = #{content,jdbcType=VARCHAR},\n" +
+            "      extend_content = #{extendContent,jdbcType=VARCHAR},\n" +
+            "      update_time = now(),\n" +
+            "      mark = #{mark,jdbcType=VARCHAR}\n" +
+            "    where id = #{id,jdbcType=INTEGER}")
+    int approve(OaBillParam record);
 
 }
