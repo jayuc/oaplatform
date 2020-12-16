@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    @Select("select * from t_sys_user where id = #{id}")
+    @Select("select * from t_sys_user where user_id = #{id}")
     User getUserById(Integer id);
 
     @Select("select * from t_sys_user where login_name = #{loginName}")

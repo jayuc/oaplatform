@@ -20,7 +20,7 @@ public interface OaBillMapper {
     })
     List<OaBill> list(OaBill record);
 
-    @Select("select * from t_oa_bill where id = #{id}")
+    @Select("select * from t_oa_bill where bill_id = #{id}")
     OaBill getById(Integer id);
 
     @Insert("insert into t_oa_bill (code, type, \n" +
@@ -43,7 +43,7 @@ public interface OaBillMapper {
             "      #{updateTime,jdbcType=TIMESTAMP}, #{mark,jdbcType=VARCHAR})")
     int insert(OaBill record);
 
-    @Delete("delete from t_oa_bill where id = #{id}")
+    @Delete("delete from t_oa_bill where bill_id = #{id}")
     int deleteById(String id);
 
     @Update("update t_oa_bill\n" +
@@ -72,7 +72,7 @@ public interface OaBillMapper {
             "      extend_content = #{extendContent,jdbcType=VARCHAR},\n" +
             "      update_time = #{updateTime,jdbcType=TIMESTAMP},\n" +
             "      mark = #{mark,jdbcType=VARCHAR}\n" +
-            "    where id = #{id,jdbcType=INTEGER}")
+            "    where bill_id = #{id,jdbcType=INTEGER}")
     int update(OaBill record);
 
     @Update("update t_oa_bill\n" +
@@ -84,7 +84,7 @@ public interface OaBillMapper {
             "      extend_content = #{extendContent,jdbcType=VARCHAR},\n" +
             "      update_time = now(),\n" +
             "      mark = #{mark,jdbcType=VARCHAR}\n" +
-            "    where id = #{id,jdbcType=INTEGER}")
+            "    where bill_id = #{id,jdbcType=INTEGER}")
     int approve(OaBillParam record);
 
 }
