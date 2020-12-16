@@ -1,18 +1,19 @@
 package top.jayu.oa.entity;
 
 import lombok.Data;
+import top.jayu.oa.param.BaseParam;
 
 @Data
-public class Employ {
-    private Integer id;
+public class Employ extends BaseParam {
+    private Integer employId;
 
-    private String name;
-
-    private String loginName;
-
-    private String password;
+    private String employName;
 
     private String position;
+
+    private Byte workAge;
+
+    private Byte yesChief;
 
     private Integer orgId;
 

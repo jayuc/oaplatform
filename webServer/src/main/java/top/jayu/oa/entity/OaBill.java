@@ -8,14 +8,11 @@ import java.util.Date;
 
 @Data
 public class OaBill extends BaseParam {
-    private Integer id;
+    private Integer billId;
 
-    private String employName = "张三";
-    private String orgName = "办公室";
+    private String billCode;
 
-    private String code;
-
-    private Byte type;
+    private Byte billType;
 
     private String currentStep;
 
@@ -39,9 +36,9 @@ public class OaBill extends BaseParam {
 
     private Byte workAge;
 
-    private Short days;
+    private Byte holidayType;
 
-    private Short holidayType;
+    private Short days;
 
     private Short peopleNumber;
 

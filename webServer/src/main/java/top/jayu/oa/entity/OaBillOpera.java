@@ -1,17 +1,16 @@
 package top.jayu.oa.entity;
 
 import lombok.Data;
-import top.jayu.oa.param.BaseParam;
 
 import java.util.Date;
 
 @Data
-public class OaBillOpera extends BaseParam {
-    private Integer id;
+public class OaBillOpera {
+    private Integer billOperaId;
 
     private Integer billId;
 
-    private String step;
+    private String billStep;
 
     private Integer approveEmployId;
 
@@ -22,5 +21,4 @@ public class OaBillOpera extends BaseParam {
     private String content;
 
     private Date createTime;
-
 }

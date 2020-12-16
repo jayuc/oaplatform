@@ -1,21 +1,21 @@
 package top.jayu.oa.entity;
 
 import lombok.Data;
-import lombok.ToString;
 import top.jayu.oa.param.BaseParam;
 
-@ToString
 @Data
 public class User extends BaseParam {
-    private Integer id;
+    private Integer userId;
 
     private String loginName;
 
     private String password;
 
-    private String name;
+    private String userName;
 
     private Integer employId;
+
+    private Byte yesChief;
 
     private Integer orgId;
 
