@@ -22,22 +22,48 @@
                   header-cell-class-name="form-table-header-cell"
                   style="width: 100%">
               <el-table-column
-                      prop="name"
-                      label="姓名"
+                      prop="userCode"
+                      label="编号"
                       align="center"
-                      width="180">
+                      width="200">
               </el-table-column>
               <el-table-column
-                      prop="age"
-                      label="年龄"
+                      prop="userName"
+                      label="姓名"
                       align="center"
-                      width="180">
+                      width="160">
+              </el-table-column>
+              <el-table-column
+                      prop="sex"
+                      label="性别"
+                      align="center"
+                      :formatter="formatSex"
+                      width="100">
+              </el-table-column>
+              <el-table-column
+                      prop="orgId"
+                      label="所属机构"
+                      align="center"
+                      :formatter="formatOrg"
+                      width="240">
+              </el-table-column>
+              <el-table-column
+                      prop="position"
+                      label="岗位"
+                      align="center"
+                      width="280">
+              </el-table-column>
+              <el-table-column
+                      prop="loginName"
+                      label="登录名"
+                      align="center"
+                      width="140">
               </el-table-column>
               <el-table-column
                       prop="mobileTel"
                       align="center"
                       width="180"
-                      label="手机号码">
+                      label="手机号">
               </el-table-column>
               <el-table-column
                       prop="operation"
@@ -63,6 +89,8 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
+    import OrgUtil from '@/utils/OrgUtil';
+    import CodeUtil from '@/utils/CodeUtil';
 
     export default {
         name: 'user-setting',
@@ -82,7 +110,7 @@
         },
         methods: {
             submit(){
-                console.log(this.formData);
+//                console.log(this.formData);
                 RestUtil.get('user/list', this.formData, {
                     enableLoading: true,       // 启动请求期间的正在加载
                     loadingStartFun: () => {   // 请求开始前执行
@@ -105,6 +133,15 @@
                 }, () => {
 
                 });
+            },
+            formatSex(row, column, cellValue){
+                return CodeUtil.getName(4, cellValue);
+            },
+            formatOrg(row, column, cellValue){
+                let org = OrgUtil.getOrgById(cellValue);
+                if(org){
+                    return org.attribute.shortOrgName;
+                }
             },
             handleSizeChange(currentPageSize) {
                 this.formData.pageSize = currentPageSize;

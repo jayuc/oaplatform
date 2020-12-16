@@ -9,6 +9,8 @@ public class Employ extends BaseParam {
 
     private String employName;
 
+    private String employCode;
+
     private String position;
 
     private Byte workAge;
@@ -24,4 +26,6 @@ public class Employ extends BaseParam {
     private Integer age;
 
     private String address;
+
+    private Byte sex;
 }

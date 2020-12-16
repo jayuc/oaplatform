@@ -6,6 +6,7 @@ import top.jayu.oa.entity.Org;
 import top.jayu.oa.entity.OrgTree;
 import top.jayu.oa.mapper.OrgMapper;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class OrgService {
     @Autowired
     OrgMapper orgMapper;
 
-    public OrgTree orgTree(){
+    public List<OrgTree> orgTree(){
 
         OrgTree root = new OrgTree(-1, "3400", "合肥市烟草专卖局", null);
         List<Org> list1 = orgMapper.list1();
@@ -41,7 +42,7 @@ public class OrgService {
         handleList(list3, tempMap2, tempMap3);
         handleList(list4, tempMap3, tempMap4);
 
-        return root;
+        return Arrays.asList(root);
     }
 
     private void handleList(List<Org> list, Map<Integer, OrgTree> tempMap1, Map<Integer, OrgTree> tempMap2){

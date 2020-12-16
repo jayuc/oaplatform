@@ -2,7 +2,11 @@
 import Config from '@/config';
 
 const getCodes = (codeType) => {
-    return Config.get('$code')[codeType];
+    let codes = Config.get('$code');
+    if(codes){
+        return codes[codeType];
+    }
+    return null;
 };
 
 // 获取数据字典名

@@ -156,4 +156,4 @@ INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,2,'10天',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,3,'15天',1);
 
 INSERT t_sys_user (user_id,user_name,login_name,password,org_id,role_id)
-values (-1,'超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',-1,-1);
+values (9999,'超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',-1,-1);

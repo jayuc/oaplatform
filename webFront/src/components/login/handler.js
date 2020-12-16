@@ -2,6 +2,7 @@
 import User from '@/user';
 import RestUtil from '@/utils/RestUtil';
 import Config from '@/config';
+import OrgUtil from '@/utils/OrgUtil';
 
 // 加载数据字典
 const initCode = () => {
@@ -25,6 +26,8 @@ const initCode = () => {
 const initOrg = () => {
     RestUtil.get('org/orgTree').then((tree) => {
         Config.set('$org', tree);
+        // 生成机构 map
+        OrgUtil.loop(tree);
     });
 };
 

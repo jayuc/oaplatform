@@ -27,6 +27,12 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+logging:
+  level:
+    root: info
+    top.jayu.oa: debug
+
+
 
 
 

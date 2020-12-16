@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import top.jayu.oa.entity.OrgTree;
 import top.jayu.oa.service.OrgService;
 
+import java.util.List;
+
 /**
  * Created by 余杰 on 2020/12/16 11:50
  */
@@ -19,7 +21,7 @@ public class OrgController {
     OrgService orgService;
 
     @GetMapping("/orgTree")
-    public OrgTree orgTree(){
+    public List<OrgTree> orgTree(){
         return orgService.orgTree();
     }
 
