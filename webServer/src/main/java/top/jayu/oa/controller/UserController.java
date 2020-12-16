@@ -57,6 +57,8 @@ public class UserController {
             }else {
                 result.property("user", candidateUser);
             }
+        }else {
+            result.error("用户名错误！");
         }
         return result.getResult();
     }

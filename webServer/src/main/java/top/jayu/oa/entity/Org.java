@@ -4,17 +4,27 @@ import lombok.Data;
 
 @Data
 public class Org {
-    private Integer id;
+    private Integer orgId;
 
     private Integer parentId;
 
-    private String name;
+    private String orgName;
 
-    private String code;
+    private String shortOrgName;
 
-    private String codePriv;
+    private String orgCode;
+
+    private String orgCodePriv;
+
+    private Byte yesOffice;
+
+    private Integer leaderId;
+
+    private Integer deputyId;
 
     private String address;
 
     private String tel;
+
+    private Byte sort;
 }

@@ -14,7 +14,7 @@ CREATE TABLE `t_sys_org` (
   `short_org_name` varchar(64) DEFAULT NULL COMMENT '机构简称',
   `org_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '机构编号',
   `org_code_priv` varchar(32) DEFAULT NULL COMMENT '机构权限编码',
-  `yes_office` tinyint DEFAULT NULL COMMENT '是否是机关',
+  `yes_office` tinyint(1) DEFAULT NULL COMMENT '是否是机关',
   `leader_id` int(11) DEFAULT NULL COMMENT '负责人id',
   `deputy_id` int(11) DEFAULT NULL COMMENT '分管领导id',
   `address` varchar(255) DEFAULT NULL COMMENT '机构地址',
@@ -27,6 +27,7 @@ CREATE TABLE `t_sys_org` (
 CREATE TABLE `t_sys_employ` (
   `employ_id` int(11) NOT NULL AUTO_INCREMENT,
   `employ_name` varchar(16) DEFAULT NULL COMMENT '姓名',
+  `employ_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '职员编号',
   `position` varchar(32) DEFAULT NULL COMMENT '岗位',
   `work_age` tinyint DEFAULT NULL COMMENT '工龄',
   `yes_chief` tinyint DEFAULT NULL COMMENT '是否是科级干部',
@@ -34,6 +35,7 @@ CREATE TABLE `t_sys_employ` (
   `tel` varchar(16) DEFAULT NULL COMMENT '联系方式',
   `mobile_tel` varchar(16) DEFAULT NULL COMMENT '手机号',
   `age` int(11) DEFAULT NULL COMMENT '年龄',
+  `sex` tinyint(1) DEFAULT NULL COMMENT '性别',
   `address` varchar(255) DEFAULT NULL COMMENT '家庭地址',
   PRIMARY KEY (`employ_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -44,13 +46,16 @@ CREATE TABLE `t_sys_user` (
   `login_name` varchar(16) DEFAULT NULL COMMENT '登录名',
   `password` varchar(32) DEFAULT NULL COMMENT '密码',
   `user_name` varchar(16) DEFAULT NULL COMMENT '姓名',
+  `user_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '用户编号',
   `employ_id` int(11) DEFAULT NULL COMMENT '职员id',
+  `position` varchar(32) DEFAULT NULL COMMENT '岗位',
   `yes_chief` tinyint DEFAULT NULL COMMENT '是否是科级干部',
   `org_id` int(11) DEFAULT NULL COMMENT '机构id',
   `role_id` int(11) DEFAULT NULL COMMENT '角色id',
   `tel` varchar(16) DEFAULT NULL COMMENT '联系方式',
   `mobile_tel` varchar(16) DEFAULT NULL COMMENT '手机号',
   `age` int(11) DEFAULT NULL COMMENT '年龄',
+  `sex` tinyint(1) DEFAULT NULL COMMENT '性别',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -69,7 +74,7 @@ CREATE TABLE `t_sys_code` (
   `code` smallint NOT NULL COMMENT '字段编号',
   `code_no` tinyint NOT NULL COMMENT '值',
   `name` varchar(16) DEFAULT NULL COMMENT '字段名称',
-  `enable_flag` tinyint DEFAULT NULL COMMENT '是否启用,1表示启用',
+  `enable_flag` tinyint(1) DEFAULT NULL COMMENT '是否启用,1表示启用',
   `mark` varchar(128) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -150,5 +155,5 @@ INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,1,'5天',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,2,'10天',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,3,'15天',1);
 
-INSERT t_sys_user (user_id,user_name,login_name,password,org_id,role_id,tel,age)
-values (-1,'超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',2,1,'18823747865',32);
+INSERT t_sys_user (user_id,user_name,login_name,password,org_id,role_id)
+values (-1,'超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',-1,-1);

@@ -3,15 +3,8 @@ import User from '@/user';
 import RestUtil from '@/utils/RestUtil';
 import Config from '@/config';
 
-// 登录成功后执行
-const afterLoginSuccess = (userInfo) => {
-
-    // 用户信息赋值
-    for(let index in userInfo){
-        User.set(index, userInfo[index]);
-    }
-
-    // 加载数据字典
+// 加载数据字典
+const initCode = () => {
     RestUtil.get('code/list').then((list) => {
         // console.log(list);
         let map = {};
@@ -26,6 +19,28 @@ const afterLoginSuccess = (userInfo) => {
         }
         Config.set('$code', map);
     });
+};
+
+// 加载机构树
+const initOrg = () => {
+    RestUtil.get('org/orgTree').then((tree) => {
+        Config.set('$org', tree);
+    });
+};
+
+// 登录成功后执行
+const afterLoginSuccess = (userInfo) => {
+
+    // 用户信息赋值
+    for(let index in userInfo){
+        User.set(index, userInfo[index]);
+    }
+
+    // 加载数据字典
+    initCode();
+
+    // 加载机构树
+    initOrg();
 
 };
 

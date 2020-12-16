@@ -53,7 +53,7 @@
       data() {
           return {
               mainTitle: Config.get('mainTitle'),
-              userName: User.get('name')
+              userName: User.get('userName')
           };
       },
       methods: {
