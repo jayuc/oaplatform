@@ -24,17 +24,23 @@
                   <el-menu-item>出差</el-menu-item>
               </router-link>
             </el-submenu>
-            <el-submenu index="2">
+              <el-submenu index="2">
+                  <template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>
+                  <router-link to="/main/userManage">
+                      <el-menu-item>用户管理</el-menu-item>
+                  </router-link>
+              </el-submenu>
+            <el-submenu index="3">
                 <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
-                <router-link to="/main/userManage">
-                    <el-menu-item>用户管理</el-menu-item>
+                <router-link to="/main/errand">
+                    <el-menu-item>修改密码</el-menu-item>
                 </router-link>
             </el-submenu>
           </el-menu>
         </el-aside>
 
         <el-main style="background-color: rgb(238, 241, 246);">
-            <div style="background: #ffffff;height: 100%;">
+            <div style="background: #ffffff;height: 100%;" id="main-index-body">
                 <router-view></router-view>
             </div>
         </el-main>

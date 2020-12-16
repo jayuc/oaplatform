@@ -1,101 +1,107 @@
 <template>
-    <div style="height: 100%;" ref="pageTableContainer">
-        <div style="height:20px;"></div>
-        <div class="form-search-container">
-            <span class="form-search-title">查询条件</span>
-            <el-form :inline="true" :model="formData" class="demo-form-inline">
-                <el-form-item label="结束：">
-                    <el-radio v-model="stopFlag" label="0">全部</el-radio>
-                    <el-radio v-model="stopFlag" label="1">已结束</el-radio>
-                    <el-radio v-model="stopFlag" label="2">未结束</el-radio>
-                </el-form-item>
-                <el-form-item style="margin-left: 10px;">
-                    <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
-                </el-form-item>
-                <el-form-item style="margin-left: 10px;">
-                    <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">新 增</el-button>
-                </el-form-item>
-            </el-form>
-        </div>
-        <div class="form-table-container" :style="tableContainerStyle">
-            <el-table
-                  ref="elTable"
-                  :data="tableData"
-                  border
-                  :height="tableHeight"
-                  header-row-class-name="form-table-header"
-                  header-cell-class-name="form-table-header-cell"
-                  style="width: 100%">
-              <el-table-column
-                      prop="employName"
-                      label="申请人"
-                      align="center"
-                      width="180">
-              </el-table-column>
-              <el-table-column
-                      prop="orgName"
-                      label="申请人单位"
-                      align="center"
-                      width="180">
-              </el-table-column>
-              <el-table-column
-                      prop="workAge"
-                      align="center"
-                      width="180"
-                      label="工龄（年）">
-              </el-table-column>
-              <el-table-column
-                      prop="holidayType"
-                      align="center"
-                      width="180"
-                      :formatter="handleHolidayType"
-                      label="休假标准">
-              </el-table-column>
-              <el-table-column
-                      prop="startTime"
-                      align="center"
-                      width="180"
-                      label="开始日期">
-              </el-table-column>
-              <el-table-column
-                      prop="endTime"
-                      align="center"
-                      width="180"
-                      label="结束日期">
-              </el-table-column>
-              <el-table-column
-                      prop="days"
-                      align="center"
-                      width="180"
-                      label="天数">
-              </el-table-column>
-              <el-table-column
-                      prop="operation"
-                      align="center"
-                      label="操作">
-                  <template slot-scope="scope">
-                      <el-button @click="showBill(scope.row)" type="text" size="small">查看</el-button>
-                      <el-button @click="approveBill(scope.row)" type="text" size="small">审批</el-button>
-                  </template>
-              </el-table-column>
-            </el-table>
-            <div style="height: 10px;"></div>
-            <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="formData.pageNumber"
-                  :page-sizes="[15, 30, 45, 60]"
-                  :page-size="formData.pageSize"
-                  layout="prev, pager, next, jumper, total, sizes"
-                  :total="total">
-            </el-pagination>
-        </div>
+    <el-container style="height: 100%; border: 1px solid #eee">
+
+        <el-header height="104px">
+            <div class="form-search-top-div"></div>
+            <div class="form-search-container">
+                <span class="form-search-title">查询条件</span>
+                <el-form :inline="true" :model="formData" class="demo-form-inline">
+                    <el-form-item label="结束：">
+                        <el-radio v-model="stopFlag" label="0">全部</el-radio>
+                        <el-radio v-model="stopFlag" label="1">已结束</el-radio>
+                        <el-radio v-model="stopFlag" label="2">未结束</el-radio>
+                    </el-form-item>
+                    <el-form-item style="margin-left: 10px;">
+                        <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
+                    </el-form-item>
+                    <el-form-item style="margin-left: 10px;">
+                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">新 增</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </el-header>
+
+        <el-main>
+            <div class="form-table-container" :style="tableContainerStyle">
+                <el-table
+                      ref="elTable"
+                      :data="tableData"
+                      border
+                      :height="tableHeight"
+                      header-row-class-name="form-table-header"
+                      header-cell-class-name="form-table-header-cell"
+                      style="width: 100%">
+                    <el-table-column
+                          prop="employName"
+                          label="申请人"
+                          align="center"
+                          width="180">
+                    </el-table-column>
+                    <el-table-column
+                          prop="orgName"
+                          label="申请人单位"
+                          align="center"
+                          width="180">
+                    </el-table-column>
+                    <el-table-column
+                          prop="workAge"
+                          align="center"
+                          width="180"
+                          label="工龄（年）">
+                    </el-table-column>
+                    <el-table-column
+                          prop="holidayType"
+                          align="center"
+                          width="180"
+                          :formatter="handleHolidayType"
+                          label="休假标准">
+                    </el-table-column>
+                    <el-table-column
+                          prop="startTime"
+                          align="center"
+                          width="180"
+                          label="开始日期">
+                    </el-table-column>
+                    <el-table-column
+                          prop="endTime"
+                          align="center"
+                          width="180"
+                          label="结束日期">
+                    </el-table-column>
+                    <el-table-column
+                          prop="days"
+                          align="center"
+                          width="180"
+                          label="天数">
+                    </el-table-column>
+                    <el-table-column
+                          prop="operation"
+                          align="center"
+                          label="操作">
+                      <template slot-scope="scope">
+                          <el-button @click="showBill(scope.row)" type="text" size="small">查看</el-button>
+                          <el-button @click="approveBill(scope.row)" type="text" size="small">审批</el-button>
+                      </template>
+                    </el-table-column>
+                </el-table>
+                <div style="height: 10px;"></div>
+                <el-pagination
+                      @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                      :current-page="formData.pageNumber"
+                      :page-sizes="[15, 30, 45, 60]"
+                      :page-size="formData.pageSize"
+                      layout="prev, pager, next, jumper, total, sizes"
+                      :total="total">
+                </el-pagination>
+            </div>
+        </el-main>
 
         <add-leave ref="addLeave" />
 
         <approve-leave ref="approveLeave" />
 
-    </div>
+    </el-container>
 </template>
 
 <script>
@@ -173,9 +179,9 @@
             },
             afterCreated(){
                 let pageHeight = Config.get('mainBodyHeight');
-                let tableContainerHeight = pageHeight - 144;
+                let tableContainerHeight = pageHeight - 146;
                 this.tableContainerStyle = 'height:' + tableContainerHeight + 'px';
-                this.tableHeight = tableContainerHeight - 32;
+                this.tableHeight = tableContainerHeight - 34;
             }
         },
         created(){

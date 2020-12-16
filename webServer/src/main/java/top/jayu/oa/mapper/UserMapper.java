@@ -18,7 +18,15 @@ public interface UserMapper {
     @Select("select * from t_sys_user where login_name = #{loginName}")
     User getUserByLoginName(String loginName);
 
-    @Select("select * from t_sys_user")
-    List<User> list();
+    @Select({
+            "<script> ",
+            "select * ",
+            "  from t_sys_user ",
+            "  <where>  ",
+            "    <if test='userName != null and userName != \"\"'> and user_name like concat('%',#{userName},'%') </if> ",
+            "  </where > ",
+            "</script> "
+    })
+    List<User> list(User record);
 
 }

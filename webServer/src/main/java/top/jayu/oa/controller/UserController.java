@@ -37,7 +37,7 @@ public class UserController {
     public Map<String, Object> list(User dto){
         ResultUtil.Result result = ResultUtil.build();
         PageHelper.startPage(dto.getPageNumber(), dto.getPageSize());
-        List<User> list = userMapper.list();
+        List<User> list = userMapper.list(dto);
         if(list.size() > 0){
             Page<User> page = (Page<User>) list;
             result.total(page.getTotal());

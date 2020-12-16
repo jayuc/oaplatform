@@ -1,88 +1,98 @@
 <template>
-  <div style="height: 100%;" ref="pageTableContainer">
-      <div style="height:20px;"></div>
-      <div class="form-search-container">
-          <span class="form-search-title">查询条件</span>
-          <el-form :inline="true" :model="formData" class="demo-form-inline">
-              <el-form-item label="用户名：">
-                  <el-input v-model="formData.userName" placeholder="请输入用户名"></el-input>
-              </el-form-item>
-              <el-form-item>
-                  <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
-              </el-form-item>
-          </el-form>
-      </div>
-      <div class="form-table-container" :style="tableContainerStyle">
-          <el-table
-                  ref="elTable"
-                  :data="tableData"
-                  border
-                  :height="tableHeight"
-                  header-row-class-name="form-table-header"
-                  header-cell-class-name="form-table-header-cell"
-                  style="width: 100%">
-              <el-table-column
-                      prop="userCode"
-                      label="编号"
-                      align="center"
-                      width="200">
-              </el-table-column>
-              <el-table-column
-                      prop="userName"
-                      label="姓名"
-                      align="center"
-                      width="160">
-              </el-table-column>
-              <el-table-column
-                      prop="sex"
-                      label="性别"
-                      align="center"
-                      :formatter="formatSex"
-                      width="100">
-              </el-table-column>
-              <el-table-column
-                      prop="orgId"
-                      label="所属机构"
-                      align="center"
-                      :formatter="formatOrg"
-                      width="240">
-              </el-table-column>
-              <el-table-column
-                      prop="position"
-                      label="岗位"
-                      align="center"
-                      width="280">
-              </el-table-column>
-              <el-table-column
-                      prop="loginName"
-                      label="登录名"
-                      align="center"
-                      width="140">
-              </el-table-column>
-              <el-table-column
-                      prop="mobileTel"
-                      align="center"
-                      width="180"
-                      label="手机号">
-              </el-table-column>
-              <el-table-column
-                      prop="operation"
-                      align="center"
-                      label="操作">
-              </el-table-column>
-          </el-table>
-          <div style="height: 10px;"></div>
-          <el-pagination
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :current-page="formData.pageNumber"
-                  :page-sizes="[15, 30, 45, 60]"
-                  :page-size="formData.pageSize"
-                  layout="prev, pager, next, jumper, total, sizes"
-                  :total="total">
-          </el-pagination>
-      </div>
-  </div>
+
+    <el-container style="height: 100%; border: 1px solid #eee">
+        <el-aside width="200px">
+
+        </el-aside>
+
+        <el-container>
+
+            <el-header height="104px">
+                <div class="form-search-top-div"></div>
+                <div class="form-search-container">
+                    <span class="form-search-title">查询条件</span>
+                    <el-form :inline="true" :model="formData" class="demo-form-inline">
+                        <el-form-item label="用户名：">
+                            <el-input v-model="formData.userName" placeholder="请输入用户名"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </el-header>
+
+            <el-main>
+                <div class="form-table-container" :style="tableContainerStyle">
+                    <el-table
+                          ref="elTable"
+                          :data="tableData"
+                          border
+                          :height="tableHeight"
+                          header-row-class-name="form-table-header"
+                          header-cell-class-name="form-table-header-cell"
+                          style="width: 100%">
+                        <el-table-column
+                              prop="userCode"
+                              label="编号"
+                              align="center"
+                              width="200">
+                        </el-table-column>
+                        <el-table-column
+                              prop="userName"
+                              label="姓名"
+                              align="center"
+                              width="160">
+                        </el-table-column>
+                        <el-table-column
+                              prop="sex"
+                              label="性别"
+                              align="center"
+                              :formatter="formatSex"
+                              width="100">
+                        </el-table-column>
+                        <el-table-column
+                              prop="orgId"
+                              label="所属机构"
+                              align="center"
+                              :formatter="formatOrg"
+                              width="240">
+                        </el-table-column>
+                        <el-table-column
+                              prop="position"
+                              label="岗位"
+                              align="center"
+                              width="280">
+                        </el-table-column>
+                        <el-table-column
+                              prop="loginName"
+                              label="登录名"
+                              align="center"
+                              width="140">
+                        </el-table-column>
+                        <el-table-column
+                              prop="operation"
+                              align="center"
+                              label="操作">
+                        </el-table-column>
+                    </el-table>
+                    <div style="height: 10px;"></div>
+                    <el-pagination
+                          @size-change="handleSizeChange"
+                          @current-change="handleCurrentChange"
+                          :current-page="formData.pageNumber"
+                          :page-sizes="[15, 30, 45, 60]"
+                          :page-size="formData.pageSize"
+                          layout="prev, pager, next, jumper, total, sizes"
+                          :total="total">
+                    </el-pagination>
+                </div>
+            </el-main>
+
+        </el-container>
+
+    </el-container>
+
 </template>
 
 <script>
@@ -153,9 +163,9 @@
             },
             afterCreated(){
                 let pageHeight = Config.get('mainBodyHeight');
-                let tableContainerHeight = pageHeight - 144;
+                let tableContainerHeight = pageHeight - 146;
                 this.tableContainerStyle = 'height:' + tableContainerHeight + 'px';
-                this.tableHeight = tableContainerHeight - 32;
+                this.tableHeight = tableContainerHeight - 34;
             }
         },
         created(){

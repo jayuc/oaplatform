@@ -23,6 +23,14 @@ a {
     position: relative;
 }
 
+#main-index-body .el-main{
+    padding: 0;
+}
+
+#main-index-body .el-header{
+    padding: 0;
+}
+
 .form-search-container span.form-search-title{
     position: absolute;
     left: 20px;
@@ -32,6 +40,10 @@ a {
     height: 16px;
     background: #ffffff;
     text-align: center;
+}
+
+.form-search-top-div{
+    height: 20px;
 }
 
 .form-table-container{
