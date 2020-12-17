@@ -26,9 +26,6 @@ public class OaBillController {
     public Map<String, Object> list(OaBill dto){
         ResultUtil.Result result = ResultUtil.build();
         PageHelper.startPage(dto.getPageNumber(), dto.getPageSize());
-        if(dto != null && dto.getUserId() != -1 && dto.getUserId() != 1){
-            dto.setCurrentStep(dto.getUserId() + "");
-        }
         List<OaBill> list = oaBillMapper.list(dto);
         if(list.size() > 0){
             Page<OaBill> page = (Page<OaBill>) list;

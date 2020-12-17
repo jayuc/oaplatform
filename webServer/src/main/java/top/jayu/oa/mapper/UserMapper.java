@@ -24,6 +24,7 @@ public interface UserMapper {
             "  from t_sys_user ",
             "  <where>  ",
             "    <if test='userName != null and userName != \"\"'> and user_name like concat('%',#{userName},'%') </if> ",
+            "    <if test='orgId != null and orgId != 0'> and org_id = #{orgId} </if> ",
             "  </where > ",
             "</script> "
     })

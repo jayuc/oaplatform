@@ -126,10 +126,18 @@ function doAjax(_options) {
 // 处理公用部分参数
 function handleOptions(options, _options){
   $.extend(options, _options);
-  options.data.userId = User.get("id");
-    options.data.orgId = User.get("orgId");
-    options.data.roleId = User.get("roleId");
-    options.data.employId = User.get("employId");
+  if(typeof options.data.userId === 'undefined'){
+      options.data.userId = User.get("id");
+  }
+    if(typeof options.data.orgId === 'undefined'){
+        options.data.orgId = User.get("orgId");
+    }
+    if(typeof options.data.roleId === 'undefined'){
+        options.data.roleId = User.get("roleId");
+    }
+    if(typeof options.data.employId === 'undefined'){
+        options.data.employId = User.get("employId");
+    }
   options.data.token = "";
 }
 

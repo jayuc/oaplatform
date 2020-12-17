@@ -7,7 +7,7 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="申请人：" :label-width="formLabelWidth">
-                        {{formData.employName}}
+                        {{formData.userName}}
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -70,6 +70,8 @@
 
     import RestUtil from '@/utils/RestUtil';
     import YuCodeRadio from "../public/yu-code-radio.vue";
+    import user from '@/user';
+    import OrgUtil from '@/utils/OrgUtil';
 
     export default {
         components: {YuCodeRadio},
@@ -126,7 +128,9 @@
             initFormData(){
                 this.formData = {
                     type: 1,
-                    currentStep: 'start'
+                    currentStep: 'start',
+                    userName: user.get('userName'),
+                    orgName: OrgUtil.getShortNameById(user.get('orgId'))
                 };
                 // 休假标准下拉框复位
                 if(this.$refs.holidayTypeSelect){

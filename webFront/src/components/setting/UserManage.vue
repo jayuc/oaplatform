@@ -1,8 +1,18 @@
 <template>
 
     <el-container style="height: 100%; border: 1px solid #eee">
-        <el-aside width="200px">
-
+        <el-aside width="300px">
+            <div class="org-tree-top-div">
+                <span class="org-tree-title">机构导航</span>
+            </div>
+            <div class="org-tree-container" :style="orgTreeContainerStyle">
+                <el-tree :data="orgTreeData"
+                         :props="defaultProps"
+                         node-key="orgId"
+                         :default-expanded-keys="[-1]"
+                         @node-click="handleNodeClick"
+                ></el-tree>
+            </div>
         </el-aside>
 
         <el-container>
@@ -16,7 +26,7 @@
                             <el-input v-model="formData.userName" placeholder="请输入用户名"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
+                            <el-button type="primary" @click="submit(0)" :disabled="searchBtnStatus">查 询</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -36,20 +46,20 @@
                               prop="userCode"
                               label="编号"
                               align="center"
-                              width="200">
+                              width="160">
                         </el-table-column>
                         <el-table-column
                               prop="userName"
                               label="姓名"
                               align="center"
-                              width="160">
+                              width="120">
                         </el-table-column>
                         <el-table-column
                               prop="sex"
                               label="性别"
                               align="center"
                               :formatter="formatSex"
-                              width="100">
+                              width="60">
                         </el-table-column>
                         <el-table-column
                               prop="orgId"
@@ -62,13 +72,20 @@
                               prop="position"
                               label="岗位"
                               align="center"
-                              width="280">
+                              width="240">
                         </el-table-column>
                         <el-table-column
                               prop="loginName"
                               label="登录名"
                               align="center"
-                              width="140">
+                              width="100">
+                        </el-table-column>
+                        <el-table-column
+                                prop="yesChief"
+                                label="职级"
+                                align="center"
+                                :formatter="formatChief"
+                                width="100">
                         </el-table-column>
                         <el-table-column
                               prop="operation"
@@ -107,20 +124,36 @@
         data(){
             return {
                 tableContainerStyle: '',
+                orgTreeContainerStyle: '',
                 tableHeight: 500,
                 formData: {
-                  userName: '',
-                  pageNumber: 1,
-                  pageSize: 15,
+                    userName: '',
+                    pageNumber: 1,
+                    pageSize: 15,
+                    orgId: 0
                 },
                 searchBtnStatus: false,
                 total: 0,
-                tableData: []
+                tableData: [],
+                orgTreeData: [],
+                defaultProps: {
+                    children: 'children',
+                    label: (data) => {
+                        let names = data.orgName.split('-');
+                        let name = names[names.length-1];
+                        if(name.indexOf('（内部专卖管理') > -1){
+                            return name.split('（')[0];
+                        }
+                        return name;
+                    }
+                }
             }
         },
         methods: {
-            submit(){
-//                console.log(this.formData);
+            submit(orgId){
+                if(typeof orgId != 'undefined'){
+                    this.formData.orgId = orgId;
+                }
                 RestUtil.get('user/list', this.formData, {
                     enableLoading: true,       // 启动请求期间的正在加载
                     loadingStartFun: () => {   // 请求开始前执行
@@ -144,14 +177,31 @@
 
                 });
             },
+            // 机构树点击事件
+            handleNodeClick(data){
+                this.formData.pageNumber = 1;
+                this.submit(data.orgId);
+            },
             formatSex(row, column, cellValue){
-                return CodeUtil.getName(4, cellValue);
+                if(cellValue){
+                    return CodeUtil.getName(4, cellValue);
+                }
+                return '';
             },
             formatOrg(row, column, cellValue){
-                let org = OrgUtil.getOrgById(cellValue);
-                if(org){
-                    return org.attribute.shortOrgName;
+                if(cellValue){
+                    let org = OrgUtil.getOrgById(cellValue);
+                    if(org && org.attribute){
+                        return org.attribute.shortOrgName;
+                    }
                 }
+                return '';
+            },
+            formatChief(row, column, cellValue){
+                if(cellValue == 1){
+                    return '科级干部';
+                }
+                return '';
             },
             handleSizeChange(currentPageSize) {
                 this.formData.pageSize = currentPageSize;
@@ -164,8 +214,12 @@
             afterCreated(){
                 let pageHeight = Config.get('mainBodyHeight');
                 let tableContainerHeight = pageHeight - 146;
+                // 表格容器高度
                 this.tableContainerStyle = 'height:' + tableContainerHeight + 'px';
+                // 表格高度
                 this.tableHeight = tableContainerHeight - 34;
+                // 机构导航容器高度
+                this.orgTreeContainerStyle = 'height:' + (pageHeight - 56) + 'px';
             }
         },
         created(){
@@ -173,6 +227,10 @@
         },
         mounted(){
             this.submit();
+            let org = Config.get('$org');
+            if(org instanceof Array){
+                this.orgTreeData = org;
+            }
         }
     }
 </script>

@@ -54,6 +54,31 @@ a {
     background: #f5f7fa;
 }
 
+.org-tree-container{
+    border-radius: 5px;
+    border: 1px solid #DCDFE6;
+    margin-left: 20px;
+    padding: 12px 5px 0 0;
+    overflow: auto;
+}
+
+.org-tree-top-div{
+    height: 20px;
+    position: relative;
+}
+
+.org-tree-top-div .org-tree-title{
+    position: absolute;
+    left: 40px;
+    top: 12px;
+    display: block;
+    width: 56px;
+    height: 16px;
+    background: #ffffff;
+    text-align: center;
+    z-index: 2;
+}
+
 .el-pagination .btn-prev{
     float: left;
 }

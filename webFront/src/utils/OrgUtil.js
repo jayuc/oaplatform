@@ -28,8 +28,29 @@ const getOrgById = (id) => {
     }
 };
 
+const getNameById = (id) => {
+    let org = getOrgById(id);
+    if(org){
+        return org.orgName;
+    }
+    return '';
+};
+
+const getShortNameById = (id) => {
+    let org = getOrgById(id);
+    if(org){
+        if(org.attribute){
+            return org.attribute.shortOrgName;
+        }
+        return org.orgName;
+    }
+    return '';
+};
+
 export default {
     getOrgTree,
     getOrgById,
-    loop
+    loop,
+    getNameById,
+    getShortNameById
 }
