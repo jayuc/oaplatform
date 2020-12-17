@@ -26,6 +26,9 @@
             </el-submenu>
               <el-submenu index="2">
                   <template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>
+                  <router-link to="/main/orgManage">
+                      <el-menu-item>机构管理</el-menu-item>
+                  </router-link>
                   <router-link to="/main/userManage">
                       <el-menu-item>用户管理</el-menu-item>
                   </router-link>

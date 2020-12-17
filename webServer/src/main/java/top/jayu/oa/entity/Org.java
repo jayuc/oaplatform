@@ -1,9 +1,10 @@
 package top.jayu.oa.entity;
 
 import lombok.Data;
+import top.jayu.oa.param.BaseParam;
 
 @Data
-public class Org {
+public class Org extends BaseParam {
     private Integer orgId;
 
     private Integer parentId;

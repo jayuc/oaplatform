@@ -5,6 +5,7 @@ import Login from '@/components/login';
 import LeaveBill from '@/components/process/leave';
 import DoingBill from '@/components/process/doing';
 import UserManage from '@/components/setting/UserManage';
+import OrgManage from '@/components/setting/orgManage';
 
 Vue.use(Router);
 
@@ -23,6 +24,7 @@ export default new Router({
             {path: 'leave', component: LeaveBill},   // 请假
             {path: 'errand', component: DoingBill},  // 出差
             {path: 'userManage', component: UserManage},  // 用户管理
+            {path: 'orgManage', component: OrgManage},  // 机构管理
         ]
     }
   ]

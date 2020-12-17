@@ -25,6 +25,7 @@ public interface UserMapper {
             "  <where>  ",
             "    <if test='userName != null and userName != \"\"'> and user_name like concat('%',#{userName},'%') </if> ",
             "    <if test='orgId != null and orgId != 0'> and org_id = #{orgId} </if> ",
+            "    <if test='orgCodePriv != null and orgCodePriv != \"\"'> and org_code like concat(#{orgCodePriv},'%') </if> ",
             "  </where > ",
             "</script> "
     })

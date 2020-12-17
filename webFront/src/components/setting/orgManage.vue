@@ -17,21 +17,6 @@
 
         <el-container>
 
-            <el-header height="104px">
-                <div class="form-search-top-div"></div>
-                <div class="form-search-container">
-                    <span class="form-search-title">查询条件</span>
-                    <el-form :inline="true" :model="formData" class="demo-form-inline">
-                        <el-form-item label="用户名：">
-                            <el-input v-model="formData.userName" placeholder="请输入用户名"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="submit('')" :disabled="searchBtnStatus">查 询</el-button>
-                        </el-form-item>
-                    </el-form>
-                </div>
-            </el-header>
-
             <el-main>
                 <div class="form-table-container" :style="tableContainerStyle">
                     <el-table
@@ -43,49 +28,22 @@
                           header-cell-class-name="form-table-header-cell"
                           style="width: 100%">
                         <el-table-column
-                              prop="userCode"
-                              label="编号"
+                              prop="orgCode"
+                              label="机构编号"
                               align="center"
-                              width="160">
+                              width="140">
                         </el-table-column>
                         <el-table-column
-                              prop="userName"
-                              label="姓名"
+                              prop="orgName"
+                              label="机构名称"
                               align="center"
-                              width="120">
+                              width="350">
                         </el-table-column>
                         <el-table-column
-                              prop="sex"
-                              label="性别"
-                              align="center"
-                              :formatter="formatSex"
-                              width="60">
-                        </el-table-column>
-                        <el-table-column
-                              prop="orgId"
-                              label="所属机构"
-                              align="center"
-                              :formatter="formatOrg"
-                              width="240">
-                        </el-table-column>
-                        <el-table-column
-                              prop="position"
-                              label="岗位"
-                              align="center"
-                              width="240">
-                        </el-table-column>
-                        <el-table-column
-                              prop="loginName"
-                              label="登录名"
-                              align="center"
-                              width="100">
-                        </el-table-column>
-                        <el-table-column
-                                prop="yesChief"
-                                label="职级"
+                                prop="shortOrgName"
+                                label="机构简称"
                                 align="center"
-                                :formatter="formatChief"
-                                width="100">
+                                width="220">
                         </el-table-column>
                         <el-table-column
                               prop="operation"
@@ -116,8 +74,6 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import OrgUtil from '@/utils/OrgUtil';
-    import CodeUtil from '@/utils/CodeUtil';
 
     export default {
         name: 'user-setting',
@@ -127,7 +83,6 @@
                 orgTreeContainerStyle: '',
                 tableHeight: 500,
                 formData: {
-                    userName: '',
                     pageNumber: 1,
                     pageSize: 15,
                     orgId: 0,
@@ -155,7 +110,7 @@
                 if(typeof orgCodePriv != 'undefined'){
                     this.formData.orgCodePriv = orgCodePriv;
                 }
-                RestUtil.get('user/list', this.formData, {
+                RestUtil.get('org/list', this.formData, {
                     enableLoading: true,       // 启动请求期间的正在加载
                     loadingStartFun: () => {   // 请求开始前执行
                         this.searchBtnStatus = true;
@@ -188,27 +143,6 @@
                     this.submit('');
                 }
             },
-            formatSex(row, column, cellValue){
-                if(cellValue){
-                    return CodeUtil.getName(4, cellValue);
-                }
-                return '';
-            },
-            formatOrg(row, column, cellValue){
-                if(cellValue){
-                    let org = OrgUtil.getOrgById(cellValue);
-                    if(org && org.attribute){
-                        return org.attribute.shortOrgName;
-                    }
-                }
-                return '';
-            },
-            formatChief(row, column, cellValue){
-                if(cellValue == 1){
-                    return '科级干部';
-                }
-                return '';
-            },
             handleSizeChange(currentPageSize) {
                 this.formData.pageSize = currentPageSize;
                 this.submit();
@@ -219,7 +153,7 @@
             },
             afterCreated(){
                 let pageHeight = Config.get('mainBodyHeight');
-                let tableContainerHeight = pageHeight - 146;
+                let tableContainerHeight = pageHeight - 42;
                 // 表格容器高度
                 this.tableContainerStyle = 'height:' + tableContainerHeight + 'px';
                 // 表格高度

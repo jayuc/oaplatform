@@ -7,4 +7,5 @@ public class BaseParam {
     private Integer pageNumber;
     private Integer pageSize;
     private Integer userId;
+    private String orgCodePriv;
 }

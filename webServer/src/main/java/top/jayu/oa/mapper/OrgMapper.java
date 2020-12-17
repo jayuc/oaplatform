@@ -13,6 +13,22 @@ import java.util.List;
 @Mapper
 public interface OrgMapper {
 
+    @Select({
+            "<script> ",
+            "select * ",
+            "  from t_sys_org ",
+            "  <where>  ",
+            "    <if test='orgName != null and orgName != \"\"'> and org_name like concat('%',#{orgName},'%') </if> ",
+            "    <if test='orgId != null and orgId != 0'> and org_id = #{orgId} </if> ",
+            "    <if test='orgCodePriv != null and orgCodePriv != \"\"'> and org_code like concat(#{orgCodePriv},'%') </if> ",
+            "  </where > ",
+            "</script> "
+    })
+    List<Org> list(Org record);
+
+    @Select("select * from t_sys_org where org_id = #{id}")
+    Org getById(String id);
+
     // 一级菜单
     @Select("select * from t_sys_org where parent_id = -1")
     List<Org> list1();
