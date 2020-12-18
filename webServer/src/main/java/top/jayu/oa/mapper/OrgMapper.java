@@ -15,12 +15,14 @@ public interface OrgMapper {
 
     @Select({
             "<script> ",
-            "select * ",
-            "  from t_sys_org ",
+            "select o.*,u.user_name leader_name,p.user_name deputy_name ",
+            "  from t_sys_org o ",
+            "  left join t_sys_user u on o.leader_id = u.user_id",
+            "  left join t_sys_user p on o.deputy_id = p.user_id",
             "  <where>  ",
-            "    <if test='orgName != null and orgName != \"\"'> and org_name like concat('%',#{orgName},'%') </if> ",
-            "    <if test='orgId != null and orgId != 0'> and org_id = #{orgId} </if> ",
-            "    <if test='orgCodePriv != null and orgCodePriv != \"\"'> and org_code like concat(#{orgCodePriv},'%') </if> ",
+            "    <if test='orgName != null and orgName != \"\"'> and o.org_name like concat('%',#{orgName},'%') </if> ",
+            "    <if test='orgId != null and orgId != 0'> and o.org_id = #{orgId} </if> ",
+            "    <if test='orgCodePriv != null and orgCodePriv != \"\"'> and o.org_code like concat(#{orgCodePriv},'%') </if> ",
             "  </where > ",
             "</script> "
     })

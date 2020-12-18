@@ -23,6 +23,10 @@ public class Org extends BaseParam {
 
     private Integer deputyId;
 
+    private String leaderName;
+
+    private String deputyName;
+
     private String address;
 
     private String tel;

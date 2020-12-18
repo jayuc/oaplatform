@@ -46,6 +46,18 @@
                                 width="220">
                         </el-table-column>
                         <el-table-column
+                                prop="leaderName"
+                                label="负责人"
+                                align="center"
+                                width="100">
+                        </el-table-column>
+                        <el-table-column
+                                prop="deputyName"
+                                label="分管领导"
+                                align="center"
+                                width="100">
+                        </el-table-column>
+                        <el-table-column
                               prop="operation"
                               align="center"
                               label="操作">
