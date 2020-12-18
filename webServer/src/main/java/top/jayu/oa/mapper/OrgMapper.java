@@ -28,6 +28,9 @@ public interface OrgMapper {
     })
     List<Org> list(Org record);
 
+    @Select("select yes_office from t_sys_org where org_id = #{id}")
+    Byte ifOffice(int id);
+
     @Select("select * from t_sys_org where org_id = #{id}")
     Org getById(String id);
 

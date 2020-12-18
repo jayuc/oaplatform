@@ -14,7 +14,7 @@ CREATE TABLE `t_sys_org` (
   `short_org_name` varchar(64) DEFAULT NULL COMMENT '机构简称',
   `org_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '机构编号',
   `org_code_priv` varchar(32) DEFAULT NULL COMMENT '机构权限编码',
-  `yes_office` tinyint DEFAULT NULL COMMENT '是否是机关',
+  `yes_office` tinyint DEFAULT NULL COMMENT '是否是机关,1表示是',
   `leader_id` int(11) DEFAULT NULL COMMENT '负责人id',
   `deputy_id` int(11) DEFAULT NULL COMMENT '分管领导id',
   `address` varchar(255) DEFAULT NULL COMMENT '机构地址',
@@ -81,19 +81,6 @@ CREATE TABLE `t_sys_code` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-# 流程表
-CREATE TABLE `t_oa_process` (
-  `process_id` int(11) NOT NULL AUTO_INCREMENT,
-  `process_type` smallint NOT NULL COMMENT '表单类别',
-  `prev_step` varchar(32) NOT NULL COMMENT '表单步骤，start为第一个步骤',
-  `next_step` varchar(32) NOT NULL COMMENT '表单步骤，end为最后一个步骤',
-  `approve_org_id` int(11) DEFAULT NULL COMMENT '审批机构',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  `mark` varchar(128) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`process_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 # 流程单表
 CREATE TABLE `t_oa_bill` (
   `bill_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -101,10 +88,10 @@ CREATE TABLE `t_oa_bill` (
   `bill_type` tinyint NOT NULL COMMENT '表单类别,数据字典：1',
   `current_step` varchar(32) NOT NULL COMMENT '表单当前步骤，可以动态调整',
   `stop_flag` tinyint DEFAULT NULL COMMENT '终止标记，1表示终止 2表示未终止',
-  `employ_id` int(11) DEFAULT NULL COMMENT '申请人id',
-  `next_employ_id` int(11) DEFAULT NULL COMMENT '审批人',
-  `next_org_id` int(11) DEFAULT NULL COMMENT '审批机构',
-  `org_id` int(11) DEFAULT NULL COMMENT '机构id',
+  `apply_id` int(11) DEFAULT NULL COMMENT '申请人id',
+  `next_approve_list` varchar(128) DEFAULT NULL COMMENT '下一步审批人id列表，中间用英文逗号隔开，例如,2,34,',
+  `history_approve_list` varchar(256) DEFAULT NULL COMMENT '历史审批人id列表，中间用英文逗号隔开，例如,2,34,',
+  `org_id` int(11) DEFAULT NULL COMMENT '申请人机构id',
   `org_oa_type` tinyint DEFAULT NULL COMMENT '机构流程类型',
   `start_time` datetime DEFAULT NULL COMMENT '开始日期',
   `end_time` datetime DEFAULT NULL COMMENT '结束日期',
@@ -126,10 +113,40 @@ CREATE TABLE `t_oa_bill` (
   PRIMARY KEY (`bill_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+# 流程步骤表
+CREATE TABLE `t_oa_process` (
+  `process_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_type` tinyint NOT NULL COMMENT '表单类别,数据字典：1',
+  `current_step` varchar(32) DEFAULT NULL COMMENT '当前步骤',
+  `next_step` varchar(32) DEFAULT NULL COMMENT '下一步骤名称',
+  `parent_step` varchar(32) DEFAULT NULL COMMENT '父步骤',
+  `process_condition_id` int(11) DEFAULT NULL COMMENT '流程条件id',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `mark` varchar(128) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`process_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+# 流程条件
+CREATE TABLE `t_oa_process_condition` (
+  `process_condition_id` int(11) NOT NULL AUTO_INCREMENT,
+  `input` varchar(32) NOT NULL COMMENT '条件输入,例如：userId',
+  `input_value_type` varchar(32) NOT NULL COMMENT '条件输入值类型,例如：String,Integer',
+  `ioc_entity_name` varchar(32) NOT NULL COMMENT 'spring容器中实体名字',
+  `ioc_entity_method` varchar(32) NOT NULL COMMENT '方法',
+  `seccess_to` varchar(32) NOT NULL COMMENT '结果为true流向步骤名',
+  `seccess_condition_id` int(11) DEFAULT NULL COMMENT '流程条件id,结果为true后,如果不为空，则继续进入此条件',
+  `fail_to` varchar(32) NOT NULL COMMENT '结果为false的流向的步骤名',
+  `fail_condition_id` int(11) DEFAULT NULL COMMENT '流程条件id,结果为false后,如果不为空，则继续进入此条件',
+  `condition_desc` varchar(1024) DEFAULT NULL COMMENT '条件描述',
+  PRIMARY KEY (`process_condition_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 # 流程单操作记录
 CREATE TABLE `t_oa_bill_opera` (
   `bill_opera_id` int(11) NOT NULL AUTO_INCREMENT,
   `bill_id` int(11) NOT NULL COMMENT '流程单id',
+  `bill_type` tinyint NOT NULL COMMENT '表单类别,数据字典：1',
   `bill_step` varchar(32) NOT NULL COMMENT '流程的步骤',
   `approve_employ_id` int(11) DEFAULT NULL COMMENT '审批人',
   `approve_org_id` int(11) DEFAULT NULL COMMENT '审批机构',
@@ -141,6 +158,15 @@ CREATE TABLE `t_oa_bill_opera` (
 
 
 # 模拟数据
+
+INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,seccess_to,fail_to,condition_desc)
+VALUE ('orgId', 'Integer', 'orgService', 'orgIfOffice', '0000', '0001', '是否是机关');
+INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,seccess_to,fail_to,condition_desc)
+VALUE ('userId', 'Integer', 'userService', 'userIfChief', '000000', 'end', '是否是科级干部');
+
+INSERT t_oa_process (process_type,current_step,parent_step,process_condition_id)
+VALUE (1, '00', 'root', 1);
+
 INSERT t_sys_code_type (code,name) VALUE (1,'流程类型');
 INSERT t_sys_code_type (code,name) VALUE (2,'交通工具');
 INSERT t_sys_code_type (code,name) VALUE (3,'休假标准');

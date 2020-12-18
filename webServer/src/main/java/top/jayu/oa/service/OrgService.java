@@ -21,6 +21,15 @@ public class OrgService {
     @Autowired
     OrgMapper orgMapper;
 
+    /**
+     * 是否是机关
+     * @return
+     */
+    public boolean orgIfOffice(int orgId){
+        Byte b = orgMapper.ifOffice(orgId);
+        return b == 1;
+    }
+
     public List<OrgTree> orgTree(){
 
         OrgTree root = new OrgTree(-1, "3400", "合肥市烟草专卖局", null);

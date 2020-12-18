@@ -8,13 +8,15 @@ import java.util.Date;
 public class OaProcess {
     private Integer processId;
 
-    private Short processType;
+    private Byte billType;
 
-    private String prevStep;
+    private String currentStep;
 
     private String nextStep;
 
-    private Integer approveOrgId;
+    private String parentStep;
+
+    private Integer processConditionId;
 
     private Date createTime;
 

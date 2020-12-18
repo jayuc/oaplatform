@@ -1,13 +1,11 @@
 package top.jayu.oa.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import top.jayu.oa.param.BaseParam;
 
 import java.util.Date;
 
 @Data
-public class OaBill extends BaseParam {
+public class OaBill {
     private Integer billId;
 
     private String billCode;
@@ -18,20 +16,18 @@ public class OaBill extends BaseParam {
 
     private Byte stopFlag;
 
-    private Integer employId;
+    private Integer applyId;
 
-    private Integer nextEmployId;
+    private String nextApproveList;
 
-    private Integer nextOrgId;
+    private String historyApproveList;
 
     private Integer orgId;
 
     private Byte orgOaType;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
     private Byte workAge;

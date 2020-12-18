@@ -10,6 +10,8 @@ public class OaBillOpera {
 
     private Integer billId;
 
+    private Byte billType;
+
     private String billStep;
 
     private Integer approveEmployId;
