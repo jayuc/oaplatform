@@ -124,3 +124,7 @@ a {
 .el-dialog__header .el-dialog__close:hover,.el-dialog__header .el-dialog__headerbtn .el-dialog__close{
     color: #ffffff;
 }
+
+.el-dialog__body{
+    padding: 30px 20px 30px 5px;
+}
