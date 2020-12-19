@@ -116,9 +116,11 @@
                         { type: 'number', message: '天数必须为数字值'}
                     ],
                     startTime: [
+                        { required: true, message: '请选择开始日期', trigger: 'blur' },
                         { validator: validateStartTime, trigger: 'change' }
                     ],
                     endTime: [
+                        { required: true, message: '请选择结束日期', trigger: 'blur' },
                         { validator: validateEndTime, trigger: 'change' }
                     ]
                 }
@@ -128,7 +130,7 @@
             initFormData(){
                 this.formData = {
                     type: 1,
-                    currentStep: 'start',
+                    currentStep: '00',
                     userName: user.get('userName'),
                     orgName: OrgUtil.getShortNameById(user.get('orgId'))
                 };
@@ -163,7 +165,7 @@
                                 this.submitBtnDisabled = false;
                             }
                         }).then(() => {
-                            this.$parent.submit();
+                            this.$emit('complete');
                             this.close();
                         });
                     } else {

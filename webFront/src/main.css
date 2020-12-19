@@ -108,3 +108,19 @@ a {
 .el-dialog{
     text-align: left;
 }
+
+.el-dialog__header{
+    background: #409EFF;
+}
+
+.el-dialog__title{
+    color: #ffffff;
+}
+
+.el-dialog__header .el-dialog__close{
+    color: #ffffff;
+}
+
+.el-dialog__header .el-dialog__close:hover,.el-dialog__header .el-dialog__headerbtn .el-dialog__close{
+    color: #ffffff;
+}

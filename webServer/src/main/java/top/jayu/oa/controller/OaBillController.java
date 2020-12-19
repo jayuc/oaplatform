@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.jayu.oa.entity.OaBill;
+import top.jayu.oa.iter.WorkFlowEngine;
 import top.jayu.oa.mapper.OaBillMapper;
 import top.jayu.oa.param.OaBillParam;
 import top.jayu.oa.util.ResultUtil;
@@ -22,6 +23,9 @@ public class OaBillController {
     @Autowired
     OaBillMapper oaBillMapper;
 
+    @Autowired
+    WorkFlowEngine workFlowEngine;
+
     @GetMapping("/list")
     public Map<String, Object> list(OaBill dto){
         ResultUtil.Result result = ResultUtil.build();
@@ -33,6 +37,16 @@ public class OaBillController {
             result.total(page.getTotal());
         }
         return result.getResult();
+    }
+
+    /**
+     * 订单投递
+     * @param dto
+     * @return
+     */
+    @PostMapping("/deliver")
+    public Map<String, Object> deliver(OaBill dto) {
+        return workFlowEngine.deliver(dto);
     }
 
     @PostMapping("/insert")

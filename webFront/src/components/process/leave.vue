@@ -97,7 +97,7 @@
             </div>
         </el-main>
 
-        <add-leave ref="addLeave" />
+        <add-leave ref="addLeave" @complete="submit" />
 
         <approve-leave ref="approveLeave" />
 
@@ -158,7 +158,7 @@
                 });
             },
             openAddLeave(){
-                this.$refs.addLeave.open({}, 'oa/bill/insert', 'add');
+                this.$refs.addLeave.open({}, 'oa/bill/deliver', 'add');
             },
             showBill(row){
                 console.log(row);

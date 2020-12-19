@@ -1,11 +1,12 @@
 package top.jayu.oa.entity;
 
 import lombok.Data;
+import top.jayu.oa.param.BaseParam;
 
 import java.util.Date;
 
 @Data
-public class OaBill {
+public class OaBill extends BaseParam {
     private Integer billId;
 
     private String billCode;

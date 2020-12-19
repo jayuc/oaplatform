@@ -74,7 +74,7 @@
                   // 登录成功后处理
                   handler.afterLoginSuccess(result.properties.user);
               }, (error) => {
-                  console.error(error.responseJSON.message);
+                  console.error(error);
                   if(error.responseJSON && error.responseJSON.errors instanceof Array){
                       let errorArr = error.responseJSON.errors;
                       let errorStr = '';
