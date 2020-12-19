@@ -22,7 +22,6 @@ public class OaBillController {
 
     @Autowired
     OaBillMapper oaBillMapper;
-
     @Autowired
     WorkFlowEngine workFlowEngine;
 
@@ -65,7 +64,7 @@ public class OaBillController {
     }
 
     @PostMapping("/approve")
-    public int approve(OaBillParam dto){
+    public int approve(OaBill dto){
         return oaBillMapper.approve(dto);
     }
 

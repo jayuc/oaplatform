@@ -31,6 +31,9 @@ public interface OrgMapper {
     @Select("select yes_office from t_sys_org where org_id = #{id}")
     Byte ifOffice(int id);
 
+    @Select("select leader_id from t_sys_org where org_id = #{id}")
+    Integer findOrgLeaderById(Integer id);
+
     @Select("select * from t_sys_org where org_id = #{id}")
     Org getById(String id);
 

@@ -8,15 +8,13 @@ import java.util.Date;
 public class OaBillOpera {
     private Integer billOperaId;
 
-    private Integer billId;
+    private String billCode;
 
     private Byte billType;
 
     private String billStep;
 
-    private Integer approveEmployId;
-
-    private Integer approveOrgId;
+    private Integer operaId;
 
     private Byte passFlag;
 

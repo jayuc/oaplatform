@@ -129,7 +129,7 @@
         methods: {
             initFormData(){
                 this.formData = {
-                    type: 1,
+                    billType: 1,
                     currentStep: '00',
                     userName: user.get('userName'),
                     orgName: OrgUtil.getShortNameById(user.get('orgId'))
@@ -155,7 +155,7 @@
             submit(){
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
-                        this.formData.code = new Date().getTime();
+                        this.formData.billCode = new Date().getTime();
                         RestUtil.post(this.url, this.formData, {
                             enableLoading: true,       // 启动请求期间的正在加载
                             loadingStartFun: () => {   // 请求开始前执行

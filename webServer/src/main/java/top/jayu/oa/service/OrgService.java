@@ -25,9 +25,23 @@ public class OrgService {
      * 是否是机关
      * @return
      */
-    public boolean orgIfOffice(int orgId){
+    public boolean orgIfOffice(Integer orgId){
         Byte b = orgMapper.ifOffice(orgId);
         return b == 1;
+    }
+
+    // 查询机构负责人
+    public int findOrgLeaderById(Integer id){
+        return orgMapper.findOrgLeaderById(id);
+    }
+
+    // 查询机构负责人，
+    public String findOrgLeader(Integer orgId){
+        int id = findOrgLeaderById(orgId);
+        if(id > 0){
+            return "," + id + ",";
+        }
+        return null;
     }
 
     public List<OrgTree> orgTree(){

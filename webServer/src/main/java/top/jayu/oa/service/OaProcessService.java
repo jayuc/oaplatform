@@ -11,8 +11,8 @@ public class OaProcessService {
     @Autowired
     OaProcessMapper oaProcessMapper;
 
-    OaProcess getStepByName(String name){
-        return oaProcessMapper.getStepByName(name);
+    OaProcess getProcess(Byte billType, String stepName){
+        return oaProcessMapper.getProcess(billType, stepName);
     }
 
 }

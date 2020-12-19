@@ -32,15 +32,16 @@
                       header-cell-class-name="form-table-header-cell"
                       style="width: 100%">
                     <el-table-column
-                          prop="employName"
+                          prop="applyName"
                           label="申请人"
                           align="center"
                           width="180">
                     </el-table-column>
                     <el-table-column
-                          prop="orgName"
+                          prop="orgId"
                           label="申请人单位"
                           align="center"
+                          :formatter="formatOrg"
                           width="180">
                     </el-table-column>
                     <el-table-column
@@ -111,6 +112,7 @@
     import AddLeave from './addLeave.vue';
     import ApproveLeave from './approveLeave.vue';
     import CodeUtil from '@/utils/CodeUtil';
+    import OrgUtil from '@/utils/OrgUtil';
 
     export default {
         name: 'process-leave',
@@ -156,6 +158,15 @@
                 }, () => {
 
                 });
+            },
+            formatOrg(row, column, cellValue){
+                if(cellValue){
+                    let org = OrgUtil.getOrgById(cellValue);
+                    if(org && org.attribute){
+                        return org.attribute.shortOrgName;
+                    }
+                }
+                return '';
             },
             openAddLeave(){
                 this.$refs.addLeave.open({}, 'oa/bill/deliver', 'add');

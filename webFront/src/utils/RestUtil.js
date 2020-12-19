@@ -127,7 +127,7 @@ function doAjax(_options) {
 function handleOptions(options, _options){
   $.extend(options, _options);
   if(typeof options.data.userId === 'undefined'){
-      options.data.userId = User.get("id");
+      options.data.userId = User.get("userId");
   }
     if(typeof options.data.orgId === 'undefined'){
         options.data.orgId = User.get("orgId");

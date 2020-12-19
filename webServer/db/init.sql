@@ -92,7 +92,6 @@ CREATE TABLE `t_oa_bill` (
   `next_approve_list` varchar(128) DEFAULT NULL COMMENT '下一步审批人id列表，中间用英文逗号隔开，例如,2,34,',
   `history_approve_list` varchar(256) DEFAULT NULL COMMENT '历史审批人id列表，中间用英文逗号隔开，例如,2,34,',
   `org_id` int(11) DEFAULT NULL COMMENT '申请人机构id',
-  `org_oa_type` tinyint DEFAULT NULL COMMENT '机构流程类型',
   `start_time` datetime DEFAULT NULL COMMENT '开始日期',
   `end_time` datetime DEFAULT NULL COMMENT '结束日期',
   `work_age` tinyint DEFAULT NULL COMMENT '工龄',
@@ -160,12 +159,11 @@ CREATE TABLE `t_oa_process_function` (
 # 流程单操作记录
 CREATE TABLE `t_oa_bill_opera` (
   `bill_opera_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bill_id` int(11) NOT NULL COMMENT '流程单id',
+  `bill_code` varchar(32) DEFAULT NULL COMMENT '编号',
   `bill_type` tinyint NOT NULL COMMENT '表单类别,数据字典：1',
   `bill_step` varchar(32) NOT NULL COMMENT '流程的步骤',
-  `approve_employ_id` int(11) DEFAULT NULL COMMENT '审批人',
-  `approve_org_id` int(11) DEFAULT NULL COMMENT '审批机构',
-  `pass_flag` tinyint NOT NULL COMMENT '是否同意 1同意，2不同意',
+  `opera_id` int(11) DEFAULT NULL COMMENT '操作人id',
+  `pass_flag` tinyint NOT NULL COMMENT '是否同意 1同意，2不同意，0创建申请单',
   `content` varchar(1024) DEFAULT NULL COMMENT '审批意见',
   `create_time` datetime DEFAULT NULL COMMENT '审批时间',
   PRIMARY KEY (`bill_opera_id`)
