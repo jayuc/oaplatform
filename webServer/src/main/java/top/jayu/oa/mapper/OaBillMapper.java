@@ -16,6 +16,8 @@ public interface OaBillMapper {
             "  left join t_sys_user u on b.apply_id = u.user_id ",
             "  <where>  ",
             "    <if test='currentStep != null'> and b.current_step = #{currentStep} </if> ",
+            "    <if test='stopFlag != 0'> and b.stop_flag = #{stopFlag} </if> ",
+            "    <if test='userId != 9999'> and ( b.apply_id = #{userId} or b.next_approve_list like concat('%,', #{userId}, ',%') ) </if> ",
             "  </where > ",
             "</script> "
     })

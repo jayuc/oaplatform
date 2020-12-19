@@ -126,6 +126,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         Integer billId = bill.getBillId();
         if(billId == null){
             bill.setApplyId(bill.getUserId());
+            bill.setStopFlag((byte) 2);
             return oaBillMapper.insert(bill);
         }else {
             return oaBillMapper.approve(bill);

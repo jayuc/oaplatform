@@ -6,10 +6,10 @@
             <div class="form-search-container">
                 <span class="form-search-title">查询条件</span>
                 <el-form :inline="true" :model="formData" class="demo-form-inline">
-                    <el-form-item label="结束：">
-                        <el-radio v-model="stopFlag" label="0">全部</el-radio>
-                        <el-radio v-model="stopFlag" label="1">已结束</el-radio>
-                        <el-radio v-model="stopFlag" label="2">未结束</el-radio>
+                    <el-form-item label="是否完成：">
+                        <el-radio v-model="formData.stopFlag" :label="0">全部</el-radio>
+                        <el-radio v-model="formData.stopFlag" :label="1">已完成</el-radio>
+                        <el-radio v-model="formData.stopFlag" :label="2">未完成</el-radio>
                     </el-form-item>
                     <el-form-item style="margin-left: 10px;">
                         <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
@@ -35,25 +35,25 @@
                           prop="applyName"
                           label="申请人"
                           align="center"
-                          width="180">
+                          width="120">
                     </el-table-column>
                     <el-table-column
                           prop="orgId"
                           label="申请人单位"
                           align="center"
                           :formatter="formatOrg"
-                          width="180">
+                          width="280">
                     </el-table-column>
                     <el-table-column
                           prop="workAge"
                           align="center"
-                          width="180"
+                          width="120"
                           label="工龄（年）">
                     </el-table-column>
                     <el-table-column
                           prop="holidayType"
                           align="center"
-                          width="180"
+                          width="140"
                           :formatter="handleHolidayType"
                           label="休假标准">
                     </el-table-column>
@@ -72,16 +72,23 @@
                     <el-table-column
                           prop="days"
                           align="center"
-                          width="180"
+                          width="100"
                           label="天数">
+                    </el-table-column>
+                    <el-table-column
+                            prop="stopFlag"
+                            align="center"
+                            width="120"
+                            :formatter="formatStopFlag"
+                            label="是否完成">
                     </el-table-column>
                     <el-table-column
                           prop="operation"
                           align="center"
                           label="操作">
                       <template slot-scope="scope">
-                          <el-button @click="showBill(scope.row)" type="text" size="small">查看</el-button>
-                          <el-button @click="approveBill(scope.row)" type="text" size="small">审批</el-button>
+                          <el-button v-if="ifShowDetailButton(scope.row)" @click="showBill(scope.row)" type="text" size="small">查看</el-button>
+                          <el-button v-if="ifShowApproveButton(scope.row)" @click="approveBill(scope.row)" type="text" size="small">审批</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
@@ -113,6 +120,7 @@
     import ApproveLeave from './approveLeave.vue';
     import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
+    import user from '@/user';
 
     export default {
         name: 'process-leave',
@@ -127,8 +135,8 @@
                 formData: {
                     pageNumber: 1,
                     pageSize: 15,
+                    stopFlag: 2
                 },
-                stopFlag: '0',
                 searchBtnStatus: false,
                 total: 0,
                 tableData: []
@@ -167,6 +175,33 @@
                     }
                 }
                 return '';
+            },
+            formatStopFlag(row, column, cellValue){
+                if(cellValue){
+                    if(cellValue == 1){
+                        return '完成';
+                    }
+                    if(cellValue == 2){
+                        return '未完成';
+                    }
+                    return '';
+                }
+                return '';
+            },
+            // 是否显示审批按钮
+            ifShowApproveButton(row){
+                let nextApproveList = row['nextApproveList'];
+                let userId = user.get('userId');
+                console.log('nextApproveList', nextApproveList);
+                console.log('userId', userId);
+                if(typeof nextApproveList === 'string'){
+                    return nextApproveList.indexOf(',' + userId + ',') > -1;
+                }
+                return false;
+            },
+            // 是否显示查看
+            ifShowDetailButton(row){
+                return row.applyId == user.get('userId');
             },
             openAddLeave(){
                 this.$refs.addLeave.open({}, 'oa/bill/deliver', 'add');
