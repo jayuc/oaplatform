@@ -135,9 +135,9 @@ CREATE TABLE `t_oa_process_condition` (
   `input_value_type` varchar(32) NOT NULL COMMENT '条件输入值类型,例如：String,Integer',
   `ioc_entity_name` varchar(32) NOT NULL COMMENT 'spring容器中实体名字',
   `ioc_entity_method` varchar(32) NOT NULL COMMENT '方法',
-  `seccess_to` varchar(32) NOT NULL COMMENT '结果为true流向步骤名',
-  `seccess_condition_id` int(11) DEFAULT NULL COMMENT '流程条件id,结果为true后,如果不为空，则继续进入此条件',
-  `seccess_approve_function_id` int(11) DEFAULT NULL COMMENT '查询审批人方法id,结果为true时通过此方法查询审批人',
+  `success_to` varchar(32) NOT NULL COMMENT '结果为true流向步骤名',
+  `success_condition_id` int(11) DEFAULT NULL COMMENT '流程条件id,结果为true后,如果不为空，则继续进入此条件',
+  `success_approve_function_id` int(11) DEFAULT NULL COMMENT '查询审批人方法id,结果为true时通过此方法查询审批人',
   `fail_to` varchar(32) NOT NULL COMMENT '结果为false的流向的步骤名',
   `fail_condition_id` int(11) DEFAULT NULL COMMENT '流程条件id,结果为false后,如果不为空，则继续进入此条件',
   `fail_approve_function_id` int(11) DEFAULT NULL COMMENT '查询审批人方法id,结果为false时通过此方法查询审批人',
@@ -152,8 +152,8 @@ CREATE TABLE `t_oa_process_function` (
   `input_value_type` varchar(32) NOT NULL COMMENT '条件输入值类型,例如：String,Integer',
   `ioc_entity_name` varchar(32) NOT NULL COMMENT 'spring容器中实体名字',
   `ioc_entity_method` varchar(32) NOT NULL COMMENT '方法',
-  `funciton_name` varchar(32) DEFAULT NULL COMMENT '方法名，例如部门负责人',
-  `funciton_desc` varchar(1024) DEFAULT NULL COMMENT '条件描述',
+  `function_name` varchar(32) DEFAULT NULL COMMENT '方法名，例如部门负责人',
+  `function_desc` varchar(1024) DEFAULT NULL COMMENT '条件描述',
   PRIMARY KEY (`process_function_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -173,11 +173,15 @@ CREATE TABLE `t_oa_bill_opera` (
 
 
 # 模拟数据
+INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE ('orgId', 'Integer', 'orgService', 'findOrgLeader', '部门负责人');
+INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE ('orgId', 'Integer', 'orgService', 'findCompanyDeputy', '市局分管领导');
 
-INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,seccess_to,fail_to,condition_desc)
-VALUE ('orgId', 'Integer', 'orgService', 'orgIfOffice', '0000', '0001', '是否是机关');
-INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,seccess_to,fail_to,condition_desc)
-VALUE ('userId', 'Integer', 'userService', 'userIfChief', '000000', 'end', '是否是科级干部');
+INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,success_approve_function_id,fail_approve_function_id)
+VALUE ('orgId', 'Integer', 'orgService', 'orgIfOffice', '00', '01', '是否是机关', 1, 1);
+INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,success_approve_function_id)
+VALUE ('userId', 'Integer', 'userService', 'userIfChief', '00', 'end', '是否是科级干部',2);
 
 INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id)
 VALUE (1, '00', 'root', 1);

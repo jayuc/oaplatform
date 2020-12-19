@@ -14,13 +14,18 @@ public class OaProcessCondition {
 
     private String iocEntityMethod;
 
-    private String seccessTo;
+    private String successTo;
 
-    private Integer seccessConditionId;
+    private Integer successConditionId;
+
+    private Integer successApproveFunctionId;
 
     private String failTo;
 
     private Integer failConditionId;
 
+    private Integer failApproveFunctionId;
+
     private String conditionDesc;
+
 }

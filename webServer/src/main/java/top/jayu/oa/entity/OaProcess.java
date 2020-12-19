@@ -14,6 +14,8 @@ public class OaProcess {
 
     private String nextStep;
 
+    private Integer nextApproveFunctionId;
+
     private String parentStep;
 
     private Integer processConditionId;
