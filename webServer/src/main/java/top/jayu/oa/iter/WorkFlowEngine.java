@@ -12,6 +12,7 @@ import java.util.Map;
 public interface WorkFlowEngine {
 
     // 投递
-    Map<String, Object> deliver(OaBill bill);
+    // autoDb： 结果是否入库，当模拟操作（查询进度）的时候不需要入库
+    Map<String, Object> deliver(OaBill bill, boolean autoDb);
 
 }

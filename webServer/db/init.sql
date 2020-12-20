@@ -106,6 +106,7 @@ CREATE TABLE `t_oa_bill` (
   `file_url1` varchar(256) DEFAULT NULL COMMENT '附件1地址',
   `file_url2` varchar(256) DEFAULT NULL COMMENT '附件2地址',
   `file_url3` varchar(256) DEFAULT NULL COMMENT '附件3地址',
+  `history_process_list` varchar(256) DEFAULT NULL COMMENT '历史流程节点记录',
   `extend_content` varchar(2048) DEFAULT NULL COMMENT '扩展内容（存放json字符串）',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -124,6 +125,7 @@ CREATE TABLE `t_oa_process` (
   `process_condition_id` int(11) DEFAULT NULL COMMENT '流程条件id',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `process_desc` varchar(32) DEFAULT NULL COMMENT '流程描述',
   `mark` varchar(128) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`process_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

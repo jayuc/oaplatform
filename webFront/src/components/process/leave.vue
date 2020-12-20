@@ -109,6 +109,8 @@
 
         <approve-leave ref="approveLeave" />
 
+        <details-leave ref="detailsLeave" />
+
     </el-container>
 </template>
 
@@ -118,6 +120,7 @@
     import Config from '@/config';
     import AddLeave from './addLeave.vue';
     import ApproveLeave from './approveLeave.vue';
+    import DetailsLeave from './detailsLeave.vue';
     import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
@@ -126,7 +129,8 @@
         name: 'process-leave',
         components: {
             AddLeave,
-            ApproveLeave
+            ApproveLeave,
+            DetailsLeave
         },
         data(){
             return {
@@ -205,7 +209,7 @@
                 this.$refs.addLeave.open({}, 'oa/bill/deliver', 'add');
             },
             showBill(row){
-                console.log(row);
+                this.$refs.detailsLeave.open(row);
             },
             approveBill(row){
                 this.$refs.approveLeave.open(row, 'oa/bill/approve');

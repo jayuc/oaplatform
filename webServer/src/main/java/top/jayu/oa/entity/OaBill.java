@@ -66,5 +66,7 @@ public class OaBill extends BaseParam {
 
     private Date updateTime;
 
+    private String historyProcessList;
+
     private String mark;
 }

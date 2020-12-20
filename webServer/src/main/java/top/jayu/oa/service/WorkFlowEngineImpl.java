@@ -37,7 +37,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     OaBillOperaMapper oaBillOperaMapper;
 
     @Override
-    public Map<String, Object> deliver(OaBill bill) {
+    public Map<String, Object> deliver(OaBill bill, boolean autoDb) {
         ResultUtil.Result result = ResultUtil.build();
 
         String prevStep = bill.getCurrentStep();
@@ -96,14 +96,30 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
         }else {
             bill.setStopFlag((byte) 1);
+            bill.setCurrentStep("end");
             result.property("info", "流程已经完成了");
             log.info("step3-2: end ===> 流程已经完成了");
         }
 
-        // 第四步：订单更新到数据库
-        processToDb(bill);
-        // 第五步：记录日志
-        processToLog(bill, prevStep);
+        if(autoDb){  // 入库
+
+            // 入库前处理流程节点流转历史
+            String processNodeHistory = bill.getHistoryProcessList();
+            if(StrUtil.isBlank(processNodeHistory)){
+                processNodeHistory = process.getProcessDesc();
+            }else {
+                processNodeHistory = processNodeHistory + "," + process.getProcessDesc();
+            }
+            bill.setHistoryProcessList(processNodeHistory);
+
+            // 第四步：订单更新到数据库
+            processToDb(bill);
+            // 第五步：记录日志
+            processToLog(bill, prevStep);
+        }else {
+            result.property("processDesc", process.getProcessDesc());
+            result.property("bill", bill);
+        }
 
         return result.getResult();
     }

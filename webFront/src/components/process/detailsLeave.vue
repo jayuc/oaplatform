@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="审批"
+    <el-dialog title="详情"
                :visible.sync="visible"
                width="700px"
     >
@@ -51,17 +51,19 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="24">
-                    <el-form-item label="审批意见：" :label-width="formLabelWidth">
-                        <el-input v-model="formData.content" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
+                <div class="process-status">进度如下：</div>
+            </el-row>
+            <el-row>
+                <div class="process-body">
+                    <el-steps :active="stepActive" finish-status="success">
+                        <el-step v-for="item in stepList"
+                                 :key="item.key"
+                                 :description="item.desc"
+                                 :title="item.title" />
+                    </el-steps>
+                </div>
             </el-row>
         </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="close">不同意</el-button>
-            <el-button type="primary" :disabled="submitBtnDisabled" @click="submit">同 意</el-button>
-        </div>
     </el-dialog>
 </template>
 
@@ -70,29 +72,46 @@
     import RestUtil from '@/utils/RestUtil';
     import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
+    import ElRow from "element-ui/packages/row/src/row";
+    import ElStep from "../../../node_modules/element-ui/packages/steps/src/step.vue";
 
     export default {
-        name: 'process-approve-leave',
+        components: {
+            ElStep,
+            ElRow},
+        name: 'process-details-leave',
         data(){
             return {
                 visible: false,
-                submitBtnDisabled: false,
                 formLabelWidth: '110px',
                 formData: {},
-                url: '',
+                stepActive: 1,
+                stepList: [
+                    {key: 1, title: '步骤 1：', desc: '工单申请'}
+                ]
             }
         },
         methods: {
             initFormData(){
-                this.formData = {
-                    content: ''
-                };
+                this.formData = {};
             },
-            open(data, url){
+            open(data){
                 this.initFormData();
                 this.visible = true;
                 Object.assign(this.formData, data);
-                this.url = url;
+                let param = {};
+                Object.assign(param, this.formData);
+                delete param.createTime;
+                delete param.endTime;
+                delete param.startTime;
+                delete param.updateTime;
+                RestUtil.post('oa/bill/simulateDeliver', param).then((result) => {
+                    let data = result.result;
+                    if(data){
+                        this.stepActive = data.total;
+                        this.stepList = data.rows;
+                    }
+                });
             },
             close(){
                 this.visible = false;
@@ -109,30 +128,19 @@
                 }
                 return '';
             },
-            submit(){
-                this.$refs['formData'].validate((valid) => {
-                    if (valid) {
-                        RestUtil.post(this.url, this.formData, {
-                            enableLoading: true,       // 启动请求期间的正在加载
-                            loadingStartFun: () => {   // 请求开始前执行
-                                this.submitBtnDisabled = true;
-                            },
-                            loadingEndFun: () => {     // 请求开始后执行
-                                this.submitBtnDisabled = false;
-                            }
-                        }).then(() => {
-                            this.$parent.submit();
-                            this.close();
-                        });
-                    } else {
-                        return false;
-                    }
-                });
-            }
         }
     }
 </script>
 
 <style scoped>
-
+    .process-status{
+        color: #F56C6C;
+        padding-bottom: 8px;
+        font-size: 16px;
+        margin-left: 15px;
+    }
+    .process-body{
+        margin-left: 20px;
+        margin-top: 12px;
+    }
 </style>

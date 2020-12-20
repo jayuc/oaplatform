@@ -1,5 +1,6 @@
 package top.jayu.oa.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import top.jayu.oa.mapper.OaBillMapper;
 import top.jayu.oa.param.OaBillParam;
 import top.jayu.oa.util.ResultUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,12 +43,50 @@ public class OaBillController {
 
     /**
      * 订单投递
-     * @param dto
-     * @return
      */
     @PostMapping("/deliver")
     public Map<String, Object> deliver(OaBill dto) {
-        return workFlowEngine.deliver(dto);
+        return workFlowEngine.deliver(dto, true);
+    }
+
+    @PostMapping("/simulateDeliver")
+    public Map<String, Object> simulateDeliver(OaBill dto){
+        ResultUtil.Result result = ResultUtil.build();
+        List<String> stepList = new ArrayList<>();
+        boolean stopFlag = true;
+        if(1 == dto.getStopFlag()){
+            stopFlag = false;
+        }
+        String historyProcessList = dto.getHistoryProcessList();
+        if(!StrUtil.isBlank(historyProcessList)){
+            String[] processNodes = historyProcessList.split(",");
+            for (int i=0; i<processNodes.length; i++){
+                stepList.add(processNodes[i]);
+            }
+            result.total(processNodes.length);
+        }
+        OaBill bill = dto;
+        while (stopFlag){
+            Map<String, Object> deliver = workFlowEngine.deliver(bill, false);
+            Map<String, Object> properties = (Map<String, Object>) deliver.get("properties");
+            bill = (OaBill) properties.get("bill");
+            if(1 == bill.getStopFlag()){
+                stopFlag = false;
+            }
+            stepList.add((String) properties.get("processDesc"));
+        }
+        List<Map<String, Object>> rows = new ArrayList<>();
+        // 汇总进度
+        for (int i=0; i<stepList.size(); i++){
+            Map<String, Object> row = new HashMap<>();
+            Integer key = i+1;
+            row.put("key", key);
+            row.put("title", "步骤 " + key);
+            row.put("desc", stepList.get(i));
+            rows.add(row);
+        }
+        result.rows(rows);
+        return result.getResult();
     }
 
     @PostMapping("/insert")

@@ -26,5 +26,7 @@ public class OaProcess {
 
     private Date updateTime;
 
+    private String processDesc;
+
     private String mark;
 }
