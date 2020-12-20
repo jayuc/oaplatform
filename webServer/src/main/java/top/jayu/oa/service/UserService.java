@@ -28,8 +28,13 @@ public class UserService {
     // 判断是否是部门/单位负责人
     public boolean userIfLeader(Integer userId){
         User user = userMapper.getUserById(userId);
-        Org org = orgMapper.getById(user.getUserId());
+        Org org = orgMapper.getById(user.getOrgId());
         return (int)userId == (int)org.getLeaderId();
+    }
+
+    // 判断是否是市局负责人
+    public boolean userIfCompanyLeader(Integer userId){
+        return (int)userId == 2;
     }
 
 }

@@ -8,5 +8,6 @@ public class BaseParam {
     private Integer pageSize;
     private Integer userId;
     private Integer orgId;
+    private String orgCode;
     private String orgCodePriv;
 }

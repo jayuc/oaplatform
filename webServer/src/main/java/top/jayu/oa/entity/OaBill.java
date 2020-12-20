@@ -30,6 +30,8 @@ public class OaBill extends BaseParam {
 
     private Integer applyOrgId;
 
+    private String applyOrgCodePriv;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 

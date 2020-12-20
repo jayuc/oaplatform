@@ -59,19 +59,24 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 throw new RuntimeException("找不到投递需要的流程节点");
             }
             candidateStep = step;
-            approveFunctionId = process.getNextApproveFunctionId();
+            if(!"end".equals(step)){
+                approveFunctionId = process.getNextApproveFunctionId();
+            }
         }else {
             StepTemp stepTemp = processCondition(condition.getProcessConditionId(), bill);
             log.info("step2-2: stepTemp ===> " + stepTemp);
             if(stepTemp != null){
                 candidateStep = stepTemp.step;
-                approveFunctionId = stepTemp.approveFunctionId;
+                if(!"end".equals(candidateStep)){
+                    approveFunctionId = stepTemp.approveFunctionId;
+                }
             }
         }
 
         log.info("step3: candidateStep ===> " + candidateStep);
         // 第三步：查询下一步审批人
         if(!"end".equals(candidateStep)){
+
             ApproveResult approveResult = findApprove(approveFunctionId, bill);
             log.info("step3-1: approveResult ===> " + approveResult);
             if(!StrUtil.isBlank(approveResult.approveList)){   // 找到了审批人
@@ -80,16 +85,19 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             }else {
                 result.error(approveResult.stepName + "未配置，请联系管理员进行配置");
             }
+
+            if(candidateStep != null){
+                bill.setCurrentStep(bill.getCurrentStep() + candidateStep);
+            }else {
+                throw new RuntimeException("找不到投递需要的流程节点");
+            }
+
+            bill.setStopFlag((byte) 2);
+
         }else {
             bill.setStopFlag((byte) 1);
             result.property("info", "流程已经完成了");
             log.info("step3-2: end ===> 流程已经完成了");
-        }
-
-        if(candidateStep != null){
-            bill.setCurrentStep(bill.getCurrentStep() + candidateStep);
-        }else {
-            throw new RuntimeException("找不到投递需要的流程节点");
         }
 
         // 第四步：订单更新到数据库
@@ -139,7 +147,6 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     private int processToDb(OaBill bill){
         Integer billId = bill.getBillId();
         if(billId == null){
-            bill.setStopFlag((byte) 2);
             log.info("step4: bill insert ===> " + bill);
             return oaBillMapper.insert(bill);
         }else {
@@ -189,7 +196,9 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 }
                 StepTemp stepTemp = new StepTemp();
                 stepTemp.step = condition.getSuccessTo();
-                stepTemp.approveFunctionId = condition.getSuccessApproveFunctionId();
+                if(!"end".equals(stepTemp.step)){
+                    stepTemp.approveFunctionId = condition.getSuccessApproveFunctionId();
+                }
                 return stepTemp;
             }else {
                 Integer failConditionId = condition.getFailConditionId();
@@ -198,7 +207,9 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 }
                 StepTemp stepTemp = new StepTemp();
                 stepTemp.step = condition.getFailTo();
-                stepTemp.approveFunctionId = condition.getFailApproveFunctionId();
+                if(!"end".equals(stepTemp.step)){
+                    stepTemp.approveFunctionId = condition.getFailApproveFunctionId();
+                }
                 return stepTemp;
             }
         }

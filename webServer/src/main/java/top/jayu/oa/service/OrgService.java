@@ -1,5 +1,6 @@
 package top.jayu.oa.service;
 
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.jayu.oa.entity.Org;
@@ -44,23 +45,20 @@ public class OrgService {
         return null;
     }
 
-    // 查询机构分管领导
-    public int findCompanyDeputyById(Integer id){
-        return orgMapper.findCompanyDeputyById(id);
-    }
-
     // 查询市局分管领导
-    public String findCompanyDeputy(Integer orgId){
-        int companyDeputyById = findCompanyDeputyById(orgId);
-        if(companyDeputyById > 0){
-            return "," + companyDeputyById + ",";
+    public String findCompanyDeputy(String orgCodePriv){
+        if(StrUtil.isBlank(orgCodePriv)){
+            return null;
         }
-        return null;
+        String orgPriv = orgCodePriv.substring(0, 6);
+        Integer deputyId = orgMapper.findCompanyDeputy(orgPriv);
+        return "," + deputyId + ",";
     }
 
     // 查询市局负责人
-    public String findCompanyLeader(Integer orgId){
-        return findOrgLeader(orgId);
+    public String findCompanyLeader(String orgCodePriv){
+        Integer deputyId = orgMapper.findCompanyLeader("340000");
+        return "," + deputyId + ",";
     }
 
     public List<OrgTree> orgTree(){

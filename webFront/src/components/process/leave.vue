@@ -179,7 +179,7 @@
             formatStopFlag(row, column, cellValue){
                 if(cellValue){
                     if(cellValue == 1){
-                        return '完成';
+                        return '已完成';
                     }
                     if(cellValue == 2){
                         return '未完成';
@@ -192,8 +192,6 @@
             ifShowApproveButton(row){
                 let nextApproveList = row['nextApproveList'];
                 let userId = user.get('userId');
-                console.log('nextApproveList', nextApproveList);
-                console.log('userId', userId);
                 if(typeof nextApproveList === 'string'){
                     return nextApproveList.indexOf(',' + userId + ',') > -1;
                 }

@@ -29,7 +29,7 @@ public interface OaBillMapper {
     @Insert("insert into t_oa_bill (bill_code, bill_type, \n" +
             "      current_step, stop_flag, apply_id, \n" +
             "      next_approve_list, history_approve_list, apply_org_id, \n" +
-            "      start_time, end_time, \n" +
+            "      apply_org_code_priv, start_time, end_time, \n" +
             "      work_age, days, holiday_type, people_number, \n" +
             "      content, address, travel_tool, \n" +
             "      amount, file_url1, file_url2, \n" +
@@ -38,7 +38,7 @@ public interface OaBillMapper {
             "    values (#{billCode,jdbcType=VARCHAR}, #{billType,jdbcType=TINYINT}, \n" +
             "      #{currentStep,jdbcType=VARCHAR}, #{stopFlag,jdbcType=TINYINT}, #{applyId,jdbcType=INTEGER}, \n" +
             "      #{nextApproveList,jdbcType=VARCHAR}, #{historyApproveList,jdbcType=VARCHAR}, #{applyOrgId,jdbcType=INTEGER}, \n" +
-            "      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, \n" +
+            "      #{applyOrgCodePriv,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, \n" +
             "      #{workAge,jdbcType=TINYINT}, #{days,jdbcType=SMALLINT}, #{holidayType,jdbcType=SMALLINT}, #{peopleNumber,jdbcType=SMALLINT}, \n" +
             "      #{content,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{travelTool,jdbcType=TINYINT}, \n" +
             "      #{amount,jdbcType=INTEGER}, #{fileUrl1,jdbcType=VARCHAR}, #{fileUrl2,jdbcType=VARCHAR}, \n" +

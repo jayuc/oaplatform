@@ -19,6 +19,10 @@ public class User extends BaseParam {
 
     private Integer orgId;
 
+    private String orgCode;
+
+    private String orgName;
+
     private String position;
 
     private Integer roleId;

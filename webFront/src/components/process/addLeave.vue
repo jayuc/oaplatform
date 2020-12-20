@@ -133,6 +133,7 @@
                     currentStep: '00',
                     applyId: user.get('userId'),
                     applyOrgId: user.get('orgId'),
+                    applyOrgCodePriv: user.get('orgCodePriv'),
                     userName: user.get('userName'),
                     orgName: OrgUtil.getShortNameById(user.get('orgId'))
                 };

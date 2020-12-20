@@ -18,7 +18,7 @@ public interface UserMapper {
     @Select("select password from t_sys_user where login_name = #{loginName}")
     String getPasswordByLoginName(String loginName);
 
-    @Select("select * from t_sys_user where login_name = #{loginName}")
+    @Select("select u.*,o.org_name,o.org_code_priv from t_sys_user u left join t_sys_org o on u.org_id = o.org_id where u.login_name = #{loginName}")
     User getUserByLoginName(String loginName);
 
     @Select({
