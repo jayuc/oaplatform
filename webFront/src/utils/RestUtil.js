@@ -124,21 +124,16 @@ function doAjax(_options) {
 
 // 处理options
 // 处理公用部分参数
+// userId,orgId,roleId,employId,token这个几个字段为专用字段，表示用户信息
 function handleOptions(options, _options){
-  $.extend(options, _options);
-  if(typeof options.data.userId === 'undefined'){
-      options.data.userId = User.get("userId");
-  }
-    if(typeof options.data.orgId === 'undefined'){
-        options.data.orgId = User.get("orgId");
-    }
-    if(typeof options.data.roleId === 'undefined'){
-        options.data.roleId = User.get("roleId");
-    }
-    if(typeof options.data.employId === 'undefined'){
-        options.data.employId = User.get("employId");
-    }
-  options.data.token = "";
+    $.extend(options, _options);
+    options.data.currentUserId = User.get("userId");
+    options.data.currentOrgId = User.get("orgId");
+    options.data.currentOrgCode = User.get("orgCode");
+    options.data.currentRoleId = User.get("roleId");
+    options.data.currentEmployId = User.get("employId");
+    options.data.currentOrgCodePriv = User.get("orgCodePriv");
+    options.data.token = "";
 }
 
 //处理url

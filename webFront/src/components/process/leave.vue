@@ -107,7 +107,7 @@
 
         <add-leave ref="addLeave" @complete="submit" />
 
-        <approve-leave ref="approveLeave" />
+        <approve-leave ref="approveLeave" @complete="submit" />
 
         <details-leave ref="detailsLeave" />
 
@@ -194,10 +194,12 @@
             },
             // 是否显示审批按钮
             ifShowApproveButton(row){
-                let nextApproveList = row['nextApproveList'];
-                let userId = user.get('userId');
-                if(typeof nextApproveList === 'string'){
-                    return nextApproveList.indexOf(',' + userId + ',') > -1;
+                if(row['stopFlag'] != 1){
+                    let nextApproveList = row['nextApproveList'];
+                    let userId = user.get('userId');
+                    if(typeof nextApproveList === 'string'){
+                        return nextApproveList.indexOf(',' + userId + ',') > -1;
+                    }
                 }
                 return false;
             },
@@ -212,7 +214,7 @@
                 this.$refs.detailsLeave.open(row);
             },
             approveBill(row){
-                this.$refs.approveLeave.open(row, 'oa/bill/approve');
+                this.$refs.approveLeave.open(row, 'oa/bill/deliver');
             },
             handleHolidayType(row, column, cellValue){
                 return CodeUtil.getName(3, cellValue);

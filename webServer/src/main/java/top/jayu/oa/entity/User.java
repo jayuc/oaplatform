@@ -21,6 +21,8 @@ public class User extends BaseParam {
 
     private String orgCode;
 
+    private String orgCodePriv;
+
     private String orgName;
 
     private String position;

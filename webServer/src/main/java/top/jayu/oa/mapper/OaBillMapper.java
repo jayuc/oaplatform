@@ -17,7 +17,7 @@ public interface OaBillMapper {
             "  <where>  ",
             "    <if test='currentStep != null'> and b.current_step = #{currentStep} </if> ",
             "    <if test='stopFlag != 0'> and b.stop_flag = #{stopFlag} </if> ",
-            "    <if test='userId != 9999'> and ( b.apply_id = #{userId} or b.next_approve_list like concat('%,', #{userId}, ',%') ) </if> ",
+            "    <if test='currentUserId != 9999'> and ( b.apply_id = #{currentUserId} or b.next_approve_list like concat('%,', #{currentUserId}, ',%') ) </if> ",
             "  </where > ",
             "</script> "
     })
@@ -73,7 +73,7 @@ public interface OaBillMapper {
             "      file_url3 = #{fileUrl3,jdbcType=VARCHAR},\n" +
             "      extend_content = #{extendContent,jdbcType=VARCHAR},\n" +
             "      update_time = #{updateTime,jdbcType=TIMESTAMP},\n" +
-            "      mark = #{mark,jdbcType=VARCHAR}\n" +
+            "      mark = #{mark,jdbcType=VARCHAR},\n" +
             "      history_process_list = #{historyProcessList,jdbcType=VARCHAR}\n" +
             "    where bill_id = #{id,jdbcType=INTEGER}")
     int update(OaBill record);
@@ -86,8 +86,9 @@ public interface OaBillMapper {
             "      content = #{content,jdbcType=VARCHAR},\n" +
             "      extend_content = #{extendContent,jdbcType=VARCHAR},\n" +
             "      update_time = now(),\n" +
-            "      mark = #{mark,jdbcType=VARCHAR}\n" +
-            "    where bill_id = #{id,jdbcType=INTEGER}")
+            "      mark = #{mark,jdbcType=VARCHAR},\n" +
+            "      history_process_list = #{historyProcessList,jdbcType=VARCHAR}\n" +
+            "    where bill_id = #{billId,jdbcType=INTEGER}")
     int approve(OaBill record);
 
 }

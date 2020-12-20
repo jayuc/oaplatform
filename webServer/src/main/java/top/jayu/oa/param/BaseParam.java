@@ -6,8 +6,10 @@ import lombok.Data;
 public class BaseParam {
     private Integer pageNumber;
     private Integer pageSize;
-    private Integer userId;
-    private Integer orgId;
-    private String orgCode;
-    private String orgCodePriv;
+    private Integer currentUserId;
+    private Integer currentOrgId;
+    private Integer currentRoleId;
+    private Integer currentEmployId;
+    private String currentOrgCode;
+    private String currentOrgCodePriv;
 }

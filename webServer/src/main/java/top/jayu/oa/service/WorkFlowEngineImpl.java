@@ -103,14 +103,8 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
         if(autoDb){  // 入库
 
-            // 入库前处理流程节点流转历史
-            String processNodeHistory = bill.getHistoryProcessList();
-            if(StrUtil.isBlank(processNodeHistory)){
-                processNodeHistory = process.getProcessDesc();
-            }else {
-                processNodeHistory = processNodeHistory + "," + process.getProcessDesc();
-            }
-            bill.setHistoryProcessList(processNodeHistory);
+            // 入库前处理参数
+            handleParamBeforeToDb(bill, process);
 
             // 第四步：订单更新到数据库
             processToDb(bill);
@@ -159,6 +153,18 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         return approveResult;
     }
 
+    // 入库前处理参数
+    private void handleParamBeforeToDb(OaBill bill, OaProcess process){
+        // 入库前处理流程节点流转历史
+        String processNodeHistory = bill.getHistoryProcessList();
+        if(StrUtil.isBlank(processNodeHistory)){
+            processNodeHistory = process.getProcessDesc();
+        }else {
+            processNodeHistory = processNodeHistory + "," + process.getProcessDesc();
+        }
+        bill.setHistoryProcessList(processNodeHistory);
+    }
+
     // 第四步：更新到数据库
     private int processToDb(OaBill bill){
         Integer billId = bill.getBillId();
@@ -166,6 +172,14 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             log.info("step4: bill insert ===> " + bill);
             return oaBillMapper.insert(bill);
         }else {
+            // 处理历史审批人
+            String approveList = bill.getHistoryApproveList();
+            if(StrUtil.isBlank(approveList)){
+                approveList = bill.getNextApproveList();
+            }else {
+                approveList = approveList + "," + bill.getNextApproveList();
+            }
+            bill.setHistoryApproveList(approveList);
             log.info("step4: bill update ===> " + bill);
             return oaBillMapper.approve(bill);
         }
@@ -178,7 +192,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         oaBillOpera.setBillType(bill.getBillType());
         oaBillOpera.setBillStep(step);
         oaBillOpera.setContent(bill.getContent());
-        oaBillOpera.setOperaId(bill.getUserId());
+        oaBillOpera.setOperaId(bill.getCurrentUserId());
         if(bill.getPassFlag() == null){
             bill.setPassFlag((byte) 0);
         }

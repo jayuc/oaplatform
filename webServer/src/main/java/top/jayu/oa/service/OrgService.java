@@ -61,6 +61,26 @@ public class OrgService {
         return "," + deputyId + ",";
     }
 
+    // 查询单位分管领导
+    public String findUnitDeputy(String orgCodePriv){
+        if(StrUtil.isBlank(orgCodePriv)){
+            return null;
+        }
+        String orgPriv = orgCodePriv.substring(0, 8);
+        Integer deputyId = orgMapper.findCompanyDeputy(orgPriv);
+        return "," + deputyId + ",";
+    }
+
+    // 查询单位负责人
+    public String findUnitLeader(String orgCodePriv){
+        if(StrUtil.isBlank(orgCodePriv)){
+            return null;
+        }
+        String orgPriv = orgCodePriv.substring(0, 6);
+        Integer deputyId = orgMapper.findCompanyLeader(orgPriv);
+        return "," + deputyId + ",";
+    }
+
     public List<OrgTree> orgTree(){
 
         OrgTree root = new OrgTree(-1, "3400", "合肥市烟草专卖局", null);

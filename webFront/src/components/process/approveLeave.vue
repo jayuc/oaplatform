@@ -112,7 +112,13 @@
             submit(){
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
-                        RestUtil.post(this.url, this.formData, {
+                        let param = {};
+                        Object.assign(param, this.formData);
+                        delete param.createTime;
+                        delete param.endTime;
+                        delete param.startTime;
+                        delete param.updateTime;
+                        RestUtil.post(this.url, param, {
                             enableLoading: true,       // 启动请求期间的正在加载
                             loadingStartFun: () => {   // 请求开始前执行
                                 this.submitBtnDisabled = true;
@@ -121,7 +127,7 @@
                                 this.submitBtnDisabled = false;
                             }
                         }).then(() => {
-                            this.$parent.submit();
+                            this.$emit('complete');
                             this.close();
                         });
                     } else {

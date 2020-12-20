@@ -180,6 +180,10 @@ INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_
 VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findCompanyDeputy', '市局分管领导');
 INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
 VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findCompanyLeader', '市局负责人');
+INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findUnitDeputy', '单位分管领导');
+INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findUnitLeader', '单位负责人');
 
 INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
 success_approve_function_id,fail_approve_function_id, success_condition_id, fail_condition_id)
@@ -197,14 +201,24 @@ INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity
 fail_approve_function_id)
 VALUE ('applyId', 'Integer', 'userService', 'userIfCompanyLeader', 'end', '0000', '是否是市局负责人', 2);
 
-INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id)
-VALUE (1, '00', 'root', 1);
-INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id)
-VALUE (1, '0000', '00', 2);
-INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id)
-VALUE (1, '000000', '0000', 3);
-INSERT t_oa_process (bill_type,current_step,parent_step,next_step)
-VALUE (1, '00000000', '000000', 'end');
+INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
+VALUE (1, '00', 'root', 1, '工单申请');
+INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
+VALUE (1, '0000', '00', 2, '部门负责人审批');
+INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
+VALUE (1, '000000', '0000', 3, '市局分管领导审批');
+INSERT t_oa_process (bill_type,current_step,parent_step,next_step, process_desc)
+VALUE (1, '00000000', '000000', 'end', '市局负责人审批');
+INSERT t_oa_process (bill_type,current_step,parent_step,next_step,next_approve_function_id, process_desc)
+VALUE (1, '0100', '01', '010000', 3, '部门负责人审批');
+INSERT t_oa_process (bill_type,current_step,parent_step,next_step,next_approve_function_id, process_desc)
+VALUE (1, '010000', '0100', '01000000', 4, '单位分管领导审批');
+INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
+VALUE (1, '01000000', '010000', 2, '单位负责人审批');
+INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
+VALUE (1, '0100000000', '01000000', 3, '市局分管领导审批');
+INSERT t_oa_process (bill_type,current_step,parent_step,next_step, process_desc)
+VALUE (1, '010000000000', '0100000000', 'end', '市局负责人审批');
 
 INSERT t_sys_code_type (code,name) VALUE (1,'流程类型');
 INSERT t_sys_code_type (code,name) VALUE (2,'交通工具');

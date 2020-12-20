@@ -167,12 +167,12 @@
                     let data = result.result;
                     let error = result.error;
                     if(error){
-                      TipUtil.error(error);
-                      return;
+                        TipUtil.error(error);
+                        return;
                     }
                     if(data){
-                      this.tableData = data.rows;
-                      this.total = data.total;
+                        this.tableData = data.rows;
+                        this.total = data.total;
                     }
                 }, () => {
 
