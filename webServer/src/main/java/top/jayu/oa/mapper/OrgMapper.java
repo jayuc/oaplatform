@@ -29,13 +29,16 @@ public interface OrgMapper {
     List<Org> list(Org record);
 
     @Select("select yes_office from t_sys_org where org_id = #{id}")
-    Byte ifOffice(int id);
+    Byte ifOffice(Integer id);
 
     @Select("select leader_id from t_sys_org where org_id = #{id}")
     Integer findOrgLeaderById(Integer id);
 
+    @Select("select deputy_id from t_sys_org where org_id = #{id}")
+    Integer findCompanyDeputyById(Integer id);
+
     @Select("select * from t_sys_org where org_id = #{id}")
-    Org getById(String id);
+    Org getById(Integer id);
 
     // 一级菜单
     @Select("select * from t_sys_org where parent_id = -1")

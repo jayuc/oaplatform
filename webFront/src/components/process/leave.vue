@@ -38,7 +38,7 @@
                           width="120">
                     </el-table-column>
                     <el-table-column
-                          prop="orgId"
+                          prop="applyOrgId"
                           label="申请人单位"
                           align="center"
                           :formatter="formatOrg"

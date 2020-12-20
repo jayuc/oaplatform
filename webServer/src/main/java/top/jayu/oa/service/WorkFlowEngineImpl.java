@@ -1,6 +1,8 @@
 package top.jayu.oa.service;
 
 import cn.hutool.core.util.StrUtil;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.jayu.oa.entity.*;
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 
 @Service
+@Slf4j
 public class WorkFlowEngineImpl implements WorkFlowEngine {
 
     @Autowired
@@ -41,14 +44,17 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
         // 第一步：获取流程步骤
         OaProcess process = getProcess(bill);
+        log.info("step1: process ===> " + process);
 
         // 第二步：获取步骤条件
         OaProcessCondition condition = getCondition(process.getProcessConditionId());
+        log.info("step2: condition ===> " + condition);
         // 步骤名称
         String candidateStep = null;
         int approveFunctionId = 0;
         if(condition == null){  // 如果条件为空则直接进入下一步骤
             String step = process.getNextStep();
+            log.info("step2-1: step ===> " + step);
             if(StrUtil.isBlank(step)){
                 throw new RuntimeException("找不到投递需要的流程节点");
             }
@@ -56,15 +62,18 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             approveFunctionId = process.getNextApproveFunctionId();
         }else {
             StepTemp stepTemp = processCondition(condition.getProcessConditionId(), bill);
+            log.info("step2-2: stepTemp ===> " + stepTemp);
             if(stepTemp != null){
                 candidateStep = stepTemp.step;
                 approveFunctionId = stepTemp.approveFunctionId;
             }
         }
 
+        log.info("step3: candidateStep ===> " + candidateStep);
         // 第三步：查询下一步审批人
         if(!"end".equals(candidateStep)){
             ApproveResult approveResult = findApprove(approveFunctionId, bill);
+            log.info("step3-1: approveResult ===> " + approveResult);
             if(!StrUtil.isBlank(approveResult.approveList)){   // 找到了审批人
                 bill.setNextApproveList(approveResult.approveList);
                 result.property("approveIdList", approveResult.approveList);
@@ -74,6 +83,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         }else {
             bill.setStopFlag((byte) 1);
             result.property("info", "流程已经完成了");
+            log.info("step3-2: end ===> 流程已经完成了");
         }
 
         if(candidateStep != null){
@@ -109,11 +119,15 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         String serviceName = processFunction.getIocEntityName();
         String methodName = processFunction.getIocEntityMethod();
         String propertyName = processFunction.getInput();
+        String functionName = processFunction.getFunctionName();
         ApproveResult approveResult = new ApproveResult();
         approveResult.stepName = processFunction.getFunctionName();
         try {
             Object obj = springInvokeMethod.invokeProperty(bill, propertyName);
+            log.info("step3-1: find approve (" + functionName + ") ===> serviceName: " + serviceName + " methodName: "
+                    + methodName + " param: " + obj);
             approveResult.approveList = (String) springInvokeMethod.invokeMethod(serviceName, methodName, new Object[]{obj});
+            log.info("step3-1: find approve result (" + functionName + ") ===> " + approveResult.approveList);
             return approveResult;
         } catch (Exception e) {
             e.printStackTrace();
@@ -125,10 +139,11 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     private int processToDb(OaBill bill){
         Integer billId = bill.getBillId();
         if(billId == null){
-            bill.setApplyId(bill.getUserId());
             bill.setStopFlag((byte) 2);
+            log.info("step4: bill insert ===> " + bill);
             return oaBillMapper.insert(bill);
         }else {
+            log.info("step4: bill update ===> " + bill);
             return oaBillMapper.approve(bill);
         }
     }
@@ -145,6 +160,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             bill.setPassFlag((byte) 0);
         }
         oaBillOpera.setPassFlag(bill.getPassFlag());
+        log.info("step5: oaBillOpera insert ===> " + oaBillOpera);
         return oaBillOperaMapper.insert(oaBillOpera);
     }
 
@@ -154,10 +170,14 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         String serviceName = condition.getIocEntityName();
         String methodName = condition.getIocEntityMethod();
         String propertyName = condition.getInput();
+        String conditionDesc = condition.getConditionDesc();
         Boolean ifTrue = null;
         try {
             Object obj = springInvokeMethod.invokeProperty(bill, propertyName);
+            log.info("step2-2: execute condition (" + conditionDesc + ") ===> serviceName: " + serviceName + " methodName: "
+                    + methodName + " param: " + obj);
             ifTrue = (Boolean) springInvokeMethod.invokeMethod(serviceName, methodName, new Object[]{obj});
+            log.info("step2-2: execute condition result (" + conditionDesc + ") ===> " + ifTrue);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -185,11 +205,13 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         return null;
     }
 
+    @ToString
     private class StepTemp{
         String step;
         int approveFunctionId;
     }
 
+    @ToString
     private class ApproveResult{
         String approveList;
         String stepName;

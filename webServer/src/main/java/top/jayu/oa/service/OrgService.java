@@ -35,13 +35,32 @@ public class OrgService {
         return orgMapper.findOrgLeaderById(id);
     }
 
-    // 查询机构负责人，
+    // 查询部门负责人，
     public String findOrgLeader(Integer orgId){
         int id = findOrgLeaderById(orgId);
         if(id > 0){
             return "," + id + ",";
         }
         return null;
+    }
+
+    // 查询机构分管领导
+    public int findCompanyDeputyById(Integer id){
+        return orgMapper.findCompanyDeputyById(id);
+    }
+
+    // 查询市局分管领导
+    public String findCompanyDeputy(Integer orgId){
+        int companyDeputyById = findCompanyDeputyById(orgId);
+        if(companyDeputyById > 0){
+            return "," + companyDeputyById + ",";
+        }
+        return null;
+    }
+
+    // 查询市局负责人
+    public String findCompanyLeader(Integer orgId){
+        return findOrgLeader(orgId);
     }
 
     public List<OrgTree> orgTree(){

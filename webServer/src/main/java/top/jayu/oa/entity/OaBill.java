@@ -28,7 +28,7 @@ public class OaBill extends BaseParam {
 
     private String historyApproveList;
 
-    private Integer orgId;
+    private Integer applyOrgId;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;

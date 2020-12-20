@@ -1,8 +1,10 @@
 package top.jayu.oa.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class OaProcessCondition {
     private Integer processConditionId;
 

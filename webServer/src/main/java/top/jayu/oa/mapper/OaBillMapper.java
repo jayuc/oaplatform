@@ -28,7 +28,7 @@ public interface OaBillMapper {
 
     @Insert("insert into t_oa_bill (bill_code, bill_type, \n" +
             "      current_step, stop_flag, apply_id, \n" +
-            "      next_approve_list, history_approve_list, org_id, \n" +
+            "      next_approve_list, history_approve_list, apply_org_id, \n" +
             "      start_time, end_time, \n" +
             "      work_age, days, holiday_type, people_number, \n" +
             "      content, address, travel_tool, \n" +
@@ -37,7 +37,7 @@ public interface OaBillMapper {
             "      update_time, mark)\n" +
             "    values (#{billCode,jdbcType=VARCHAR}, #{billType,jdbcType=TINYINT}, \n" +
             "      #{currentStep,jdbcType=VARCHAR}, #{stopFlag,jdbcType=TINYINT}, #{applyId,jdbcType=INTEGER}, \n" +
-            "      #{nextApproveList,jdbcType=VARCHAR}, #{historyApproveList,jdbcType=VARCHAR}, #{orgId,jdbcType=INTEGER}, \n" +
+            "      #{nextApproveList,jdbcType=VARCHAR}, #{historyApproveList,jdbcType=VARCHAR}, #{applyOrgId,jdbcType=INTEGER}, \n" +
             "      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, \n" +
             "      #{workAge,jdbcType=TINYINT}, #{days,jdbcType=SMALLINT}, #{holidayType,jdbcType=SMALLINT}, #{peopleNumber,jdbcType=SMALLINT}, \n" +
             "      #{content,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{travelTool,jdbcType=TINYINT}, \n" +
@@ -57,7 +57,7 @@ public interface OaBillMapper {
             "      apply_id = #{applyId,jdbcType=INTEGER},\n" +
             "      next_approve_list = #{nextApproveList,jdbcType=VARCHAR},\n" +
             "      history_approve_list = #{historyApproveList,jdbcType=VARCHAR},\n" +
-            "      org_id = #{orgId,jdbcType=INTEGER},\n" +
+            "      apply_org_id = #{applyOrgId,jdbcType=INTEGER},\n" +
             "      start_time = #{startTime,jdbcType=TIMESTAMP},\n" +
             "      end_time = #{endTime,jdbcType=TIMESTAMP},\n" +
             "      work_age = #{workAge,jdbcType=TINYINT},\n" +

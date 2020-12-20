@@ -12,7 +12,7 @@ CREATE TABLE `t_sys_org` (
   `parent_id` int(11) COMMENT '父机构主键ID',
   `org_name` varchar(128) DEFAULT NULL COMMENT '机构名',
   `short_org_name` varchar(64) DEFAULT NULL COMMENT '机构简称',
-  `org_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '机构编号',
+  `org_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '机构编号,可用于机构树生成和机构权限判断',
   `org_code_priv` varchar(32) DEFAULT NULL COMMENT '机构权限编码',
   `yes_office` tinyint DEFAULT NULL COMMENT '是否是机关,1表示是',
   `leader_id` int(11) DEFAULT NULL COMMENT '负责人id',
@@ -91,7 +91,7 @@ CREATE TABLE `t_oa_bill` (
   `apply_id` int(11) DEFAULT NULL COMMENT '申请人id',
   `next_approve_list` varchar(128) DEFAULT NULL COMMENT '下一步审批人id列表，中间用英文逗号隔开，例如,2,34,',
   `history_approve_list` varchar(256) DEFAULT NULL COMMENT '历史审批人id列表，中间用英文逗号隔开，例如,2,34,',
-  `org_id` int(11) DEFAULT NULL COMMENT '申请人机构id',
+  `apply_org_id` int(11) DEFAULT NULL COMMENT '申请人机构id',
   `start_time` datetime DEFAULT NULL COMMENT '开始日期',
   `end_time` datetime DEFAULT NULL COMMENT '结束日期',
   `work_age` tinyint DEFAULT NULL COMMENT '工龄',
@@ -175,14 +175,28 @@ INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_
 VALUE ('orgId', 'Integer', 'orgService', 'findOrgLeader', '部门负责人');
 INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
 VALUE ('orgId', 'Integer', 'orgService', 'findCompanyDeputy', '市局分管领导');
+INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE ('orgId', 'Integer', 'orgService', 'findCompanyLeader', '市局负责人');
 
-INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,success_approve_function_id,fail_approve_function_id)
-VALUE ('orgId', 'Integer', 'orgService', 'orgIfOffice', '00', '01', '是否是机关', 1, 1);
+INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
+success_approve_function_id,fail_approve_function_id, success_condition_id, fail_condition_id)
+VALUE ('orgId', 'Integer', 'orgService', 'orgIfOffice', '00', '01', '是否是机关', 1, 1, 4, 4);
 INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,success_approve_function_id)
 VALUE ('userId', 'Integer', 'userService', 'userIfChief', '00', 'end', '是否是科级干部',2);
+INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,success_approve_function_id)
+VALUE ('userId', 'Integer', 'userService', 'userIfLeader', '00', 'end', '是否是部门/单位负责人',3);
+INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
+success_approve_function_id, fail_approve_function_id)
+VALUE ('userId', 'Integer', 'userService', 'userIfLeader', '0000', '00', '是否是部门负责人',2, 1);
 
 INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id)
 VALUE (1, '00', 'root', 1);
+INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id)
+VALUE (1, '0000', '00', 2);
+INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id)
+VALUE (1, '000000', '0000', 3);
+INSERT t_oa_process (bill_type,current_step,parent_step,next_step)
+VALUE (1, '00000000', '000000', 'end');
 
 INSERT t_sys_code_type (code,name) VALUE (1,'流程类型');
 INSERT t_sys_code_type (code,name) VALUE (2,'交通工具');
