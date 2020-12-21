@@ -44,6 +44,8 @@ public class OaBill extends BaseParam {
 
     private Short days;
 
+    private String peopleList;
+
     private Short peopleNumber;
 
     private String content;
@@ -69,4 +71,7 @@ public class OaBill extends BaseParam {
     private String historyProcessList;
 
     private String mark;
+
+    // 审批意见
+    private String approveOpinion;
 }

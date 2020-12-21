@@ -45,17 +45,16 @@
                           width="280">
                     </el-table-column>
                     <el-table-column
-                          prop="workAge"
+                          prop="content"
                           align="center"
-                          width="120"
-                          label="工龄（年）">
+                          width="300"
+                          label="出差事由">
                     </el-table-column>
                     <el-table-column
-                          prop="holidayType"
-                          align="center"
-                          width="140"
-                          :formatter="handleHolidayType"
-                          label="休假标准">
+                            prop="address"
+                            align="center"
+                            width="140"
+                            label="出差目的地">
                     </el-table-column>
                     <el-table-column
                           prop="startTime"
@@ -68,12 +67,6 @@
                           align="center"
                           width="180"
                           label="结束日期">
-                    </el-table-column>
-                    <el-table-column
-                          prop="days"
-                          align="center"
-                          width="100"
-                          label="天数">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
@@ -105,11 +98,11 @@
             </div>
         </el-main>
 
-        <add-leave ref="addLeave" @complete="submit" />
+        <add-business-trip ref="addLeave" @complete="submit" />
 
-        <approve-leave ref="approveLeave" @complete="submit" />
+        <approve-business-trip ref="approveLeave" @complete="submit" />
 
-        <details-leave ref="detailsLeave" />
+        <details-business-trip ref="detailsLeave" />
 
     </el-container>
 </template>
@@ -118,19 +111,18 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import AddLeave from './addLeave.vue';
-    import ApproveLeave from './approveLeave.vue';
-    import DetailsLeave from './detailsLeave.vue';
-    import CodeUtil from '@/utils/CodeUtil';
+    import AddBusinessTrip from './addBusinessTrip.vue';
+    import ApproveBusinessTrip from './approveBusinessTrip.vue';
+    import DetailsBusinessTrip from './detailsBusinessTrip.vue';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
 
     export default {
         name: 'process-leave',
         components: {
-            AddLeave,
-            ApproveLeave,
-            DetailsLeave
+            AddBusinessTrip,
+            ApproveBusinessTrip,
+            DetailsBusinessTrip
         },
         data(){
             return {
@@ -140,7 +132,7 @@
                     pageNumber: 1,
                     pageSize: 15,
                     stopFlag: 2,
-                    billType: 1
+                    billType: 2
                 },
                 searchBtnStatus: false,
                 total: 0,
@@ -216,9 +208,6 @@
             },
             approveBill(row){
                 this.$refs.approveLeave.open(row, 'oa/bill/deliver');
-            },
-            handleHolidayType(row, column, cellValue){
-                return CodeUtil.getName(3, cellValue);
             },
             handleSizeChange(currentPageSize) {
                 this.formData.pageSize = currentPageSize;

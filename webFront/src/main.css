@@ -126,5 +126,13 @@ a {
 }
 
 .el-dialog__body{
-    padding: 30px 20px 30px 5px;
+    padding: 30px 30px 20px 10px;
+}
+
+.el-date-editor.el-input, .el-date-editor.el-input__inner {
+    width: 100%;
+}
+
+.el-select{
+    width: 100%;
 }

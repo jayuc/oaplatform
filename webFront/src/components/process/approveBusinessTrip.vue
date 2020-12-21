@@ -17,14 +17,28 @@
                 </el-col>
             </el-row>
             <el-row>
+                <el-col :span="24">
+                    <el-form-item label="出差事由：" prop="content" :label-width="formLabelWidth">
+                        {{formData.content}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
-                    <el-form-item label="工龄：" :label-width="formLabelWidth">
-                        {{formData.workAge}}
+                    <el-form-item label="出差人员：" prop="peopleList" :label-width="formLabelWidth">
+                        {{formData.peopleList}}
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
-                        {{formatHolidayType(formData.holidayType)}}
+                    <el-form-item label="出差人数：" prop="peopleNumber" :label-width="formLabelWidth">
+                        {{formData.peopleNumber}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="目的地：" prop="address" :label-width="formLabelWidth">
+                        {{formData.address}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -38,16 +52,6 @@
                     <el-form-item label="结束日期：" :label-width="formLabelWidth">
                         {{formData.endTime}}
                     </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="天数：" :label-width="formLabelWidth">
-                        {{formData.days}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-
                 </el-col>
             </el-row>
             <el-row>
@@ -68,7 +72,6 @@
 <script>
 
     import RestUtil from '@/utils/RestUtil';
-    import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
 
     export default {
@@ -96,9 +99,6 @@
             },
             close(){
                 this.visible = false;
-            },
-            formatHolidayType(cellValue){
-                return CodeUtil.getName(3, cellValue);
             },
             formatOrg(cellValue){
                 if(cellValue){

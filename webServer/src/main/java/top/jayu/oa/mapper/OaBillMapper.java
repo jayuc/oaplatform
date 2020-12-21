@@ -17,6 +17,7 @@ public interface OaBillMapper {
             "  <where>  ",
             "    <if test='currentStep != null'> and b.current_step = #{currentStep} </if> ",
             "    <if test='stopFlag != 0'> and b.stop_flag = #{stopFlag} </if> ",
+            "    <if test='billType != null'> and b.bill_type = #{billType} </if> ",
             "    <if test='currentUserId != 9999'> and ( b.apply_id = #{currentUserId} or b.next_approve_list like concat('%,', #{currentUserId}, ',%') ) </if> ",
             "  </where > ",
             "</script> "
@@ -34,7 +35,7 @@ public interface OaBillMapper {
             "      content, address, travel_tool, \n" +
             "      amount, file_url1, file_url2, \n" +
             "      file_url3, extend_content, create_time, \n" +
-            "      update_time, mark)\n" +
+            "      people_list, update_time, mark)\n" +
             "    values (#{billCode,jdbcType=VARCHAR}, #{billType,jdbcType=TINYINT}, \n" +
             "      #{currentStep,jdbcType=VARCHAR}, #{stopFlag,jdbcType=TINYINT}, #{applyId,jdbcType=INTEGER}, \n" +
             "      #{nextApproveList,jdbcType=VARCHAR}, #{historyApproveList,jdbcType=VARCHAR}, #{applyOrgId,jdbcType=INTEGER}, \n" +
@@ -43,7 +44,7 @@ public interface OaBillMapper {
             "      #{content,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{travelTool,jdbcType=TINYINT}, \n" +
             "      #{amount,jdbcType=INTEGER}, #{fileUrl1,jdbcType=VARCHAR}, #{fileUrl2,jdbcType=VARCHAR}, \n" +
             "      #{fileUrl3,jdbcType=VARCHAR}, #{extendContent,jdbcType=VARCHAR}, now(), \n" +
-            "      #{updateTime,jdbcType=TIMESTAMP}, #{mark,jdbcType=VARCHAR})")
+            "      #{peopleList,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{mark,jdbcType=VARCHAR})")
     int insert(OaBill record);
 
     @Delete("delete from t_oa_bill where bill_id = #{id}")
@@ -74,6 +75,7 @@ public interface OaBillMapper {
             "      extend_content = #{extendContent,jdbcType=VARCHAR},\n" +
             "      update_time = #{updateTime,jdbcType=TIMESTAMP},\n" +
             "      mark = #{mark,jdbcType=VARCHAR},\n" +
+            "      people_list = #{peopleList,jdbcType=VARCHAR},\n" +
             "      history_process_list = #{historyProcessList,jdbcType=VARCHAR}\n" +
             "    where bill_id = #{id,jdbcType=INTEGER}")
     int update(OaBill record);

@@ -191,7 +191,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         oaBillOpera.setBillCode(bill.getBillCode());
         oaBillOpera.setBillType(bill.getBillType());
         oaBillOpera.setBillStep(step);
-        oaBillOpera.setContent(bill.getContent());
+        oaBillOpera.setContent(bill.getApproveOpinion());
         oaBillOpera.setOperaId(bill.getCurrentUserId());
         if(bill.getPassFlag() == null){
             bill.setPassFlag((byte) 0);

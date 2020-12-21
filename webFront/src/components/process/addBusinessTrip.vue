@@ -17,14 +17,28 @@
                 </el-col>
             </el-row>
             <el-row>
+                <el-col :span="24">
+                    <el-form-item label="出差事由：" prop="content" :label-width="formLabelWidth">
+                        <el-input type="textarea" :rows="3" v-model.number="formData.content" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
-                    <el-form-item label="工龄：" prop="workAge" :label-width="formLabelWidth">
-                        <el-input v-model.number="formData.workAge" autocomplete="off"></el-input>
+                    <el-form-item label="出差人员：" prop="peopleList" :label-width="formLabelWidth">
+                        <el-input v-model="formData.peopleList" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
-                        <yu-code-radio @change="holidayTypeChange" :code="3" ref="holidayTypeSelect"></yu-code-radio>
+                    <el-form-item label="出差人数：" prop="peopleNumber" :label-width="formLabelWidth">
+                        <el-input v-model.number="formData.peopleNumber" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="目的地：" prop="address" :label-width="formLabelWidth">
+                        <el-input v-model="formData.address" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -39,23 +53,13 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="结束日期：" prop="endTime" :label-width="formLabelWidth">
+                    <el-form-item label="结束日期：" prop="endTime" style="width: 100%" :label-width="formLabelWidth">
                         <el-date-picker
                                 v-model="formData.endTime"
                                 type="date"
                                 placeholder="选择日期">
                         </el-date-picker>
                     </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="天数：" prop="days" :label-width="formLabelWidth">
-                        <el-input v-model.number="formData.days" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-
                 </el-col>
             </el-row>
         </el-form>
@@ -69,12 +73,11 @@
 <script>
 
     import RestUtil from '@/utils/RestUtil';
-    import YuCodeRadio from "../public/yu-code-radio.vue";
     import user from '@/user';
     import OrgUtil from '@/utils/OrgUtil';
 
     export default {
-        components: {YuCodeRadio},
+        components: {},
         name: 'process-add-leave',
         data(){
             // 开始日期校验
@@ -101,19 +104,23 @@
                 formLabelWidth: '110px',
                 formData: {},
                 titleMap: {
-                    add: '年休假申请',
-                    edit: '年休假编辑'
+                    add: '出差申请',
+                    edit: '出差编辑'
                 },
                 title: '',
                 url: '',
                 rules: {
-                    workAge: [
-                        { required: true, message: '请输入工龄', trigger: 'blur' },
-                        { type: 'number', message: '工龄必须为数字值'}
+                    content: [
+                        { required: true, message: '请输入出差事由', trigger: 'blur' }
                     ],
-                    days: [
-                        { required: true, message: '请输入天数', trigger: 'blur' },
-                        { type: 'number', message: '天数必须为数字值'}
+                    peopleList: [
+                        { required: true, message: '请输入出差人员', trigger: 'blur' }
+                    ],
+                    address: [
+                        { required: true, message: '请输入出差目的地', trigger: 'blur' }
+                    ],
+                    peopleNumber: [
+                        { type: 'number', message: '人数必须为数字值'}
                     ],
                     startTime: [
                         { required: true, message: '请选择开始日期', trigger: 'blur' },
@@ -129,7 +136,7 @@
         methods: {
             initFormData(){
                 this.formData = {
-                    billType: 1,
+                    billType: 2,
                     currentStep: '00',
                     applyId: user.get('userId'),
                     applyOrgId: user.get('orgId'),
@@ -151,9 +158,6 @@
             },
             close(){
                 this.visible = false;
-            },
-            holidayTypeChange(key){
-                this.formData.holidayType = key;
             },
             submit(){
                 this.$refs['formData'].validate((valid) => {

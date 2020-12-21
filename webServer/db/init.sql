@@ -98,6 +98,7 @@ CREATE TABLE `t_oa_bill` (
   `work_age` tinyint DEFAULT NULL COMMENT '工龄',
   `holiday_type` tinyint DEFAULT NULL COMMENT '休假标准',
   `days` smallint DEFAULT NULL COMMENT '天数',
+  `people_list` varchar(256) DEFAULT NULL COMMENT '出差人员',
   `people_number` smallint DEFAULT NULL COMMENT '人数',
   `content` varchar(1024) DEFAULT NULL COMMENT '内容（比如出差内容）',
   `address` varchar(128) DEFAULT NULL COMMENT '地点',
@@ -185,6 +186,12 @@ VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findUnitDeputy', '单位分�
 INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
 VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findUnitLeader', '单位负责人');
 
+# 出差
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (6, 'applyOrgCodePriv', 'String', 'orgService', 'findUnitLeader', '单位/部门负责人');
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (7, 'applyOrgCodePriv', 'String', 'orgService', 'findCompanyDeputy', '市局分管领导');
+
 INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
 success_approve_function_id,fail_approve_function_id, success_condition_id, fail_condition_id)
 VALUE ('applyOrgId', 'Integer', 'orgService', 'orgIfOffice', '00', '01', '是否是机关', 1, 1, 4, 4);
@@ -200,6 +207,11 @@ VALUE ('applyId', 'Integer', 'userService', 'userIfCompanyLeader', 'end', 'end',
 INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
 fail_approve_function_id)
 VALUE ('applyId', 'Integer', 'userService', 'userIfCompanyLeader', 'end', '0000', '是否是市局负责人', 2);
+
+# 出差
+INSERT t_oa_process_condition (process_condition_id, input,input_value_type,ioc_entity_name,ioc_entity_method,
+success_to,fail_to,condition_desc,success_approve_function_id)
+VALUE (7, 'applyId', 'Integer', 'userService', 'userIfChief', '00', 'end', '是否是科级干部', 7);
 
 INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
 VALUE (1, '00', 'root', 1, '工单申请');
@@ -219,6 +231,12 @@ INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, pr
 VALUE (1, '0100000000', '01000000', 3, '市局分管领导审批');
 INSERT t_oa_process (bill_type,current_step,parent_step,next_step, process_desc)
 VALUE (1, '010000000000', '0100000000', 'end', '市局负责人审批');
+
+# 出差
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc)
+VALUE (14, 2, '00', 'root', '00', 6, '工单申请');
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,process_condition_id,process_desc)
+VALUE (15, 2, '0000', '00', 7, '单位/部门负责人审批');
 
 INSERT t_sys_code_type (code,name) VALUE (1,'流程类型');
 INSERT t_sys_code_type (code,name) VALUE (2,'交通工具');
