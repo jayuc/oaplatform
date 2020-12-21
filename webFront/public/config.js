@@ -5,7 +5,7 @@
 var $rootScope = {
 
     // rest 根路径
-    restRoot: 'http://127.0.0.1:8056/',
+    restRoot: 'http://192.168.31.187:8056/',
 
     // 登录页标题
     loginTitle: '合肥烟草专卖局OA系统',

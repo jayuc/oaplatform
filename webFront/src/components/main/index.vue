@@ -35,7 +35,7 @@
               </el-submenu>
             <el-submenu index="3">
                 <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
-                <router-link to="/main/errand">
+                <router-link to="/main/doing">
                     <el-menu-item>修改密码</el-menu-item>
                 </router-link>
             </el-submenu>
