@@ -19,4 +19,7 @@ var $rootScope = {
     //用户信息
     userInfo: {},
 
+    // 下载地址
+    uploadUrl: 'http://192.168.31.187/'
+
 };

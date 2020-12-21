@@ -32,6 +32,9 @@ logging:
     root: info
     top.jayu.oa: debug
 
+upload:
+  location: D:/oa/
+
 
 
 

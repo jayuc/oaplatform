@@ -62,6 +62,27 @@
                     </el-form-item>
                 </el-col>
             </el-row>
+            <el-row>
+                <el-form-item label="附件上传：" :label-width="formLabelWidth">
+                    <el-upload 	:action="uploadUrl"
+                                  :on-remove="handleRemove"
+                                  :before-remove="beforeRemove"
+                                  :on-success="afterFileSuccess"
+                                  :limit="3"
+                                  :on-exceed="handleExceed"
+                                  :file-list="fileList">
+                        <el-button size="mini"
+                                   type="success"
+                                   plain
+                        >
+                            点击上传
+                        </el-button>
+                        <i class="el-icon-success success" v-show="fileokIcon"></i>
+                        <i class="el-icon-error error" v-show="filenoIcon"></i>
+                        <span style="margin-left: 20px;color: red;">最多上传3个文件</span>
+                    </el-upload>
+                </el-form-item>
+            </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
@@ -75,9 +96,11 @@
     import RestUtil from '@/utils/RestUtil';
     import user from '@/user';
     import OrgUtil from '@/utils/OrgUtil';
+    import ElRow from "element-ui/packages/row/src/row";
+    import Config from '@/config';
 
     export default {
-        components: {},
+        components: {ElRow},
         name: 'process-add-leave',
         data(){
             // 开始日期校验
@@ -130,7 +153,12 @@
                         { required: true, message: '请选择结束日期', trigger: 'blur' },
                         { validator: validateEndTime, trigger: 'change' }
                     ]
-                }
+                },
+                uploadUrl: Config.get('restRoot') + 'upload/file/one',  // 图片上传地址
+                fileokIcon: false,  // 文件 成功标识
+                filenoIcon: false,  // 文件 失败标识
+                fileList: [],
+                fileArr: []
             };
         },
         methods: {
@@ -144,6 +172,8 @@
                     userName: user.get('userName'),
                     orgName: OrgUtil.getShortNameById(user.get('orgId'))
                 };
+                this.fileList = [];
+                this.fileArr = [];
                 // 休假标准下拉框复位
                 if(this.$refs.holidayTypeSelect){
                     this.$refs.holidayTypeSelect.reset();
@@ -159,7 +189,40 @@
             close(){
                 this.visible = false;
             },
+            afterFileSuccess(file){
+                this.fileArr.push(file);
+            },
+            handleRemove(file) {
+                for (let i=0; i<this.fileArr.length; i++){
+                    if(this.fileArr[i] && this.fileArr[i].fileName == file.name){
+                        this.fileArr[i] = null;
+                    }
+                }
+            },
+            handleExceed(files, fileList) {
+                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            },
+            beforeRemove(file) {
+                return this.$confirm(`确定移除 ${ file.name }？`);
+            },
             submit(){
+                let a = 1;
+                let rootPath = Config.get('uploadUrl');
+                for (let i=0; i<this.fileArr.length; i++){
+                    let file = this.fileArr[i];
+                    if(file){
+                        if(a == 1){
+                            this.formData.fileUrl1 = rootPath + file.path;
+                        }
+                        if(a == 2){
+                            this.formData.fileUrl2 = rootPath + file.path;
+                        }
+                        if(a == 3){
+                            this.formData.fileUrl3 = rootPath + file.path;
+                        }
+                    }
+                    a++;
+                }
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
                         this.formData.billCode = new Date().getTime();

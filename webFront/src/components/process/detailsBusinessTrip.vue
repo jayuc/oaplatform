@@ -55,6 +55,16 @@
                 </el-col>
             </el-row>
             <el-row>
+                <el-col :span="24">
+                    <el-form-item label="附件：" :label-width="formLabelWidth">
+                        <div v-for="(item, i) in fileList" :key="i">
+                            {{i+1}}. {{item.name}}
+                            <a :href="item.url" download style="float: right">下载</a>
+                        </div>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
                 <div class="process-status">进度如下：</div>
             </el-row>
             <el-row>
@@ -77,9 +87,12 @@
     import OrgUtil from '@/utils/OrgUtil';
     import ElRow from "element-ui/packages/row/src/row";
     import ElStep from "../../../node_modules/element-ui/packages/steps/src/step.vue";
+    import ElCol from "element-ui/packages/col/src/col";
+    import handler from './handler';
 
     export default {
         components: {
+            ElCol,
             ElStep,
             ElRow},
         name: 'process-details-leave',
@@ -91,7 +104,8 @@
                 stepActive: 1,
                 stepList: [
                     {key: 1, title: '步骤 1：', desc: '工单申请'}
-                ]
+                ],
+                fileList: []
             }
         },
         methods: {
@@ -102,6 +116,7 @@
                 this.initFormData();
                 this.visible = true;
                 Object.assign(this.formData, data);
+                this.fileList = handler.handleFileList(this.formData);
                 let param = {};
                 Object.assign(param, this.formData);
                 delete param.createTime;

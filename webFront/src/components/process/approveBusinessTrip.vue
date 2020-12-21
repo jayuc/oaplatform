@@ -56,6 +56,16 @@
             </el-row>
             <el-row>
                 <el-col :span="24">
+                    <el-form-item label="附件：" :label-width="formLabelWidth">
+                        <div v-for="(item, i) in fileList" :key="i">
+                            {{i+1}}. {{item.name}}
+                            <a :href="item.url" download style="float: right">下载</a>
+                        </div>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
                     <el-form-item label="审批意见：" :label-width="formLabelWidth">
                         <el-input v-model="formData.approveOpinion" autocomplete="off"></el-input>
                     </el-form-item>
@@ -73,6 +83,7 @@
 
     import RestUtil from '@/utils/RestUtil';
     import OrgUtil from '@/utils/OrgUtil';
+    import handler from './handler';
 
     export default {
         name: 'process-approve-leave',
@@ -83,6 +94,7 @@
                 formLabelWidth: '110px',
                 formData: {},
                 url: '',
+                fileList: []
             }
         },
         methods: {
@@ -95,6 +107,7 @@
                 this.initFormData();
                 this.visible = true;
                 Object.assign(this.formData, data);
+                this.fileList = handler.handleFileList(this.formData);
                 this.url = url;
             },
             close(){
