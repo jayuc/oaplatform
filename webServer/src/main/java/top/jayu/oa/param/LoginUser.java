@@ -5,10 +5,12 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class LoginUser {
+public class LoginUser extends BaseParam {
     @NotBlank(message = "登录名不能为空")
     private String loginName;
 
     @NotBlank(message = "密码不能为空")
     private String password;
+
+    private String originPassword;
 }

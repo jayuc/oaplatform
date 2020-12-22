@@ -1,5 +1,6 @@
 package top.jayu.oa.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,11 @@ public class UserController {
         return result.getResult();
     }
 
+    @PostMapping("/update")
+    public Integer update(User dto){
+        return userMapper.update(dto);
+    }
+
     @PostMapping("/login")
     public Map<String, Object> login(@Valid LoginUser user){
         log.info(user.toString());
@@ -56,6 +62,21 @@ public class UserController {
             }
         }else {
             result.error("用户名错误！");
+        }
+        return result.getResult();
+    }
+
+    @PostMapping("/updatePassword")
+    public Map<String, Object> updatePassword(LoginUser dto){
+        ResultUtil.Result result = ResultUtil.build();
+        String password = userMapper.getPasswordByLoginName(dto.getLoginName());
+        if(!StrUtil.isBlank(password) && password.equals(dto.getOriginPassword())){
+            Integer res = userMapper.updatePassword(dto);
+            if(res != 1){
+                result.error("密码修改错误");
+            }
+        }else {
+            result.error("原密码输入错误");
         }
         return result.getResult();
     }

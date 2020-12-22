@@ -2,7 +2,9 @@ package top.jayu.oa.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import top.jayu.oa.entity.User;
+import top.jayu.oa.param.LoginUser;
 
 import java.util.List;
 
@@ -33,5 +35,19 @@ public interface UserMapper {
             "</script> "
     })
     List<User> list(User record);
+
+    @Update({
+            "<script> ",
+            "update t_sys_user ",
+            "<set> ",
+            "   <if test='yesChief != null'> yes_chief = #{yesChief}, </if> ",
+            "</set> ",
+            "where user_id = #{userId}",
+            "</script> "
+    })
+    Integer update(User record);
+
+    @Update("update t_sys_user set password = #{password} where user_id = #{currentUserId}")
+    Integer updatePassword(LoginUser record);
 
 }

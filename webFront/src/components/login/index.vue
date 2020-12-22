@@ -4,7 +4,7 @@
       <div style="color: #ffffff;font-size: 30px;">{{loginTitle}}</div>
       <div style="height: 50px;"></div>
       <div style="width: 340px;margin: 0 auto;">
-          <el-form :model="ruleForm" label-width="100px" class="loginForm">
+          <el-form :model="ruleForm" label-width="100px" class="loginForm" @keyup.enter.native="submit">
               <el-form-item label="用户名　：" >
                   <el-input type="loginName" v-model="ruleForm.loginName"></el-input>
               </el-form-item>

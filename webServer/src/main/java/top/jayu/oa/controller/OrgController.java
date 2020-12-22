@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.jayu.oa.entity.Org;
@@ -41,6 +42,11 @@ public class OrgController {
         result.total(page.getTotal());
         result.rows(page.getResult());
         return result.getResult();
+    }
+
+    @PostMapping("/update")
+    public Integer update(Org dto){
+        return orgMapper.update(dto);
     }
 
 }

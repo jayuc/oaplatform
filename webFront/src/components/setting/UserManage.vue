@@ -91,6 +91,9 @@
                               prop="operation"
                               align="center"
                               label="操作">
+                            <template slot-scope="scope">
+                                <el-button v-if="ifShowChief(scope.row)" @click="updateChief(scope.row)" type="text" size="small">设置科级干部</el-button>
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div style="height: 10px;"></div>
@@ -108,6 +111,8 @@
 
         </el-container>
 
+        <chief-setting ref="chiefSetting" @complete="submit" />
+
     </el-container>
 
 </template>
@@ -118,9 +123,13 @@
     import Config from '@/config';
     import OrgUtil from '@/utils/OrgUtil';
     import CodeUtil from '@/utils/CodeUtil';
+    import ChiefSetting from './userSetChief.vue';
 
     export default {
         name: 'user-setting',
+        components: {
+            ChiefSetting
+        },
         data(){
             return {
                 tableContainerStyle: '',
@@ -177,6 +186,16 @@
                 }, () => {
 
                 });
+            },
+            // 是否显示科级干部
+            ifShowChief(row){
+                if(row.yesChief != 1){
+                    return true;
+                }
+            },
+            // 设置科级干部
+            updateChief(row){
+                this.$refs.chiefSetting.open(row);
             },
             // 机构树点击事件
             handleNodeClick(data){

@@ -2,6 +2,7 @@ package top.jayu.oa.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import top.jayu.oa.entity.Org;
 
 import java.util.List;
@@ -27,6 +28,18 @@ public interface OrgMapper {
             "</script> "
     })
     List<Org> list(Org record);
+
+    @Update({
+            "<script> ",
+            "update t_sys_org ",
+            "<set> ",
+            "   <if test='leaderId != null'> leader_id = #{leaderId}, </if> ",
+            "   <if test='deputyId != null'> deputy_id = #{deputyId}, </if> ",
+            "</set> ",
+            "where org_id = #{orgId}",
+            "</script> "
+    })
+    Integer update(Org record);
 
     @Select("select yes_office from t_sys_org where org_id = #{id}")
     Byte ifOffice(Integer id);
