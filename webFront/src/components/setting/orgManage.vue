@@ -61,6 +61,10 @@
                               prop="operation"
                               align="center"
                               label="操作">
+                            <template slot-scope="scope">
+                                <el-button v-if="ifShowLeader(scope.row)" type="text" size="small">设置负责人</el-button>
+                                <el-button v-if="ifShowDeputy(scope.row)" type="text" size="small">设置分管领导</el-button>
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div style="height: 10px;"></div>
@@ -144,6 +148,12 @@
                 }, () => {
 
                 });
+            },
+            ifShowLeader(){
+                return true;
+            },
+            ifShowDeputy(){
+                return true;
             },
             // 机构树点击事件
             handleNodeClick(data){
