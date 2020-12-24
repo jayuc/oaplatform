@@ -64,9 +64,11 @@
                             <template slot-scope="scope">
                                 <el-button v-if="ifShowLeader(scope.row)"
                                            plain
+                                           @click="doSetLeader(scope.row)"
                                            type="primary" size="small">设置负责人</el-button>
                                 <el-button v-if="ifShowDeputy(scope.row)"
                                            plain
+                                           @click="doSetDeputy(scope.row)"
                                            type="primary" size="small">设置分管领导</el-button>
                             </template>
                         </el-table-column>
@@ -86,6 +88,10 @@
 
         </el-container>
 
+        <org-set-leader ref="orgSetLeader" @complete="submit" />
+
+        <org-set-deputy ref="orgSetDeputy" @complete="submit" />
+
     </el-container>
 
 </template>
@@ -94,9 +100,15 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
+    import OrgSetLeader from './orgSetLeader.vue';
+    import OrgSetDeputy from './orgSetDeputy.vue';
 
     export default {
         name: 'user-setting',
+        components: {
+            OrgSetLeader,
+            OrgSetDeputy
+        },
         data(){
             return {
                 tableContainerStyle: '',
@@ -158,6 +170,12 @@
             },
             ifShowDeputy(){
                 return true;
+            },
+            doSetLeader(row){
+                this.$refs.orgSetLeader.open(row);
+            },
+            doSetDeputy(row){
+                this.$refs.orgSetDeputy.open(row);
             },
             // 机构树点击事件
             handleNodeClick(data){

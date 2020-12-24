@@ -3,8 +3,8 @@ import Router from 'vue-router'
 import Main from '@/components/main';
 import Login from '@/components/login';
 import LeaveBill from '@/components/process/leave';
-import UserManage from '@/components/setting/UserManage';
-import OrgManage from '@/components/setting/orgManage';
+import UserManage from '@/components/organization/UserManage';
+import OrgManage from '@/components/organization/orgManage';
 import BusinessTrip from '@/components/process/businessTripMain';
 import PasswordSetting from '@/components/setting/passwordSetting';
 import Doing from '@/components/process/doing';

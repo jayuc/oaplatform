@@ -23,6 +23,7 @@ public interface OrgMapper {
             "  <where>  ",
             "    <if test='orgName != null and orgName != \"\"'> and o.org_name like concat('%',#{orgName},'%') </if> ",
             "    <if test='orgId != null and orgId != 0'> and o.org_id = #{orgId} </if> ",
+            "    <if test='parentId != null and parentId != 0'> and o.parent_id = #{parentId} </if> ",
             "    <if test='orgCodePriv != null and orgCodePriv != \"\"'> and o.org_code like concat(#{orgCodePriv},'%') </if> ",
             "  </where > ",
             "</script> "

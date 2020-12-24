@@ -9,13 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.jayu.oa.entity.Org;
 import top.jayu.oa.entity.User;
 import top.jayu.oa.mapper.EmployMapper;
+import top.jayu.oa.mapper.OrgMapper;
 import top.jayu.oa.mapper.UserMapper;
 import top.jayu.oa.param.LoginUser;
 import top.jayu.oa.util.ResultUtil;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +32,8 @@ public class UserController {
     UserMapper userMapper;
     @Autowired
     EmployMapper employMapper;
+    @Autowired
+    OrgMapper orgMapper;
 
     @GetMapping("/getUserById")
     public User getUserById(Integer id){
@@ -79,6 +85,49 @@ public class UserController {
             result.error("原密码输入错误");
         }
         return result.getResult();
+    }
+
+    // 获取此部门下面的负责人待选
+    @GetMapping("/getLeaderCandidate")
+    public Map<String, List<User>> getLeaderCandidate(User dto){
+        Map<String, List<User>> map = new HashMap<>();
+        generateUserList(map, dto.getOrgId(), dto.getOrgName());
+        Org orgDto = new Org();
+        orgDto.setParentId(dto.getOrgId());
+        List<Org> orgList = orgMapper.list(orgDto);
+        for (int i=0; i<orgList.size(); i++){
+            Org item = orgList.get(i);
+            if(item.getOrgName().indexOf("领导") > -1){
+                generateUserList(map, item.getOrgId(), item.getOrgName());
+            }
+        }
+        return map;
+    }
+
+    // 获取此部门下面的分管领导待选
+    @GetMapping("/getDeputyCandidate")
+    public Map<String, List<User>> getDeputyCandidate(User dto){
+        Org org = orgMapper.getById(dto.getOrgId());
+        Org parentOrg = orgMapper.getById(org.getParentId());
+        if(parentOrg == null){
+            Map<String, List<User>> map = new HashMap<>();
+            generateUserList(map, 1, "市局（公司）领导");
+            return map;
+        }else {
+            User userDto = new User();
+            userDto.setOrgId(parentOrg.getOrgId());
+            userDto.setOrgName(parentOrg.getOrgName());
+            return getLeaderCandidate(userDto);
+        }
+    }
+
+    private void generateUserList(Map<String, List<User>> map, Integer orgId, String orgName){
+        User userDto = new User();
+        userDto.setOrgId(orgId);
+        List<User> list = userMapper.list(userDto);
+        if(list.size() > 0){
+            map.put(orgName, list);
+        }
     }
 
 }
