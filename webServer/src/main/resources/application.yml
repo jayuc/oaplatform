@@ -1,16 +1,35 @@
+# 端口
 server:
   port: 8056
+# 数据源
 spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://127.0.0.1:3306/oa?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://121.89.170.193:3306/oa?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # 启动时立即初始化数据源
-    initialization-mode: always
-    # 启动时执行测试 sql
-    schema: classpath:init.sql
-    sql-script-encoding: utf-8
+    # druid 配置
+    druid:
+      # 初始化时建立物理连接的个数
+      initial-size: 2
+      # 最大连接池数量
+      max-active: 30
+      # 最小连接池数量
+      min-idle: 2
+      # 获取连接时最大等待时间，单位毫秒
+      max-wait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 连接保持空闲而不被驱逐的最小时间
+      min-evictable-idle-time-millis: 300000
+      # 用来检测连接是否有效的sql，要求是一个查询语句
+      validation-query: SELECT 1 FROM DUAL
+      # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      test-while-idle: true
+      # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-borrow: false
+      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-return: false
 
   profiles:
       # 开发/测试/生产环境分别对应dev/test/prod

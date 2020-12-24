@@ -238,21 +238,5 @@ VALUE (14, 2, '00', 'root', '00', 6, '工单申请');
 INSERT t_oa_process (process_id, bill_type,current_step,parent_step,process_condition_id,process_desc)
 VALUE (15, 2, '0000', '00', 7, '单位/部门负责人审批');
 
-INSERT t_sys_code_type (code,name) VALUE (1,'流程类型');
-INSERT t_sys_code_type (code,name) VALUE (2,'交通工具');
-INSERT t_sys_code_type (code,name) VALUE (3,'休假标准');
-
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,1,'公休假',1);
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,2,'出差',1);
-
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,1,'火车',1);
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,2,'汽车',1);
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,3,'飞机',1);
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,4,'轮船',1);
-
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,1,'5天',1);
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,2,'10天',1);
-INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (3,3,'15天',1);
-
 INSERT t_sys_user (user_id,user_name,login_name,password,org_id,role_id)
 values (9999,'超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',-1,-1);

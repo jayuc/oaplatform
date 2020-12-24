@@ -36,9 +36,14 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="24">
+                <el-col :span="12">
                     <el-form-item label="目的地：" prop="address" :label-width="formLabelWidth">
                         {{formData.address}}
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="交通工具：" :label-width="formLabelWidth">
+                        {{formatTravelTool(formData.travelTool)}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -89,6 +94,7 @@
     import ElStep from "../../../node_modules/element-ui/packages/steps/src/step.vue";
     import ElCol from "element-ui/packages/col/src/col";
     import handler from './handler';
+    import CodeUtil from '@/utils/CodeUtil';
 
     export default {
         components: {
@@ -142,6 +148,9 @@
                     }
                 }
                 return '';
+            },
+            formatTravelTool(cellValue){
+                return CodeUtil.getName(2, cellValue);
             },
         }
     }

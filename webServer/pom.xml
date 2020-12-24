@@ -64,6 +64,12 @@
 	        <scope>test</scope>
 	    </dependency>
 
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>1.1.9</version>
+		</dependency>
+
 		<!-- 热部署插件 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

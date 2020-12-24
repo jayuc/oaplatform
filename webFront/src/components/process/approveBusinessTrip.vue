@@ -36,9 +36,14 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="24">
+                <el-col :span="12">
                     <el-form-item label="目的地：" prop="address" :label-width="formLabelWidth">
                         {{formData.address}}
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="交通工具：" :label-width="formLabelWidth">
+                        {{formatTravelTool(formData.travelTool)}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -84,6 +89,7 @@
     import RestUtil from '@/utils/RestUtil';
     import OrgUtil from '@/utils/OrgUtil';
     import handler from './handler';
+    import CodeUtil from '@/utils/CodeUtil';
 
     export default {
         name: 'process-approve-leave',
@@ -121,6 +127,9 @@
                     }
                 }
                 return '';
+            },
+            formatTravelTool(cellValue){
+                return CodeUtil.getName(2, cellValue);
             },
             submit(){
                 this.$refs['formData'].validate((valid) => {

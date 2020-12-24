@@ -1,8 +1,13 @@
 <template>
   <div :style="backgroudStyle">
-      <div style="height: 300px;"></div>
+      <div style="height: 240px;"></div>
+      <div>
+          <img  style="width: 100px"
+                :src="logoUrl"/>
+      </div>
+      <div style="height: 26px;"></div>
       <div style="color: #ffffff;font-size: 30px;">{{loginTitle}}</div>
-      <div style="height: 50px;"></div>
+      <div style="height: 40px;"></div>
       <div style="width: 340px;margin: 0 auto;">
           <el-form :model="ruleForm" label-width="100px" class="loginForm" @keyup.enter.native="submit">
               <el-form-item label="用户名　：" >
@@ -17,6 +22,8 @@
               </el-form-item>
           </el-form>
       </div>
+      <div style="height: 100px;"></div>
+      <div>技术支持：安徽天安芯科物联网技术有限公司</div>
   </div>
 </template>
 
@@ -28,6 +35,7 @@
   import StringUtil from '@/utils/StringUtil';
   import Config from '@/config';
   import handler from './handler';
+  import logoUrl from '../../assets/logo.png';
 
   export default {
       components: {
@@ -36,6 +44,7 @@
       name: 'alogin',
       data() {
           return {
+              logoUrl,
               loginTitle: Config.get('loginTitle'),
               backgroudStyle: {
                   height: '100%',

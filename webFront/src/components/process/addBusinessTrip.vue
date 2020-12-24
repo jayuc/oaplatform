@@ -36,9 +36,14 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="24">
+                <el-col :span="12">
                     <el-form-item label="目的地：" prop="address" :label-width="formLabelWidth">
                         <el-input v-model="formData.address" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="交通工具：" :label-width="formLabelWidth">
+                        <yu-code-radio @change="travelToolChange" :code="2" ref="travelToolSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -98,9 +103,10 @@
     import OrgUtil from '@/utils/OrgUtil';
     import ElRow from "element-ui/packages/row/src/row";
     import Config from '@/config';
+    import YuCodeRadio from "../public/yu-code-radio.vue";
 
     export default {
-        components: {ElRow},
+        components: {ElRow, YuCodeRadio},
         name: 'process-add-leave',
         data(){
             // 开始日期校验
@@ -174,9 +180,9 @@
                 };
                 this.fileList = [];
                 this.fileArr = [];
-                // 休假标准下拉框复位
-                if(this.$refs.holidayTypeSelect){
-                    this.$refs.holidayTypeSelect.reset();
+                // 交通工具下拉框复位
+                if(this.$refs.travelToolSelect){
+                    this.$refs.travelToolSelect.reset();
                 }
             },
             open(data, url, titleType){
@@ -204,6 +210,10 @@
             },
             beforeRemove(file) {
                 return this.$confirm(`确定移除 ${ file.name }？`);
+            },
+            // 交通工具处理
+            travelToolChange(key){
+                this.formData.travelTool = key;
             },
             submit(){
                 let a = 1;
