@@ -80,8 +80,14 @@
                           align="center"
                           label="操作">
                       <template slot-scope="scope">
-                          <el-button v-if="ifShowDetailButton(scope.row)" @click="showBill(scope.row)" type="text" size="small">查看</el-button>
-                          <el-button v-if="ifShowApproveButton(scope.row)" @click="approveBill(scope.row)" type="text" size="small">审批</el-button>
+                          <el-button v-if="ifShowDetailButton(scope.row)" @click="showBill(scope.row)"
+                                     plain
+                                     type="success"
+                                     size="small">查看</el-button>
+                          <el-button v-if="ifShowApproveButton(scope.row)" @click="approveBill(scope.row)"
+                                     plain
+                                     type="warning"
+                                     size="small">审批</el-button>
                       </template>
                     </el-table-column>
                 </el-table>

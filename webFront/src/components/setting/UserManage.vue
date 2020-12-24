@@ -92,7 +92,9 @@
                               align="center"
                               label="操作">
                             <template slot-scope="scope">
-                                <el-button v-if="ifShowChief(scope.row)" @click="updateChief(scope.row)" type="text" size="small">设置科级干部</el-button>
+                                <el-button v-if="ifShowChief(scope.row)" @click="updateChief(scope.row)"
+                                           plain
+                                           type="primary" size="small">设置科级干部</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
