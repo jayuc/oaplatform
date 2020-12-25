@@ -12,6 +12,8 @@ public class OaProcess {
 
     private Byte billType;
 
+    private Byte orgPrivLen;
+
     private String currentStep;
 
     private String nextStep;

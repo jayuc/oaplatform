@@ -118,8 +118,9 @@ CREATE TABLE `t_oa_bill` (
 # 流程步骤表
 CREATE TABLE `t_oa_process` (
   `process_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bill_type` tinyint NOT NULL COMMENT '表单类别,数据字典：1',
+  `bill_type` tinyint NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
   `current_step` varchar(32) DEFAULT NULL COMMENT '当前步骤',
+  `org_priv_len` tinyint NOT NULL COMMENT '机构权限长度，通过机构权限长度判断机构所处的层级',
   `next_step` varchar(32) DEFAULT NULL COMMENT '下一步骤名称',
   `next_approve_function_id` int(11) DEFAULT NULL COMMENT '下一步审批人查询方法id',
   `parent_step` varchar(32) DEFAULT NULL COMMENT '父步骤',
@@ -164,7 +165,7 @@ CREATE TABLE `t_oa_process_function` (
 CREATE TABLE `t_oa_bill_opera` (
   `bill_opera_id` int(11) NOT NULL AUTO_INCREMENT,
   `bill_code` varchar(32) DEFAULT NULL COMMENT '编号',
-  `bill_type` tinyint NOT NULL COMMENT '表单类别,数据字典：1',
+  `bill_type` tinyint NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
   `bill_step` varchar(32) NOT NULL COMMENT '流程的步骤',
   `opera_id` int(11) DEFAULT NULL COMMENT '操作人id',
   `pass_flag` tinyint NOT NULL COMMENT '是否同意 1同意，2不同意，0创建申请单',

@@ -40,79 +40,93 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     public Map<String, Object> deliver(OaBill bill, boolean autoDb) {
         ResultUtil.Result result = ResultUtil.build();
 
-        String prevStep = bill.getCurrentStep();
+        log.info("");
+        log.info("进入流程 ===> " + bill);
+        // 进入流程
+        Byte passFlag = bill.getPassFlag();
+        if(passFlag == 2){  // 不同意
 
-        // 第一步：获取流程步骤
-        OaProcess process = getProcess(bill);
-        log.info("step1: process ===> " + process);
 
-        // 第二步：获取步骤条件
-        OaProcessCondition condition = getCondition(process.getProcessConditionId());
-        log.info("step2: condition ===> " + condition);
-        // 步骤名称
-        String candidateStep = null;
-        int approveFunctionId = 0;
-        if(condition == null){  // 如果条件为空则直接进入下一步骤
-            String step = process.getNextStep();
-            log.info("step2-1: step ===> " + step);
-            if(StrUtil.isBlank(step)){
-                throw new RuntimeException("找不到投递需要的流程节点");
-            }
-            candidateStep = step;
-            if(!"end".equals(step)){
-                approveFunctionId = process.getNextApproveFunctionId();
-            }
-        }else {
-            StepTemp stepTemp = processCondition(condition.getProcessConditionId(), bill);
-            log.info("step2-2: stepTemp ===> " + stepTemp);
-            if(stepTemp != null){
-                candidateStep = stepTemp.step;
-                if(!"end".equals(candidateStep)){
-                    approveFunctionId = stepTemp.approveFunctionId;
+
+        }else if(passFlag == 1){  // 同意
+
+            String prevStep = bill.getCurrentStep();
+
+            // 第一步：获取流程步骤
+            OaProcess process = getProcess(bill);
+            log.info("step1: process ===> " + process);
+
+            // 第二步：获取步骤条件
+            OaProcessCondition condition = getCondition(process.getProcessConditionId());
+            log.info("step2: condition ===> " + condition);
+            // 步骤名称
+            String candidateStep = null;
+            int approveFunctionId = 0;
+            if(condition == null){  // 如果条件为空则直接进入下一步骤
+                String step = process.getNextStep();
+                log.info("step2-1: step ===> " + step);
+                if(StrUtil.isBlank(step)){
+                    throw new RuntimeException("找不到投递需要的流程节点");
+                }
+                candidateStep = step;
+                if(!"end".equals(step)){
+                    approveFunctionId = process.getNextApproveFunctionId();
+                }
+            }else {
+                StepTemp stepTemp = processCondition(condition.getProcessConditionId(), bill);
+                log.info("step2-2: stepTemp ===> " + stepTemp);
+                if(stepTemp != null){
+                    candidateStep = stepTemp.step;
+                    if(!"end".equals(candidateStep)){
+                        approveFunctionId = stepTemp.approveFunctionId;
+                    }
                 }
             }
-        }
 
-        log.info("step3: candidateStep ===> " + candidateStep);
-        // 第三步：查询下一步审批人
-        if(!"end".equals(candidateStep)){
+            log.info("step3: candidateStep ===> " + candidateStep);
+            // 第三步：查询下一步审批人
+            if(!"end".equals(candidateStep)){
 
-            ApproveResult approveResult = findApprove(approveFunctionId, bill);
-            log.info("step3-1: approveResult ===> " + approveResult);
-            if(!StrUtil.isBlank(approveResult.approveList)){   // 找到了审批人
-                bill.setNextApproveList(approveResult.approveList);
-                result.property("approveIdList", approveResult.approveList);
+                ApproveResult approveResult = findApprove(approveFunctionId, bill);
+                log.info("step3-1: approveResult ===> " + approveResult);
+                if(!StrUtil.isBlank(approveResult.approveList)){   // 找到了审批人
+                    bill.setNextApproveList(approveResult.approveList);
+                    result.property("approveIdList", approveResult.approveList);
+                }else {
+                    result.error(approveResult.stepName + "未配置，请联系管理员进行配置");
+                }
+
+                if(candidateStep != null){
+                    bill.setCurrentStep(bill.getCurrentStep() + candidateStep);
+                }else {
+                    throw new RuntimeException("找不到投递需要的流程节点");
+                }
+
+                bill.setStopFlag((byte) 2);
+
             }else {
-                result.error(approveResult.stepName + "未配置，请联系管理员进行配置");
+                bill.setStopFlag((byte) 1);
+                bill.setCurrentStep("end");
+                result.property("info", "流程已经完成了");
+                log.info("step3-2: end ===> 流程已经完成了");
             }
 
-            if(candidateStep != null){
-                bill.setCurrentStep(bill.getCurrentStep() + candidateStep);
+            if(autoDb){  // 入库
+
+                // 入库前处理参数
+                handleParamBeforeToDb(bill, process);
+
+                // 第四步：订单更新到数据库
+                processToDb(bill);
+                // 第五步：记录日志
+                processToLog(bill, prevStep);
             }else {
-                throw new RuntimeException("找不到投递需要的流程节点");
+                result.property("processDesc", process.getProcessDesc());
+                result.property("bill", bill);
             }
 
-            bill.setStopFlag((byte) 2);
+        }else if(passFlag == 0){  // 新建表单
 
-        }else {
-            bill.setStopFlag((byte) 1);
-            bill.setCurrentStep("end");
-            result.property("info", "流程已经完成了");
-            log.info("step3-2: end ===> 流程已经完成了");
-        }
-
-        if(autoDb){  // 入库
-
-            // 入库前处理参数
-            handleParamBeforeToDb(bill, process);
-
-            // 第四步：订单更新到数据库
-            processToDb(bill);
-            // 第五步：记录日志
-            processToLog(bill, prevStep);
-        }else {
-            result.property("processDesc", process.getProcessDesc());
-            result.property("bill", bill);
         }
 
         return result.getResult();
