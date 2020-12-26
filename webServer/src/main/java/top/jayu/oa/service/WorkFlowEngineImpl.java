@@ -140,11 +140,13 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                     bill.setStopFlag((byte) 2);
                 }else {
                     result.error("找不到对应的流程");
+                    return result.getResult();
                 }
 
             }else {
                 log.warn("pass flag: 0, step1: 找不到流程层级");
                 result.error("找不到对应的流程");
+                return result.getResult();
             }
 
         }
@@ -209,7 +211,10 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         ApproveResult approveResult = new ApproveResult();
         approveResult.stepName = processFunction.getFunctionName();
         try {
-            Object obj = springInvokeMethod.invokeProperty(bill, propertyName);
+            Object obj = bill;
+            if(!"OaBill".equals(propertyName)){
+                obj = springInvokeMethod.invokeProperty(bill, propertyName);
+            }
             log.info("step3-1: find approve (" + functionName + ") ===> serviceName: " + serviceName + " methodName: "
                     + methodName + " param: " + obj);
             approveResult.approveList = (String) springInvokeMethod.invokeMethod(serviceName, methodName, new Object[]{obj});
@@ -278,7 +283,10 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         String conditionDesc = condition.getConditionDesc();
         Boolean ifTrue = null;
         try {
-            Object obj = springInvokeMethod.invokeProperty(bill, propertyName);
+            Object obj = bill;
+            if(!"OaBill".equals(propertyName)){
+                obj = springInvokeMethod.invokeProperty(bill, propertyName);
+            }
             log.info("step2-2: execute condition (" + conditionDesc + ") ===> serviceName: " + serviceName + " methodName: "
                     + methodName + " param: " + obj);
             ifTrue = (Boolean) springInvokeMethod.invokeMethod(serviceName, methodName, new Object[]{obj});

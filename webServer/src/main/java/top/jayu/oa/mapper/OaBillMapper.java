@@ -85,6 +85,7 @@ public interface OaBillMapper {
             "      stop_flag = #{stopFlag,jdbcType=TINYINT},\n" +
             "      next_approve_list = #{nextApproveList,jdbcType=VARCHAR},\n" +
             "      history_approve_list = #{historyApproveList,jdbcType=VARCHAR},\n" +
+            "      approve_org_code_priv = #{approveOrgCodePriv,jdbcType=VARCHAR},\n" +
             "      content = #{content,jdbcType=VARCHAR},\n" +
             "      extend_content = #{extendContent,jdbcType=VARCHAR},\n" +
             "      update_time = now(),\n" +

@@ -12,6 +12,11 @@ public class OaBillService {
     @Autowired
     OrgMapper orgMapper;
 
+    // 判断是否循环查找部门负责人
+    public boolean loopOrg(OaBill bill){
+        return true;
+    }
+
     // 查询流程所属层级
     public Integer computeOrgLevel(OaBill bill){
         String applyOrgCodePriv = bill.getApplyOrgCodePriv();

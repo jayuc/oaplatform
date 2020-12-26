@@ -103,7 +103,7 @@
     import OrgUtil from '@/utils/OrgUtil';
     import ElRow from "element-ui/packages/row/src/row";
     import Config from '@/config';
-    import YuCodeRadio from "@/public/yu-code-radio.vue";
+    import YuCodeRadio from "../public/yu-code-radio.vue";
     import TipUtil from "@/utils/TipUtil";
 
     export default {

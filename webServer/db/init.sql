@@ -94,6 +94,7 @@ CREATE TABLE `t_oa_bill` (
   `history_approve_list` varchar(256) DEFAULT NULL COMMENT '历史审批人id列表，中间用英文逗号隔开，例如,2,34,',
   `apply_org_id` int(11) DEFAULT NULL COMMENT '申请人机构id',
   `apply_org_code_priv` varchar(32) DEFAULT NULL COMMENT '申请人机构权限编码,用来判断机构层级',
+  `approve_org_code_priv` varchar(32) DEFAULT NULL COMMENT '审批人机构权限编码,用来判断机构层级',
   `start_time` datetime DEFAULT NULL COMMENT '开始日期',
   `end_time` datetime DEFAULT NULL COMMENT '结束日期',
   `work_age` tinyint DEFAULT NULL COMMENT '工龄',
@@ -234,11 +235,7 @@ VALUE (1, '0100000000', '01000000', 3, '市局分管领导审批');
 INSERT t_oa_process (bill_type,current_step,parent_step,next_step, process_desc)
 VALUE (1, '010000000000', '0100000000', 'end', '市局负责人审批');
 
-# 出差
-INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc)
-VALUE (14, 2, '00', 'root', '00', 6, '工单申请');
-INSERT t_oa_process (process_id, bill_type,current_step,parent_step,process_condition_id,process_desc)
-VALUE (15, 2, '0000', '00', 7, '单位/部门负责人审批');
+
 
 INSERT t_sys_user (user_id,user_name,login_name,password,org_id,role_id)
 values (9999,'超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',-1,-1);

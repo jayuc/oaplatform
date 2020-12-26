@@ -11,6 +11,10 @@ INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (2,5,'自带车',1);
 
 ALTER TABLE t_oa_process ADD COLUMN `org_priv_len` tinyint NOT NULL;
 
+DELETE FROM t_oa_process;
+
 ALTER TABLE t_sys_org ADD COLUMN `yes_leader` tinyint DEFAULT NULL;
 
 update t_sys_org set yes_leader = 1 where org_name like '%领导';
+
+ALTER TABLE t_oa_bill ADD COLUMN `approve_org_code_priv` varchar(32) DEFAULT NULL;
