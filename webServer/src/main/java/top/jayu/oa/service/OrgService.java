@@ -51,13 +51,13 @@ public class OrgService {
             return null;
         }
         String orgPriv = orgCodePriv.substring(0, 6);
-        Integer deputyId = orgMapper.findCompanyDeputy(orgPriv);
+        Integer deputyId = orgMapper.findOrgDeputyByPriv(orgPriv);
         return "," + deputyId + ",";
     }
 
     // 查询市局负责人
     public String findCompanyLeader(String orgCodePriv){
-        Integer deputyId = orgMapper.findCompanyLeader("340000");
+        Integer deputyId = orgMapper.findOrgLeaderByPriv("340000");
         return "," + deputyId + ",";
     }
 
@@ -67,7 +67,7 @@ public class OrgService {
             return null;
         }
         String orgPriv = orgCodePriv.substring(0, 8);
-        Integer deputyId = orgMapper.findCompanyDeputy(orgPriv);
+        Integer deputyId = orgMapper.findOrgDeputyByPriv(orgPriv);
         return "," + deputyId + ",";
     }
 
@@ -77,7 +77,7 @@ public class OrgService {
             return null;
         }
         String orgPriv = orgCodePriv.substring(0, 6);
-        Integer deputyId = orgMapper.findCompanyLeader(orgPriv);
+        Integer deputyId = orgMapper.findOrgLeaderByPriv(orgPriv);
         return "," + deputyId + ",";
     }
 

@@ -49,10 +49,10 @@ public interface OrgMapper {
     Integer findOrgLeaderById(Integer id);
 
     @Select("select deputy_id from t_sys_org where org_code_priv = #{orgCodePriv}")
-    Integer findCompanyDeputy(String orgCodePriv);
+    Integer findOrgDeputyByPriv(String orgCodePriv);
 
     @Select("select leader_id from t_sys_org where org_code_priv = #{orgCodePriv}")
-    Integer findCompanyLeader(String orgCodePriv);
+    Integer findOrgLeaderByPriv(String orgCodePriv);
 
     @Select("select * from t_sys_org where org_id = #{id}")
     Org getById(Integer id);

@@ -3,6 +3,7 @@ package top.jayu.oa.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.jayu.oa.entity.OaBill;
+import top.jayu.oa.entity.OaProcess;
 import top.jayu.oa.entity.Org;
 import top.jayu.oa.mapper.OrgMapper;
 
@@ -11,10 +12,37 @@ public class OaBillService {
 
     @Autowired
     OrgMapper orgMapper;
+    @Autowired
+    OaProcessService oaProcessService;
+    @Autowired
+    OrgService orgService;
+
+    // 查找上级部门负责人
+    public String findUpOrgLeader(OaBill bill){
+        String approveOrgCodePriv = bill.getApproveOrgCodePriv();
+        if(approveOrgCodePriv == null){  // 没有审批过的
+            return orgService.findOrgLeader(bill.getApplyOrgId());
+        }
+        String upOrgCodePriv = approveOrgCodePriv.substring(0, approveOrgCodePriv.length() - 2);
+        Integer upOrgLeader = orgMapper.findOrgLeaderByPriv(upOrgCodePriv);
+        return "," + upOrgLeader + ",";
+    }
 
     // 判断是否循环查找部门负责人
-    public boolean loopOrg(OaBill bill){
-        return true;
+    public boolean loopOrgLeader(OaBill bill){
+        String currentStep = bill.getCurrentStep();
+        if(currentStep.startsWith("loopOrgLeader")){  // 机构负责人循环步骤
+            OaProcess process = getProcess(bill.getBillType(), bill.getCurrentStep());
+            String nextStep = process.getNextStep();
+            OaProcess nextProcess = getProcess(bill.getBillType(), nextStep);
+            Byte nextOrgPrivLen = nextProcess.getOrgPrivLen();
+            int level = computeOrgLevel(bill);
+            if(nextOrgPrivLen == level){
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 
     // 查询流程所属层级
@@ -51,6 +79,11 @@ public class OaBillService {
             return candidateLevel - 1;
         }
         return candidateLevel;
+    }
+
+    // 获取流程步骤
+    private OaProcess getProcess(Byte billType, String stepName){
+        return oaProcessService.getProcess(billType, stepName);
     }
 
 }
