@@ -15,6 +15,7 @@ CREATE TABLE `t_sys_org` (
   `org_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '机构编号,可用于机构树生成和机构权限判断',
   `org_code_priv` varchar(32) DEFAULT NULL COMMENT '机构权限编码',
   `yes_office` tinyint DEFAULT NULL COMMENT '是否是机关,1表示是',
+  `yes_leader` tinyint DEFAULT NULL COMMENT '是否是领导机构,1表示是',
   `leader_id` int(11) DEFAULT NULL COMMENT '负责人id',
   `deputy_id` int(11) DEFAULT NULL COMMENT '分管领导id',
   `address` varchar(255) DEFAULT NULL COMMENT '机构地址',

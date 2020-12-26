@@ -19,6 +19,8 @@ public class Org extends BaseParam {
 
     private Byte yesOffice;
 
+    private Byte yesLeader;
+
     private Integer leaderId;
 
     private Integer deputyId;

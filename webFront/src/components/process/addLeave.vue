@@ -82,7 +82,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
-            <el-button :disabled="submitBtnDisabled" type="primary" @click="submit">提 交</el-button>
+            <el-button :disabled="submitBtnDisabled" type="primary" @click="submit(0)">提 交</el-button>
         </div>
     </el-dialog>
 </template>
@@ -94,6 +94,7 @@
     import user from '@/user';
     import OrgUtil from '@/utils/OrgUtil';
     import Config from '@/config';
+    import TipUtil from "@/utils/TipUtil";
 
     export default {
         components: {YuCodeRadio},
@@ -200,7 +201,7 @@
             beforeRemove(file) {
                 return this.$confirm(`确定移除 ${ file.name }？`);
             },
-            submit(){
+            submit(passFlag){
                 let a = 1;
                 let rootPath = Config.get('uploadUrl');
                 for (let i=0; i<this.fileArr.length; i++){
@@ -221,6 +222,7 @@
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
                         this.formData.billCode = new Date().getTime();
+                        this.formData.passFlag = passFlag;
                         RestUtil.post(this.url, this.formData, {
                             enableLoading: true,       // 启动请求期间的正在加载
                             loadingStartFun: () => {   // 请求开始前执行
@@ -229,7 +231,11 @@
                             loadingEndFun: () => {     // 请求开始后执行
                                 this.submitBtnDisabled = false;
                             }
-                        }).then(() => {
+                        }).then((result) => {
+                            if(result && result.error.length > 0){
+                                TipUtil.error(result.error);
+                                return;
+                            }
                             this.$emit('complete');
                             this.close();
                         });

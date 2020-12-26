@@ -190,10 +190,8 @@
                 });
             },
             // 是否显示科级干部
-            ifShowChief(row){
-                if(row.yesChief != 1){
-                    return true;
-                }
+            ifShowChief(){
+                return true;
             },
             // 设置科级干部
             updateChief(row){
@@ -226,7 +224,7 @@
             },
             formatChief(row, column, cellValue){
                 if(cellValue == 1){
-                    return '科级干部';
+                    return '科级以上';
                 }
                 return '';
             },

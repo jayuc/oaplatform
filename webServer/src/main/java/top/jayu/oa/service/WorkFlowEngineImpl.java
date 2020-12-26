@@ -13,6 +13,7 @@ import top.jayu.oa.mapper.OaBillOperaMapper;
 import top.jayu.oa.util.ResultUtil;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +31,8 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     @Autowired
     OaProcessFunctionService oaProcessFunctionService;
     @Autowired
+    OaBillService oaBillService;
+    @Autowired
     SpringInvokeMethod springInvokeMethod;
     @Autowired
     OaBillMapper oaBillMapper;
@@ -42,6 +45,10 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
         log.info("");
         log.info("进入流程 ===> " + bill);
+
+        String prevStep = bill.getCurrentStep();
+        OaProcess process = getProcess(bill);
+
         // 进入流程
         Byte passFlag = bill.getPassFlag();
         if(passFlag == 2){  // 不同意
@@ -50,21 +57,18 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
         }else if(passFlag == 1){  // 同意
 
-            String prevStep = bill.getCurrentStep();
-
             // 第一步：获取流程步骤
-            OaProcess process = getProcess(bill);
-            log.info("step1: process ===> " + process);
+            log.info("pass flag: 1, step1: process ===> " + process);
 
             // 第二步：获取步骤条件
             OaProcessCondition condition = getCondition(process.getProcessConditionId());
-            log.info("step2: condition ===> " + condition);
+            log.info("pass flag: 1, step2: condition ===> " + condition);
             // 步骤名称
             String candidateStep = null;
             int approveFunctionId = 0;
             if(condition == null){  // 如果条件为空则直接进入下一步骤
                 String step = process.getNextStep();
-                log.info("step2-1: step ===> " + step);
+                log.info("pass flag: 1, step2-1: step ===> " + step);
                 if(StrUtil.isBlank(step)){
                     throw new RuntimeException("找不到投递需要的流程节点");
                 }
@@ -74,7 +78,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 }
             }else {
                 StepTemp stepTemp = processCondition(condition.getProcessConditionId(), bill);
-                log.info("step2-2: stepTemp ===> " + stepTemp);
+                log.info("pass flag: 1, step2-2: stepTemp ===> " + stepTemp);
                 if(stepTemp != null){
                     candidateStep = stepTemp.step;
                     if(!"end".equals(candidateStep)){
@@ -83,12 +87,12 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 }
             }
 
-            log.info("step3: candidateStep ===> " + candidateStep);
+            log.info("pass flag: 1, step3: candidateStep ===> " + candidateStep);
             // 第三步：查询下一步审批人
             if(!"end".equals(candidateStep)){
 
                 ApproveResult approveResult = findApprove(approveFunctionId, bill);
-                log.info("step3-1: approveResult ===> " + approveResult);
+                log.info("pass flag: 1, step3-1: approveResult ===> " + approveResult);
                 if(!StrUtil.isBlank(approveResult.approveList)){   // 找到了审批人
                     bill.setNextApproveList(approveResult.approveList);
                     result.property("approveIdList", approveResult.approveList);
@@ -108,28 +112,78 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 bill.setStopFlag((byte) 1);
                 bill.setCurrentStep("end");
                 result.property("info", "流程已经完成了");
-                log.info("step3-2: end ===> 流程已经完成了");
+                log.info("pass flag: 1, step3-2: end ===> 流程已经完成了");
             }
 
-            if(autoDb){  // 入库
 
-                // 入库前处理参数
-                handleParamBeforeToDb(bill, process);
-
-                // 第四步：订单更新到数据库
-                processToDb(bill);
-                // 第五步：记录日志
-                processToLog(bill, prevStep);
-            }else {
-                result.property("processDesc", process.getProcessDesc());
-                result.property("bill", bill);
-            }
 
         }else if(passFlag == 0){  // 新建表单
 
+            //  第一步: 查询流程层级
+            Integer processLevel = oaBillService.computeOrgLevel(bill);
+            log.info("pass flag: 0, step1: process level ===> " + processLevel);
+
+            if(processLevel == 0){
+
+                bill.setStopFlag((byte) 1);
+                bill.setCurrentStep("end");
+                result.property("info", "流程已经完成了");
+                log.info("pass flag: 0, step1: end ===> 流程已经完成了");
+
+            }else if(processLevel > 0){
+
+                // 第二步：找到对应的流程
+                String processName = findProcess(bill, processLevel);
+                log.info("pass flag: 0, step2: process name ===> " + processName);
+                if(processName != null){
+                    bill.setCurrentStep(processName);
+                    bill.setStopFlag((byte) 2);
+                }else {
+                    result.error("找不到对应的流程");
+                }
+
+            }else {
+                log.warn("pass flag: 0, step1: 找不到流程层级");
+                result.error("找不到对应的流程");
+            }
+
+        }
+
+        if(autoDb){  // 入库
+
+            // 入库前处理参数
+            handleParamBeforeToDb(bill, process);
+
+            // 第四步：订单更新到数据库
+            processToDb(bill);
+
+            // 第五步：记录日志
+            processToLog(bill, prevStep);
+
+        }else {
+            result.property("processDesc", process.getProcessDesc());
+            result.property("bill", bill);
         }
 
         return result.getResult();
+    }
+
+    // 找到对应的流程
+    private String findProcess(OaBill bill, int processLevel){
+        OaProcess process = new OaProcess();
+        process.setBillType(bill.getBillType());
+        List<OaProcess> list = oaProcessService.list(process);
+        if(list.size() > 0){
+            if(processLevel > 5){
+                return "00";  // 进入第一个流程，第一个流程一般为循环流程
+            }
+            for (OaProcess oaProcess:list){
+                if(oaProcess.getOrgPrivLen() == processLevel){
+                    return oaProcess.getCurrentStep();
+                }
+            }
+        }
+        return null;
     }
 
     // 第一步：获取流程步骤

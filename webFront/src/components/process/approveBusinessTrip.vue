@@ -78,8 +78,8 @@
             </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="close">不同意</el-button>
-            <el-button type="primary" :disabled="submitBtnDisabled" @click="submit">同 意</el-button>
+            <el-button @click="submit(2)">不同意</el-button>
+            <el-button type="primary" :disabled="submitBtnDisabled" @click="submit(1)">同 意</el-button>
         </div>
     </el-dialog>
 </template>
@@ -90,6 +90,7 @@
     import OrgUtil from '@/utils/OrgUtil';
     import handler from './handler';
     import CodeUtil from '@/utils/CodeUtil';
+    import TipUtil from "@/utils/TipUtil";
 
     export default {
         name: 'process-approve-leave',
@@ -131,10 +132,11 @@
             formatTravelTool(cellValue){
                 return CodeUtil.getName(2, cellValue);
             },
-            submit(){
+            submit(passFlag){
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
                         let param = {};
+                        this.formData.passFlag = passFlag;
                         Object.assign(param, this.formData);
                         delete param.createTime;
                         delete param.endTime;
@@ -148,7 +150,11 @@
                             loadingEndFun: () => {     // 请求开始后执行
                                 this.submitBtnDisabled = false;
                             }
-                        }).then(() => {
+                        }).then((result) => {
+                            if(result && result.error.length > 0){
+                                TipUtil.error(result.error);
+                                return;
+                            }
                             this.$emit('complete');
                             this.close();
                         });
