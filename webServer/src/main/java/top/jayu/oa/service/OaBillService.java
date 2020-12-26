@@ -1,5 +1,7 @@
 package top.jayu.oa.service;
 
+import cn.hutool.core.util.StrUtil;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.jayu.oa.entity.OaBill;
@@ -20,8 +22,8 @@ public class OaBillService {
     // 查找上级部门负责人
     public String findUpOrgLeader(OaBill bill){
         String approveOrgCodePriv = bill.getApproveOrgCodePriv();
-        if(approveOrgCodePriv == null){  // 没有审批过的
-            return orgService.findOrgLeader(bill.getApplyOrgId());
+        if(StrUtil.isBlank(approveOrgCodePriv)){  // 没有审批过的
+            approveOrgCodePriv = bill.getApplyOrgCodePriv();
         }
         String upOrgCodePriv = approveOrgCodePriv.substring(0, approveOrgCodePriv.length() - 2);
         Integer upOrgLeader = orgMapper.findOrgLeaderByPriv(upOrgCodePriv);
@@ -36,7 +38,14 @@ public class OaBillService {
             String nextStep = process.getNextStep();
             OaProcess nextProcess = getProcess(bill.getBillType(), nextStep);
             Byte nextOrgPrivLen = nextProcess.getOrgPrivLen();
-            int level = computeOrgLevel(bill);
+            String applyOrgCodePriv = bill.getApplyOrgCodePriv();
+            String upOrgCodePriv = applyOrgCodePriv.substring(0, applyOrgCodePriv.length() - 2);
+            Integer uporgId = orgMapper.getOrgIdByPriv(upOrgCodePriv);
+            OaBill a = new OaBill();
+            a.setApplyOrgId(uporgId);
+            a.setApplyId(bill.getApplyId());
+            a.setApplyOrgCodePriv(upOrgCodePriv);
+            int level = computeOrgLevel(a);
             if(nextOrgPrivLen == level){
                 return true;
             }
@@ -72,6 +81,39 @@ public class OaBillService {
             }
         }
         return -1;
+    }
+
+    public Level computeOrgLevels(OaBill bill){
+        Integer level = computeOrgLevel(bill);
+        Level l = new Level();
+        l.level = level;
+        switch (level){
+            case 1:
+                l.approveId = 2;
+                break;
+            case 2:
+                l.approveId = orgMapper.findOrgDeputyByPriv(bill.getApplyOrgCodePriv());
+                break;
+            case 3:
+                l.approveId = orgMapper.findOrgLeaderByPriv(bill.getApplyOrgCodePriv());
+                break;
+            case 5:
+                l.approveId = orgMapper.findOrgLeaderById(bill.getApplyOrgId());
+                break;
+            case 6:
+                l.approveId = orgMapper.findOrgLeaderById(bill.getApplyOrgId());
+                break;
+            case 7:
+                l.approveId = orgMapper.findOrgLeaderById(bill.getApplyOrgId());
+                break;
+        }
+        return l;
+    }
+
+    @ToString
+    public static class Level{
+        public int level;
+        public int approveId;
     }
 
     private Integer generateLevel(int candidateLevel, int applyId, Org org){

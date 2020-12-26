@@ -50,9 +50,10 @@ public class OaBillController {
     }
 
     @PostMapping("/simulateDeliver")
-    public Map<String, Object> simulateDeliver(OaBill dto){
+    public Map<String, Object> simulateDeliver(OaBill dt){
         ResultUtil.Result result = ResultUtil.build();
         List<String> stepList = new ArrayList<>();
+        OaBill dto = oaBillMapper.getById(dt.getBillId());
         boolean stopFlag = true;
         if(1 == dto.getStopFlag()){
             stopFlag = false;
@@ -67,6 +68,7 @@ public class OaBillController {
         }
         OaBill bill = dto;
         while (stopFlag){
+            bill.setPassFlag((byte) 1);
             Map<String, Object> deliver = workFlowEngine.deliver(bill, false);
             Map<String, Object> properties = (Map<String, Object>) deliver.get("properties");
             bill = (OaBill) properties.get("bill");

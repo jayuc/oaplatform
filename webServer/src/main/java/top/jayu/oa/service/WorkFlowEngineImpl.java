@@ -53,7 +53,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         Byte passFlag = bill.getPassFlag();
         if(passFlag == 2){  // 不同意
 
-
+            bill.setApproveOrgCodePriv(bill.getCurrentOrgCodePriv());
 
         }else if(passFlag == 1){  // 同意
 
@@ -108,20 +108,23 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
                 bill.setStopFlag((byte) 2);
 
+
             }else {
                 bill.setStopFlag((byte) 1);
                 bill.setCurrentStep("end");
+                bill.setNextApproveList("");
                 result.property("info", "流程已经完成了");
                 log.info("pass flag: 1, step3-2: end ===> 流程已经完成了");
             }
 
-
+            bill.setApproveOrgCodePriv(bill.getCurrentOrgCodePriv());
 
         }else if(passFlag == 0){  // 新建表单
 
             //  第一步: 查询流程层级
-            Integer processLevel = oaBillService.computeOrgLevel(bill);
-            log.info("pass flag: 0, step1: process level ===> " + processLevel);
+            OaBillService.Level level = oaBillService.computeOrgLevels(bill);
+            int processLevel = level.level;
+            log.info("pass flag: 0, step1: process level ===> " + level);
 
             if(processLevel == 0){
 
@@ -138,6 +141,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 if(processName != null){
                     bill.setCurrentStep(processName);
                     bill.setStopFlag((byte) 2);
+                    bill.setNextApproveList("," + level.approveId + ",");
                 }else {
                     result.error("找不到对应的流程");
                     return result.getResult();
@@ -176,9 +180,6 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         process.setBillType(bill.getBillType());
         List<OaProcess> list = oaProcessService.list(process);
         if(list.size() > 0){
-            if(processLevel > 5){
-                return "00";  // 进入第一个流程，第一个流程一般为循环流程
-            }
             for (OaProcess oaProcess:list){
                 if(oaProcess.getOrgPrivLen() == processLevel){
                     return oaProcess.getCurrentStep();
