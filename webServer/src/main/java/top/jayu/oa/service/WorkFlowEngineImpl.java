@@ -93,7 +93,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
                 ApproveResult approveResult = findApprove(approveFunctionId, bill);
                 log.info("pass flag: 1, step3-1: approveResult ===> " + approveResult);
-                if(!StrUtil.isBlank(approveResult.approveList)){   // 找到了审批人
+                if(!StrUtil.isBlank(approveResult.approveList) && !",0,".equals(approveResult.approveList)){   // 找到了审批人
                     bill.setNextApproveList(approveResult.approveList);
                     result.property("approveIdList", approveResult.approveList);
                 }else {
@@ -117,7 +117,11 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 log.info("pass flag: 1, step3-2: end ===> 流程已经完成了");
             }
 
-            bill.setApproveOrgCodePriv(bill.getCurrentOrgCodePriv());
+            String currentOrgCodePriv = bill.getCurrentOrgCodePriv();
+            if(!StrUtil.isBlank(currentOrgCodePriv)){
+                String upOrgCodePriv = currentOrgCodePriv.substring(0, currentOrgCodePriv.length() - 2);
+                bill.setApproveOrgCodePriv(upOrgCodePriv);
+            }
 
         }else if(passFlag == 0){  // 新建表单
 

@@ -9,6 +9,9 @@ import top.jayu.oa.entity.OaProcess;
 import top.jayu.oa.entity.Org;
 import top.jayu.oa.mapper.OrgMapper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class OaBillService {
 
@@ -45,8 +48,8 @@ public class OaBillService {
             a.setApplyOrgId(uporgId);
             a.setApplyId(bill.getApplyId());
             a.setApplyOrgCodePriv(upOrgCodePriv);
-            int level = computeOrgLevel(a);
-            if(nextOrgPrivLen == level){
+            Map<String, Object> stringObjectMap = computeOrgLevel(a);
+            if(nextOrgPrivLen == (int)stringObjectMap.get("level")){
                 return true;
             }
             return false;
@@ -55,58 +58,97 @@ public class OaBillService {
     }
 
     // 查询流程所属层级
-    public Integer computeOrgLevel(OaBill bill){
+    public Map<String, Object> computeOrgLevel(OaBill bill){
         String applyOrgCodePriv = bill.getApplyOrgCodePriv();
         int length = applyOrgCodePriv.length();
         int applyId = bill.getApplyId();
+        Map<String, Object> map = new HashMap<>();
         // 申请人机构
         Org org = orgMapper.getById(bill.getApplyOrgId());
         if(length == 6){
             if("340000".equals(applyOrgCodePriv)){
                 if(applyId == 2){  // 市局负责人
-                    return 0;
+                    map.put("level", 0);
+                    map.put("org", org);
+                    return map;
                 }
-                return 1;
+                map.put("level", 1);
+                map.put("org", org);
+                return map;
             }
-            return generateLevel(3, applyId, org);
+            int level = generateLevel(3, applyId, org);
+            map.put("level", level);
+            map.put("org", org);
+            return map;
         }else {
             if(length == 8){
                 if(org.getYesLeader() != null && org.getYesLeader() == 1){   // 领导机构
-                    return generateLevel(3, applyId, org);
+                    int level = generateLevel(3, applyId, org);
+                    map.put("level", level);
+                    map.put("org", org);
+                    return map;
                 }
-                return generateLevel(5, applyId, org);
+                int level = generateLevel(5, applyId, org);
+                map.put("level", level);
+                map.put("org", org);
+                return map;
             }else if(length > 8){
                 int level = 5 + (length - 8)/2;
-                return generateLevel(level, applyId, org);
+                int lev = generateLevel(level, applyId, org);
+                map.put("level", lev);
+                map.put("org", org);
+                return map;
             }
         }
-        return -1;
+        map.put("level", -1);
+        map.put("org", org);
+        return map;
     }
 
     public Level computeOrgLevels(OaBill bill){
-        Integer level = computeOrgLevel(bill);
+        Map<String, Object> map = computeOrgLevel(bill);
         Level l = new Level();
+        int level = (int) map.get("level");
+        Org org = (Org) map.get("org");
         l.level = level;
+        String applyOrgCodePriv = bill.getApplyOrgCodePriv();
+        String candidateOrgCodePriv = applyOrgCodePriv;
         switch (level){
             case 1:
                 l.approveId = 2;
                 break;
             case 2:
-                l.approveId = orgMapper.findOrgDeputyByPriv(bill.getApplyOrgCodePriv());
+                candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
+                l.approveId = orgMapper.findOrgDeputyByPriv(candidateOrgCodePriv);
                 break;
             case 3:
-                l.approveId = orgMapper.findOrgLeaderByPriv(bill.getApplyOrgCodePriv());
+                candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
+                l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+                break;
+            case 4:
+//                if(org.getYesOffice() == 1){
+                    l.level = 3;
+                    candidateOrgCodePriv = applyOrgCodePriv.substring(0, applyOrgCodePriv.length() - 2);
+                    l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+//                }else {
+//                    l.approveId = orgMapper.findOrgDeputyByPriv(bill.getApplyOrgCodePriv());
+//                }
                 break;
             case 5:
-                l.approveId = orgMapper.findOrgLeaderById(bill.getApplyOrgId());
+                candidateOrgCodePriv = applyOrgCodePriv.substring(0, 8);
+                l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
                 break;
             case 6:
-                l.approveId = orgMapper.findOrgLeaderById(bill.getApplyOrgId());
+                candidateOrgCodePriv = applyOrgCodePriv.substring(0, 10);
+                l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
                 break;
             case 7:
-                l.approveId = orgMapper.findOrgLeaderById(bill.getApplyOrgId());
+                candidateOrgCodePriv = applyOrgCodePriv.substring(0, 12);
+                l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
                 break;
         }
+        // 当为负责人的时候需更改为上级机构的机构权限
+        bill.setApplyOrgCodePriv(candidateOrgCodePriv);
         return l;
     }
 
