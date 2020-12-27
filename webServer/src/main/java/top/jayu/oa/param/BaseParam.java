@@ -12,4 +12,5 @@ public class BaseParam {
     private Integer currentEmployId;
     private String currentOrgCode;
     private String currentOrgCodePriv;
+    private String currentUserName;
 }

@@ -95,6 +95,10 @@
                                      plain
                                      type="warning"
                                      size="small">审批</el-button>
+                          <el-button v-if="ifShowHandleRejectButton(scope.row)" @click="handleRejectBill(scope.row)"
+                                     plain
+                                     type="primary"
+                                     size="small">驳回处置</el-button>
                       </template>
                     </el-table-column>
                 </el-table>
@@ -115,6 +119,8 @@
 
         <approve-leave ref="approveLeave" @complete="submit" />
 
+        <reject-dialog ref="rejectDialog" @complete="submit" />
+
         <details-leave ref="detailsLeave" />
 
     </el-container>
@@ -130,13 +136,15 @@
     import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
+    import RejectDialog from './handleRejectLeave.vue';
 
     export default {
         name: 'process-leave',
         components: {
             AddLeave,
             ApproveLeave,
-            DetailsLeave
+            DetailsLeave,
+            RejectDialog
         },
         data(){
             return {
@@ -213,6 +221,16 @@
             // 是否显示查看
             ifShowDetailButton(row){
                 return row.applyId == user.get('userId');
+            },
+            // 是否显示驳回处置按钮
+            ifShowHandleRejectButton(row){
+                if(row.passFlag == 2){
+                    return true;
+                }
+                return false;
+            },
+            handleRejectBill(row){
+                this.$refs.rejectDialog.open(row, 'oa/bill/deliver');
             },
             openAddLeave(){
                 this.$refs.addLeave.open({}, 'oa/bill/deliver', 'add');

@@ -18,3 +18,11 @@ ALTER TABLE t_sys_org ADD COLUMN `yes_leader` tinyint DEFAULT NULL;
 update t_sys_org set yes_leader = 1 where org_name like '%领导';
 
 ALTER TABLE t_oa_bill ADD COLUMN `approve_org_code_priv` varchar(32) DEFAULT NULL;
+
+ALTER TABLE t_oa_bill ADD COLUMN `pass_flag` tinyint DEFAULT NULL;
+
+ALTER TABLE t_oa_bill ADD COLUMN `approve_id` int(11) DEFAULT NULL;
+
+ALTER TABLE t_oa_bill ADD COLUMN `approve_content` varchar(256) DEFAULT NULL;
+
+ALTER TABLE t_oa_bill ADD COLUMN `approve_name` varchar(16) DEFAULT NULL;

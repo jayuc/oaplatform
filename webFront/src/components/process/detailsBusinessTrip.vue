@@ -69,10 +69,29 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row>
+            <el-row v-if="showReject">
+                <el-col :span="12">
+                    <el-form-item label="工单状态：" :label-width="formLabelWidth">
+                        <span style="color: red;">已驳回</span>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="驳回人：" :label-width="formLabelWidth">
+                        {{formData.approveName}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row v-if="showReject">
+                <el-col :span="24">
+                    <el-form-item label="驳回原因：" :label-width="formLabelWidth">
+                        {{formData.approveContent}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row v-if="!showReject">
                 <div class="process-status">进度如下：</div>
             </el-row>
-            <el-row>
+            <el-row v-if="!showReject">
                 <div class="process-body">
                     <el-steps :active="stepActive" finish-status="success">
                         <el-step v-for="item in stepList"
@@ -111,7 +130,8 @@
                 stepList: [
                     {key: 1, title: '步骤 1：', desc: '工单申请'}
                 ],
-                fileList: []
+                fileList: [],
+                showReject: false,      // 是否显示驳回
             }
         },
         methods: {
@@ -123,19 +143,24 @@
                 this.visible = true;
                 Object.assign(this.formData, data);
                 this.fileList = handler.handleFileList(this.formData);
-                let param = {};
-                Object.assign(param, this.formData);
-                delete param.createTime;
-                delete param.endTime;
-                delete param.startTime;
-                delete param.updateTime;
-                RestUtil.post('oa/bill/simulateDeliver', param).then((result) => {
-                    let data = result.result;
-                    if(data){
-                        this.stepActive = data.total;
-                        this.stepList = data.rows;
-                    }
-                });
+                if(this.formData.passFlag != 2) {
+                    this.showReject = false;
+                    let param = {};
+                    Object.assign(param, this.formData);
+                    delete param.createTime;
+                    delete param.endTime;
+                    delete param.startTime;
+                    delete param.updateTime;
+                    RestUtil.post('oa/bill/simulateDeliver', param).then((result) => {
+                        let data = result.result;
+                        if (data) {
+                            this.stepActive = data.total;
+                            this.stepList = data.rows;
+                        }
+                    });
+                }else {
+                    this.showReject = true;
+                }
             },
             close(){
                 this.visible = false;

@@ -128,6 +128,7 @@ function doAjax(_options) {
 function handleOptions(options, _options){
     $.extend(options, _options);
     options.data.currentUserId = User.get("userId");
+    options.data.currentUserName = User.get("userName");
     options.data.currentOrgId = User.get("orgId");
     options.data.currentOrgCode = User.get("orgCode");
     options.data.currentRoleId = User.get("roleId");

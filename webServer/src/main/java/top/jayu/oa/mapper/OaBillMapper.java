@@ -32,7 +32,7 @@ public interface OaBillMapper {
             "      next_approve_list, history_approve_list, apply_org_id, \n" +
             "      history_process_list, apply_org_code_priv, start_time, end_time, \n" +
             "      work_age, days, holiday_type, people_number, \n" +
-            "      content, address, travel_tool, \n" +
+            "      pass_flag, content, address, travel_tool, \n" +
             "      amount, file_url1, file_url2, \n" +
             "      file_url3, extend_content, create_time, \n" +
             "      people_list, update_time, mark)\n" +
@@ -41,7 +41,7 @@ public interface OaBillMapper {
             "      #{nextApproveList,jdbcType=VARCHAR}, #{historyApproveList,jdbcType=VARCHAR}, #{applyOrgId,jdbcType=INTEGER}, \n" +
             "      #{historyProcessList,jdbcType=VARCHAR}, #{applyOrgCodePriv,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, \n" +
             "      #{workAge,jdbcType=TINYINT}, #{days,jdbcType=SMALLINT}, #{holidayType,jdbcType=SMALLINT}, #{peopleNumber,jdbcType=SMALLINT}, \n" +
-            "      #{content,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{travelTool,jdbcType=TINYINT}, \n" +
+            "      #{passFlag,jdbcType=TINYINT}, #{content,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{travelTool,jdbcType=TINYINT}, \n" +
             "      #{amount,jdbcType=INTEGER}, #{fileUrl1,jdbcType=VARCHAR}, #{fileUrl2,jdbcType=VARCHAR}, \n" +
             "      #{fileUrl3,jdbcType=VARCHAR}, #{extendContent,jdbcType=VARCHAR}, now(), \n" +
             "      #{peopleList,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{mark,jdbcType=VARCHAR})")
@@ -55,6 +55,7 @@ public interface OaBillMapper {
             "      bill_type = #{billType,jdbcType=TINYINT},\n" +
             "      current_step = #{currentStep,jdbcType=VARCHAR},\n" +
             "      stop_flag = #{stopFlag,jdbcType=TINYINT},\n" +
+            "      pass_flag = #{passFlag,jdbcType=TINYINT},\n" +
             "      apply_id = #{applyId,jdbcType=INTEGER},\n" +
             "      next_approve_list = #{nextApproveList,jdbcType=VARCHAR},\n" +
             "      history_approve_list = #{historyApproveList,jdbcType=VARCHAR},\n" +
@@ -73,23 +74,30 @@ public interface OaBillMapper {
             "      file_url2 = #{fileUrl2,jdbcType=VARCHAR},\n" +
             "      file_url3 = #{fileUrl3,jdbcType=VARCHAR},\n" +
             "      extend_content = #{extendContent,jdbcType=VARCHAR},\n" +
-            "      update_time = #{updateTime,jdbcType=TIMESTAMP},\n" +
+            "      update_time = now(),\n" +
             "      mark = #{mark,jdbcType=VARCHAR},\n" +
+            "      approve_name = #{approveName,jdbcType=VARCHAR},\n" +
+            "      approve_id = #{approveId,jdbcType=INTEGER},\n" +
+            "      approve_content = #{approveContent,jdbcType=VARCHAR},\n" +
             "      people_list = #{peopleList,jdbcType=VARCHAR},\n" +
             "      history_process_list = #{historyProcessList,jdbcType=VARCHAR}\n" +
-            "    where bill_id = #{id,jdbcType=INTEGER}")
+            "    where bill_id = #{billId,jdbcType=INTEGER}")
     int update(OaBill record);
 
     @Update("update t_oa_bill\n" +
             "    set current_step = #{currentStep,jdbcType=VARCHAR},\n" +
             "      stop_flag = #{stopFlag,jdbcType=TINYINT},\n" +
+            "      pass_flag = #{passFlag,jdbcType=TINYINT},\n" +
             "      next_approve_list = #{nextApproveList,jdbcType=VARCHAR},\n" +
             "      history_approve_list = #{historyApproveList,jdbcType=VARCHAR},\n" +
             "      approve_org_code_priv = #{approveOrgCodePriv,jdbcType=VARCHAR},\n" +
             "      content = #{content,jdbcType=VARCHAR},\n" +
             "      extend_content = #{extendContent,jdbcType=VARCHAR},\n" +
+            "      approve_content = #{approveContent,jdbcType=VARCHAR},\n" +
             "      update_time = now(),\n" +
             "      mark = #{mark,jdbcType=VARCHAR},\n" +
+            "      approve_name = #{approveName,jdbcType=VARCHAR},\n" +
+            "      approve_id = #{approveId,jdbcType=INTEGER},\n" +
             "      history_process_list = #{historyProcessList,jdbcType=VARCHAR}\n" +
             "    where bill_id = #{billId,jdbcType=INTEGER}")
     int approve(OaBill record);

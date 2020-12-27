@@ -41,6 +41,9 @@
             },
             reset(){  // 复位
                 this.val = null;
+            },
+            setInitValue(initValue){
+                this.val = initValue;
             }
         }
     }

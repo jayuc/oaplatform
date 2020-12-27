@@ -49,11 +49,19 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         String prevStep = bill.getCurrentStep();
         OaProcess process = getProcess(bill);
 
+        // 是否是新建工单，区别与驳回后处置工单
+        boolean yesNewBill = true;
+
         // 进入流程
         Byte passFlag = bill.getPassFlag();
         if(passFlag == 2){  // 不同意
 
-            bill.setApproveOrgCodePriv(bill.getCurrentOrgCodePriv());
+            bill.setCurrentStep("00");
+            bill.setNextApproveList("");
+            bill.setHistoryApproveList("");
+            bill.setApproveId(bill.getCurrentUserId());
+            bill.setApproveName(bill.getCurrentUserName());
+            bill.setApproveContent(bill.getApproveOpinion());
 
         }else if(passFlag == 1){  // 同意
 
@@ -110,7 +118,6 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
                 bill.setStopFlag((byte) 2);
 
-
             }else {
                 bill.setStopFlag((byte) 1);
                 bill.setCurrentStep("end");
@@ -123,6 +130,10 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 String upOrgCodePriv = currentOrgCodePriv.substring(0, currentOrgCodePriv.length() - 2);
                 bill.setApproveOrgCodePriv(upOrgCodePriv);
             }
+
+            bill.setApproveId(bill.getCurrentUserId());
+            bill.setApproveName(bill.getCurrentUserName());
+            bill.setApproveContent(bill.getApproveOpinion());
 
         }else if(passFlag == 0){  // 新建表单
 
@@ -177,15 +188,22 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 autoDb = false;
             }
 
+            if(bill.getApproveId() != null && bill.getApproveId() > 0){
+                yesNewBill = false;   // 驳回处置工单
+                bill.setApproveName("");
+                bill.setApproveId(null);
+                bill.setApproveContent("");
+            }
+
         }
 
         if(autoDb){  // 入库
 
             // 入库前处理参数
-            handleParamBeforeToDb(bill, process);
+            handleParamBeforeToDb(bill, process, yesNewBill);
 
             // 第四步：订单更新到数据库
-            processToDb(bill);
+            processToDb(bill, yesNewBill);
 
             // 第五步：记录日志
             processToLog(bill, prevStep);
@@ -254,7 +272,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     }
 
     // 入库前处理参数
-    private void handleParamBeforeToDb(OaBill bill, OaProcess process){
+    private void handleParamBeforeToDb(OaBill bill, OaProcess process, boolean yesNewBill){
         // 入库前处理流程节点流转历史
         String processNodeHistory = bill.getHistoryProcessList();
         if(StrUtil.isBlank(processNodeHistory)){
@@ -262,11 +280,14 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         }else {
             processNodeHistory = processNodeHistory + "," + process.getProcessDesc();
         }
+        if(!yesNewBill){  // 工单驳回后处置
+            processNodeHistory = process.getProcessDesc();
+        }
         bill.setHistoryProcessList(processNodeHistory);
     }
 
     // 第四步：更新到数据库
-    private int processToDb(OaBill bill){
+    private int processToDb(OaBill bill, boolean yesNewBill){
         Integer billId = bill.getBillId();
         if(billId == null){
             log.info("step4: bill insert ===> " + bill);
@@ -284,7 +305,12 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 bill.setNextApproveList("");
             }
             log.info("step4: bill update ===> " + bill);
-            return oaBillMapper.approve(bill);
+            log.info("step4: bill yes new ===> " + yesNewBill);
+            if(yesNewBill){
+                return oaBillMapper.approve(bill);
+            }else {
+                return oaBillMapper.update(bill);
+            }
         }
     }
 
