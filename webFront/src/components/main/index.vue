@@ -14,7 +14,11 @@
       <el-container>
 
         <el-aside width="200px" style="">
-          <el-menu :default-openeds="['1']">
+          <el-menu :uniqueOpened="true"
+                   :default-openeds="activeOpeneds"
+                   @open="handleOpen"
+                   @close="handleClose"
+          >
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-edit"></i>流程</template>
               <router-link to="/main/leave">
@@ -23,6 +27,9 @@
               <router-link to="/main/errand">
                   <el-menu-item>出差</el-menu-item>
               </router-link>
+                <router-link to="/main/cost">
+                    <el-menu-item>经济业务支出</el-menu-item>
+                </router-link>
             </el-submenu>
               <el-submenu index="2">
                   <template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>
@@ -61,11 +68,18 @@
       name: 'the-main',
       data() {
           return {
+              activeOpeneds: ['1'],
               mainTitle: Config.get('mainTitle'),
               userName: User.get('userName')
           };
       },
       methods: {
+          handleOpen(key, keyPath) {
+              this.activeOpeneds = keyPath;
+          },
+          handleClose(key, keyPath) {
+              console.log(key, keyPath);
+          }
 
       }
     }

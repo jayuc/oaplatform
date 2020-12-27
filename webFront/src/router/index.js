@@ -7,6 +7,7 @@ import UserManage from '@/components/organization/UserManage';
 import OrgManage from '@/components/organization/orgManage';
 import BusinessTrip from '@/components/process/businessTripMain';
 import PasswordSetting from '@/components/setting/passwordSetting';
+import EconomicCost from '@/components/process/economicCostMain';
 import Doing from '@/components/process/doing';
 
 Vue.use(Router);
@@ -25,6 +26,7 @@ export default new Router({
         children: [
             {path: 'leave', component: LeaveBill},   // 请假
             {path: 'errand', component: BusinessTrip},  // 出差
+            {path: 'cost', component: EconomicCost},  // 经济支出
             {path: 'userManage', component: UserManage},  // 用户管理
             {path: 'orgManage', component: OrgManage},  // 机构管理
             {path: 'doing', component: Doing},  // 正在开发

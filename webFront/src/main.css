@@ -31,6 +31,11 @@ a {
     padding: 0;
 }
 
+/** 导航样式 **/
+.el-menu-item:hover, .el-menu-item:focus{
+    color: #409eff;
+}
+
 .form-search-container span.form-search-title{
     position: absolute;
     left: 20px;
