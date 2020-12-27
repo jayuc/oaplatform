@@ -98,6 +98,8 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                     result.property("approveIdList", approveResult.approveList);
                 }else {
                     result.error(approveResult.stepName + "未配置，请联系管理员进行配置");
+                    // 不入库
+                    autoDb = false;
                 }
 
                 if(candidateStep != null){
@@ -112,7 +114,6 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             }else {
                 bill.setStopFlag((byte) 1);
                 bill.setCurrentStep("end");
-                bill.setNextApproveList("");
                 result.property("info", "流程已经完成了");
                 log.info("pass flag: 1, step3-2: end ===> 流程已经完成了");
             }
@@ -125,10 +126,21 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
         }else if(passFlag == 0){  // 新建表单
 
-            //  第一步: 查询流程层级
+            // 第一步：获取步骤条件
+            OaProcessCondition condition = getCondition(process.getProcessConditionId());
+            log.info("pass flag: 0, step1-1: process level ===> " + condition);
+
+            String preStep = "";
+            if(condition != null){
+                StepTemp stepTemp = processCondition(condition.getProcessConditionId(), bill);
+                preStep = stepTemp.step;
+                log.info("pass flag: 0, step1-2: stepTemp ===> " + stepTemp);
+            }
+
+            //  第二步: 查询流程层级
             OaBillService.Level level = oaBillService.computeOrgLevels(bill);
             int processLevel = level.level;
-            log.info("pass flag: 0, step1: process level ===> " + level);
+            log.info("pass flag: 0, step2: process level ===> " + level);
 
             if(processLevel == 0){
 
@@ -139,22 +151,30 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
             }else if(processLevel > 0){
 
-                // 第二步：找到对应的流程
-                String processName = findProcess(bill, processLevel);
-                log.info("pass flag: 0, step2: process name ===> " + processName);
+                // 第三步：找到对应的流程
+                String processName = findProcess(bill, processLevel, preStep);
+                log.info("pass flag: 0, step3: process name ===> " + processName);
                 if(processName != null){
                     bill.setCurrentStep(processName);
                     bill.setStopFlag((byte) 2);
-                    bill.setNextApproveList("," + level.approveId + ",");
+                    if(level.approveId > 0){
+                        bill.setNextApproveList("," + level.approveId + ",");
+                    }else {
+                        result.error(level.stepName + "未配置，请联系管理员进行配置");
+                        // 不入库
+                        autoDb = false;
+                    }
                 }else {
                     result.error("找不到对应的流程");
-                    return result.getResult();
+                    // 不入库
+                    autoDb = false;
                 }
 
             }else {
                 log.warn("pass flag: 0, step1: 找不到流程层级");
                 result.error("找不到对应的流程");
-                return result.getResult();
+                // 不入库
+                autoDb = false;
             }
 
         }
@@ -179,13 +199,15 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     }
 
     // 找到对应的流程
-    private String findProcess(OaBill bill, int processLevel){
+    private String findProcess(OaBill bill, int processLevel, String preStep){
         OaProcess process = new OaProcess();
         process.setBillType(bill.getBillType());
         List<OaProcess> list = oaProcessService.list(process);
+        String pStep = bill.getCurrentStep() + preStep;
         if(list.size() > 0){
             for (OaProcess oaProcess:list){
-                if(oaProcess.getOrgPrivLen() == processLevel){
+                if(oaProcess.getOrgPrivLen() == processLevel
+                        && oaProcess.getCurrentStep().startsWith(pStep)){
                     return oaProcess.getCurrentStep();
                 }
             }
@@ -258,6 +280,9 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 approveList = approveList + "," + bill.getNextApproveList();
             }
             bill.setHistoryApproveList(approveList);
+            if(bill.getStopFlag() == 1){  // 流程结束
+                bill.setNextApproveList("");
+            }
             log.info("step4: bill update ===> " + bill);
             return oaBillMapper.approve(bill);
         }
@@ -292,10 +317,10 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             if(!"OaBill".equals(propertyName)){
                 obj = springInvokeMethod.invokeProperty(bill, propertyName);
             }
-            log.info("step2-2: execute condition (" + conditionDesc + ") ===> serviceName: " + serviceName + " methodName: "
+            log.info("do method: processCondition : execute condition (" + conditionDesc + ") ===> serviceName: " + serviceName + " methodName: "
                     + methodName + " param: " + obj);
             ifTrue = (Boolean) springInvokeMethod.invokeMethod(serviceName, methodName, new Object[]{obj});
-            log.info("step2-2: execute condition result (" + conditionDesc + ") ===> " + ifTrue);
+            log.info("do method: processCondition: execute condition result (" + conditionDesc + ") ===> " + ifTrue);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -308,7 +333,10 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 StepTemp stepTemp = new StepTemp();
                 stepTemp.step = condition.getSuccessTo();
                 if(!"end".equals(stepTemp.step)){
-                    stepTemp.approveFunctionId = condition.getSuccessApproveFunctionId();
+                    Integer successApproveFunctionId = condition.getSuccessApproveFunctionId();
+                    if(successApproveFunctionId != null && successApproveFunctionId > 0){
+                        stepTemp.approveFunctionId = condition.getSuccessApproveFunctionId();
+                    }
                 }
                 return stepTemp;
             }else {
@@ -319,7 +347,10 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 StepTemp stepTemp = new StepTemp();
                 stepTemp.step = condition.getFailTo();
                 if(!"end".equals(stepTemp.step)){
-                    stepTemp.approveFunctionId = condition.getFailApproveFunctionId();
+                    Integer failApproveFunctionId = condition.getFailApproveFunctionId();
+                    if(failApproveFunctionId != null && failApproveFunctionId > 0){
+                        stepTemp.approveFunctionId = failApproveFunctionId;
+                    }
                 }
                 return stepTemp;
             }

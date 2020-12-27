@@ -28,8 +28,10 @@ public class UserService {
     // 判断是否是部门/单位负责人
     public boolean userIfLeader(Integer userId){
         User user = userMapper.getUserById(userId);
-        Org org = orgMapper.getById(user.getOrgId());
-        return (int)userId == (int)org.getLeaderId();
+        String orgCode = user.getOrgCode();
+        String candidateOrgCodePriv = orgCode.substring(0, 6);
+        Integer leaderId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+        return (int)userId == (int)leaderId;
     }
 
     // 判断是否是市局负责人

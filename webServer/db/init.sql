@@ -216,25 +216,6 @@ INSERT t_oa_process_condition (process_condition_id, input,input_value_type,ioc_
 success_to,fail_to,condition_desc,success_approve_function_id)
 VALUE (7, 'applyId', 'Integer', 'userService', 'userIfChief', '00', 'end', '是否是科级干部', 7);
 
-INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
-VALUE (1, '00', 'root', 1, '工单申请');
-INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
-VALUE (1, '0000', '00', 2, '部门负责人审批');
-INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
-VALUE (1, '000000', '0000', 3, '市局分管领导审批');
-INSERT t_oa_process (bill_type,current_step,parent_step,next_step, process_desc)
-VALUE (1, '00000000', '000000', 'end', '市局负责人审批');
-INSERT t_oa_process (bill_type,current_step,parent_step,next_step,next_approve_function_id, process_desc)
-VALUE (1, '0100', '01', '010000', 3, '部门负责人审批');
-INSERT t_oa_process (bill_type,current_step,parent_step,next_step,next_approve_function_id, process_desc)
-VALUE (1, '010000', '0100', '01000000', 4, '单位分管领导审批');
-INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
-VALUE (1, '01000000', '010000', 2, '单位负责人审批');
-INSERT t_oa_process (bill_type,current_step,parent_step,process_condition_id, process_desc)
-VALUE (1, '0100000000', '01000000', 3, '市局分管领导审批');
-INSERT t_oa_process (bill_type,current_step,parent_step,next_step, process_desc)
-VALUE (1, '010000000000', '0100000000', 'end', '市局负责人审批');
-
 
 
 INSERT t_sys_user (user_id,user_name,login_name,password,org_id,role_id)

@@ -10,6 +10,7 @@ import top.jayu.oa.entity.Org;
 import top.jayu.oa.mapper.OrgMapper;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -116,35 +117,60 @@ public class OaBillService {
         switch (level){
             case 1:
                 l.approveId = 2;
+                l.stepName = "市局负责人";
                 break;
             case 2:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
                 l.approveId = orgMapper.findOrgDeputyByPriv(candidateOrgCodePriv);
+                l.stepName = "市局分管领导";
                 break;
             case 3:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
                 l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+                l.stepName = "部门/单位负责人";
                 break;
             case 4:
-//                if(org.getYesOffice() == 1){
+                if(org.getYesOffice() == 1){
                     l.level = 3;
-                    candidateOrgCodePriv = applyOrgCodePriv.substring(0, applyOrgCodePriv.length() - 2);
+                    candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
                     l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
-//                }else {
-//                    l.approveId = orgMapper.findOrgDeputyByPriv(bill.getApplyOrgCodePriv());
-//                }
+                    l.stepName = "部门/单位负责人";
+                }else {
+                    OaProcess process = new OaProcess();
+                    process.setBillType(bill.getBillType());
+                    List<OaProcess> list = oaProcessService.list(process);
+                    boolean has4 = false;
+                    for (int i=0; i<list.size(); i++){
+                        if(list.get(i).getOrgPrivLen() == 4){
+                            has4 = true;
+                        }
+                    }
+                    if(has4){
+                        candidateOrgCodePriv = applyOrgCodePriv.substring(0, 8);
+                        l.approveId = orgMapper.findOrgDeputyByPriv(candidateOrgCodePriv);
+                        l.stepName = "单位分管领导";
+                    }else {
+                        l.level = 3;
+                        candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
+                        l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+                        l.stepName = "部门/单位负责人";
+                    }
+                }
                 break;
             case 5:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 8);
                 l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+                l.stepName = "二级部门负责人";
                 break;
             case 6:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 10);
                 l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+                l.stepName = "三级部门负责人";
                 break;
             case 7:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 12);
                 l.approveId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+                l.stepName = "四级部门负责人";
                 break;
         }
         // 当为负责人的时候需更改为上级机构的机构权限
@@ -156,6 +182,7 @@ public class OaBillService {
     public static class Level{
         public int level;
         public int approveId;
+        public String stepName;
     }
 
     private Integer generateLevel(int candidateLevel, int applyId, Org org){
