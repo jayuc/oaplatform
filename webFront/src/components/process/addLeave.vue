@@ -19,11 +19,12 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="工龄：" prop="workAge" :label-width="formLabelWidth">
-                        <el-input v-model.number="formData.workAge" autocomplete="off"></el-input>
+                        <el-input style="width: 200px;" v-model.number="formData.workAge" autocomplete="off"></el-input>
+                        年
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
+                    <el-form-item label="休假标准：" prop="holidayType" :label-width="formLabelWidth">
                         <yu-code-radio @change="holidayTypeChange" :code="3" ref="holidayTypeSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
@@ -51,11 +52,19 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="天数：" prop="days" :label-width="formLabelWidth">
-                        <el-input v-model.number="formData.days" autocomplete="off"></el-input>
+                        <el-input style="width: 200px;" v-model.number="formData.days" autocomplete="off"></el-input>
+                        天
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
 
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="备注：" prop="content" :label-width="formLabelWidth">
+                        <el-input type="textarea" :rows="3" v-model.number="formData.mark" autocomplete="off"></el-input>
+                    </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
@@ -137,6 +146,9 @@
                     days: [
                         { required: true, message: '请输入天数', trigger: 'blur' },
                         { type: 'number', message: '天数必须为数字值'}
+                    ],
+                    holidayType: [
+                        { required: true, message: '请选择休假标准', trigger: 'blur' }
                     ],
                     startTime: [
                         { required: true, message: '请选择开始日期', trigger: 'blur' },
