@@ -8,13 +8,13 @@ var $rootScope = {
     restRoot: 'http://127.0.0.1:8056/',
 
     // 登录页标题
-    loginTitle: '合肥烟草专卖局OA系统',
+    loginTitle: '合肥市烟草专卖局（公司）企业管理标准化运行平台',
 
     // 系统名称
-    systemName: '合肥市烟草专卖局',
+    systemName: '合肥市烟草专卖局（公司）',
 
     // 主页标题
-    mainTitle: '合肥市烟草专卖局',
+    mainTitle: '合肥市烟草专卖局（公司）企业管理标准化运行平台',
 
     //用户信息
     userInfo: {},
