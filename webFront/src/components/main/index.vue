@@ -18,22 +18,23 @@
                    @open="handleOpen"
                    @close="handleClose"
                    @select="selectItem"
+                   :router="true"
                    style="overflow: hidden;"
           >
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-edit"></i>流程</template>
-                  <el-menu-item index="1">年休假</el-menu-item>
-                  <el-menu-item index="2">出差</el-menu-item>
-                  <el-menu-item index="3">经济业务支出</el-menu-item>
+                  <el-menu-item index="/main/leave">年休假</el-menu-item>
+                  <el-menu-item index="/main/errand">出差</el-menu-item>
+                  <el-menu-item index="/main/cost">经济业务支出</el-menu-item>
             </el-submenu>
               <el-submenu index="2">
                   <template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>
-                      <el-menu-item index="1">机构管理</el-menu-item>
-                      <el-menu-item index="2">用户管理</el-menu-item>
+                      <el-menu-item index="/main/orgManage">机构管理</el-menu-item>
+                      <el-menu-item index="/main/userManage">用户管理</el-menu-item>
               </el-submenu>
             <el-submenu index="3">
                 <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
-                    <el-menu-item index="1">修改密码</el-menu-item>
+                    <el-menu-item index="/main/setPassword">修改密码</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -60,21 +61,6 @@
               activeOpeneds: ['1'],
               mainTitle: Config.get('mainTitle'),
               userName: User.get('userName'),
-              // 菜单配置
-              menuMap: {
-                  '1': {
-                      '1': '/main/leave',   // 年休假
-                      '2': '/main/errand',  // 出差
-                      '3': '/main/cost',    // 经济业务支出
-                  },
-                  '2': {
-                      '1': '/main/orgManage',  // 机构管理
-                      '2': '/main/userManage'  // 用户管理
-                  },
-                  '3': {
-                      '1': '/main/setPassword'
-                  }
-              }
           };
       },
       methods: {
@@ -85,8 +71,7 @@
               console.log(index, path);
           },
           selectItem(index, path){
-              let menuPath = this.menuMap[path[0]][path[1]];
-              this.$router.push(menuPath);
+              console.log(index, path);
           }
       }
     }
