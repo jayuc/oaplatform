@@ -35,43 +35,43 @@
                           prop="applyName"
                           label="申请人"
                           align="center"
-                          width="120">
+                          width="100">
                     </el-table-column>
                     <el-table-column
                           prop="applyOrgId"
                           label="申请人单位"
                           align="center"
                           :formatter="formatOrg"
-                          width="280">
+                          width="200">
                     </el-table-column>
                     <el-table-column
                           prop="content"
                           align="center"
-                          width="300"
+                          width="200"
                           label="出差事由">
                     </el-table-column>
                     <el-table-column
                             prop="address"
                             align="center"
-                            width="140"
+                            width="100"
                             label="出差目的地">
                     </el-table-column>
                     <el-table-column
                           prop="startTime"
                           align="center"
-                          width="180"
+                          width="100"
                           label="开始日期">
                     </el-table-column>
                     <el-table-column
                           prop="endTime"
                           align="center"
-                          width="180"
+                          width="100"
                           label="结束日期">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
                             align="center"
-                            width="120"
+                            width="80"
                             :formatter="formatStopFlag"
                             label="是否完成">
                     </el-table-column>

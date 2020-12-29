@@ -18,8 +18,11 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="业务域：" prop="workAge" :label-width="formLabelWidth">
-                        <yu-code-radio @change="holidayTypeChange" :code="5" ref="holidayTypeSelect"></yu-code-radio>
+                    <el-form-item label="业务域：" prop="firmType" :label-width="formLabelWidth">
+                        <yu-code-radio :initValue="formData.firmType"
+                                       @change="firmTypeChange"
+                                       :code="5"
+                                       ref="firmTypeSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -152,6 +155,9 @@
                     holidayType: [
                         { required: true, message: '请选择休假标准', trigger: 'blur' }
                     ],
+                    firmType: [
+                        { required: true, message: '请选择业务域', trigger: 'blur' }
+                    ],
                     startTime: [
                         { required: true, message: '请选择开始日期', trigger: 'blur' },
                         { validator: validateStartTime, trigger: 'change' }
@@ -177,6 +183,7 @@
                     applyOrgId: user.get('orgId'),
                     applyOrgCodePriv: user.get('orgCodePriv'),
                     userName: user.get('userName'),
+                    firmType: user.get('firmType'),
                     orgName: OrgUtil.getShortNameById(user.get('orgId'))
                 };
                 this.fileList = [];
@@ -198,6 +205,9 @@
             },
             holidayTypeChange(key){
                 this.formData.holidayType = key;
+            },
+            firmTypeChange(key){
+                this.formData.firmType = key;
             },
             afterFileSuccess(file){
                 this.fileArr.push(file);

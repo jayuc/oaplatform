@@ -66,7 +66,7 @@
                               label="所属机构"
                               align="center"
                               :formatter="formatOrg"
-                              width="240">
+                              width="200">
                         </el-table-column>
                         <el-table-column
                               prop="position"

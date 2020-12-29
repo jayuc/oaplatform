@@ -12,12 +12,13 @@
 
       <el-container>
 
-        <el-aside width="200px" style="">
+        <el-aside width="180px">
           <el-menu :uniqueOpened="true"
                    :default-openeds="activeOpeneds"
                    @open="handleOpen"
                    @close="handleClose"
                    @select="selectItem"
+                   style="overflow: hidden;"
           >
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-edit"></i>流程</template>

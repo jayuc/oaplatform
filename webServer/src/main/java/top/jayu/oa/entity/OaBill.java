@@ -74,6 +74,7 @@ public class OaBill extends BaseParam {
 
     private String extendContent;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
 
     private Date updateTime;

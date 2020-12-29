@@ -17,6 +17,16 @@
                 </el-col>
             </el-row>
             <el-row>
+                <el-col :span="12">
+                    <el-form-item label="业务域：" prop="firmType" :label-width="formLabelWidth">
+                        <yu-code-radio :initValue="formData.firmType"
+                                       @change="firmTypeChange"
+                                       :code="5"
+                                       ref="firmTypeSelect"></yu-code-radio>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="24">
                     <el-form-item label="出差事由：" prop="content" :label-width="formLabelWidth">
                         <el-input type="textarea" :rows="3" v-model.number="formData.content" autocomplete="off"></el-input>
@@ -215,6 +225,9 @@
             // 交通工具处理
             travelToolChange(key){
                 this.formData.travelTool = key;
+            },
+            firmTypeChange(key){
+                this.formData.firmType = key;
             },
             submit(passFlag){
                 let a = 1;

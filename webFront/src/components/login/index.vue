@@ -1,6 +1,6 @@
 <template>
   <div :style="backgroudStyle">
-      <div style="height: 240px;"></div>
+      <div style="height: 25%;"></div>
       <div>
           <img  style="width: 100px"
                 :src="logoUrl"/>

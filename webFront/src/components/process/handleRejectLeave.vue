@@ -18,16 +18,16 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="工龄：" prop="workAge" :label-width="formLabelWidth">
-                        <el-input v-model.number="formData.workAge" autocomplete="off"></el-input>
+                    <el-form-item label="业务域：" prop="firmType" :label-width="formLabelWidth">
+                        <yu-code-radio :initValue="formData.firmType"
+                                       @change="firmTypeChange"
+                                       :code="5"
+                                       ref="firmTypeSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
-                        <yu-code-radio @change="holidayTypeChange"
-                                       :initValue="formData.holidayType"
-                                       :code="3"
-                                       ref="holidayTypeSelect"></yu-code-radio>
+                    <el-form-item label="工龄：" prop="workAge" :label-width="formLabelWidth">
+                        <el-input v-model.number="formData.workAge" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -53,12 +53,24 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
+                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
+                        <yu-code-radio @change="holidayTypeChange"
+                                       :initValue="formData.holidayType"
+                                       :code="3"
+                                       ref="holidayTypeSelect"></yu-code-radio>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
                     <el-form-item label="天数：" prop="days" :label-width="formLabelWidth">
                         <el-input v-model.number="formData.days" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="备注：" prop="content" :label-width="formLabelWidth">
+                        <el-input type="textarea" :rows="3" v-model.number="formData.mark" autocomplete="off"></el-input>
+                    </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
@@ -139,6 +151,9 @@
                         { required: true, message: '请输入天数', trigger: 'blur' },
                         { type: 'number', message: '天数必须为数字值'}
                     ],
+                    firmType: [
+                        { required: true, message: '请选择业务域', trigger: 'blur' }
+                    ],
                     startTime: [
                         { required: true, message: '请选择开始日期', trigger: 'blur' },
                         { validator: validateStartTime, trigger: 'change' }
@@ -184,6 +199,9 @@
             },
             holidayTypeChange(key){
                 this.formData.holidayType = key;
+            },
+            firmTypeChange(key){
+                this.formData.firmType = key;
             },
             afterFileSuccess(file){
                 this.fileArr.push(file);

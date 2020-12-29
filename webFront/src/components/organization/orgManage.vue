@@ -43,7 +43,7 @@
                                 prop="shortOrgName"
                                 label="机构简称"
                                 align="center"
-                                width="220">
+                                width="200">
                         </el-table-column>
                         <el-table-column
                                 prop="leaderName"

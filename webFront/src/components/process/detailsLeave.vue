@@ -18,13 +18,13 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="工龄：" :label-width="formLabelWidth">
-                        {{formData.workAge}}
+                    <el-form-item label="业务域：" prop="firmType" :label-width="formLabelWidth">
+                        {{formatFirmType(formData.firmType)}}
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
-                        {{formatHolidayType(formData.holidayType)}}
+                    <el-form-item label="工龄：" :label-width="formLabelWidth">
+                        {{formatWorkAge(formData.workAge)}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -42,12 +42,21 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="天数：" :label-width="formLabelWidth">
-                        {{formData.days}}
+                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
+                        {{formatHolidayType(formData.holidayType)}}
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-
+                    <el-form-item label="天数：" :label-width="formLabelWidth">
+                        {{formatDays(formData.days)}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="备注：" prop="content" :label-width="formLabelWidth">
+                        {{formData.mark}}
+                    </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
@@ -91,6 +100,9 @@
                                  :title="item.title" />
                     </el-steps>
                 </div>
+            </el-row>
+            <el-row>
+                <div style="height: 20px;"></div>
             </el-row>
         </el-form>
     </el-dialog>
@@ -160,6 +172,15 @@
             },
             formatHolidayType(cellValue){
                 return CodeUtil.getName(3, cellValue);
+            },
+            formatFirmType(cellValue){
+                return CodeUtil.getName(5, cellValue);
+            },
+            formatWorkAge(cellValue){
+                return cellValue + '年';
+            },
+            formatDays(cellValue){
+                return cellValue + '天';
             },
             formatOrg(cellValue){
                 if(cellValue){

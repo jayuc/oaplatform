@@ -35,50 +35,50 @@
                           prop="applyName"
                           label="申请人"
                           align="center"
-                          width="120">
+                          width="100">
                     </el-table-column>
                     <el-table-column
                           prop="applyOrgId"
                           label="申请人单位"
                           align="center"
                           :formatter="formatOrg"
-                          width="280">
+                          width="200">
                     </el-table-column>
                     <el-table-column
                           prop="workAge"
                           align="center"
-                          width="120"
+                          width="100"
                           label="工龄（年）">
                     </el-table-column>
                     <el-table-column
                           prop="holidayType"
                           align="center"
-                          width="140"
+                          width="100"
                           :formatter="handleHolidayType"
                           label="休假标准">
                     </el-table-column>
                     <el-table-column
                           prop="startTime"
                           align="center"
-                          width="180"
+                          width="100"
                           label="开始日期">
                     </el-table-column>
                     <el-table-column
                           prop="endTime"
                           align="center"
-                          width="180"
+                          width="100"
                           label="结束日期">
                     </el-table-column>
                     <el-table-column
                           prop="days"
                           align="center"
-                          width="100"
+                          width="80"
                           label="天数">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
                             align="center"
-                            width="120"
+                            width="100"
                             :formatter="formatStopFlag"
                             label="是否完成">
                     </el-table-column>

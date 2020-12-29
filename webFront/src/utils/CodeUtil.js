@@ -24,5 +24,6 @@ const getName = (codeType, code) => {
 };
 
 export default {
-    getName
+    getName,
+    getCodes
 }

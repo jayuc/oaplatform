@@ -1,4 +1,12 @@
 
+import CodeUtil from '@/utils/CodeUtil';
+
+// 获取业务域
+const getFirmType = () => {
+    let firmArr = CodeUtil.getCodes(5);
+    console.log(firmArr);
+};
+
 const handleFileOne = (one) => {
     if(one){
         let arr = one.split('/');
@@ -28,5 +36,6 @@ const handleFileList = (formData) => {
 };
 
 export default {
-    handleFileList
+    handleFileList,
+    getFirmType
 }

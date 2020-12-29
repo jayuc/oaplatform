@@ -24,86 +24,86 @@
         <el-main>
             <div class="form-table-container" :style="tableContainerStyle">
                 <el-table
-                      ref="elTable"
-                      :data="tableData"
-                      border
-                      :height="tableHeight"
-                      header-row-class-name="form-table-header"
-                      header-cell-class-name="form-table-header-cell"
-                      style="width: 100%">
+                        ref="elTable"
+                        :data="tableData"
+                        border
+                        :height="tableHeight"
+                        header-row-class-name="form-table-header"
+                        header-cell-class-name="form-table-header-cell"
+                        style="width: 100%">
                     <el-table-column
-                          prop="applyName"
-                          label="申请人"
-                          align="center"
-                          width="120">
+                            prop="applyName"
+                            label="申请人"
+                            align="center"
+                            width="100">
                     </el-table-column>
                     <el-table-column
-                          prop="applyOrgId"
-                          label="申请人单位"
-                          align="center"
-                          :formatter="formatOrg"
-                          width="280">
+                            prop="applyOrgId"
+                            label="申请人单位"
+                            align="center"
+                            :formatter="formatOrg"
+                            width="200">
                     </el-table-column>
                     <el-table-column
-                          prop="content"
-                          align="center"
-                          width="300"
-                          label="出差事由">
+                            prop="content"
+                            align="center"
+                            width="200"
+                            label="事项简述">
                     </el-table-column>
                     <el-table-column
                             prop="address"
                             align="center"
-                            width="140"
-                            label="出差目的地">
+                            width="150"
+                            label="预计支出金额（元）">
                     </el-table-column>
                     <el-table-column
-                          prop="startTime"
-                          align="center"
-                          width="180"
-                          label="开始日期">
+                            prop="startTime"
+                            align="center"
+                            width="120"
+                            label="有无年度预算">
                     </el-table-column>
                     <el-table-column
-                          prop="endTime"
-                          align="center"
-                          width="180"
-                          label="结束日期">
+                            prop="createTime"
+                            align="center"
+                            width="100"
+                            label="申请日期">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
                             align="center"
-                            width="120"
+                            width="80"
                             :formatter="formatStopFlag"
                             label="是否完成">
                     </el-table-column>
                     <el-table-column
-                          prop="operation"
-                          align="center"
-                          label="操作">
-                      <template slot-scope="scope">
-                          <el-button v-if="ifShowDetailButton(scope.row)" @click="showBill(scope.row)"
-                                     plain
-                                     type="success"
-                                     size="small">查看</el-button>
-                          <el-button v-if="ifShowApproveButton(scope.row)" @click="approveBill(scope.row)"
-                                     plain
-                                     type="warning"
-                                     size="small">审批</el-button>
-                          <el-button v-if="ifShowHandleRejectButton(scope.row)" @click="handleRejectBill(scope.row)"
-                                     plain
-                                     type="primary"
-                                     size="small">驳回处置</el-button>
-                      </template>
+                            prop="operation"
+                            align="center"
+                            label="操作">
+                        <template slot-scope="scope">
+                            <el-button v-if="ifShowDetailButton(scope.row)" @click="showBill(scope.row)"
+                                       plain
+                                       type="success"
+                                       size="small">查看</el-button>
+                            <el-button v-if="ifShowApproveButton(scope.row)" @click="approveBill(scope.row)"
+                                       plain
+                                       type="warning"
+                                       size="small">审批</el-button>
+                            <el-button v-if="ifShowHandleRejectButton(scope.row)" @click="handleRejectBill(scope.row)"
+                                       plain
+                                       type="primary"
+                                       size="small">驳回处置</el-button>
+                        </template>
                     </el-table-column>
                 </el-table>
                 <div style="height: 10px;"></div>
                 <el-pagination
-                      @size-change="handleSizeChange"
-                      @current-change="handleCurrentChange"
-                      :current-page="formData.pageNumber"
-                      :page-sizes="[15, 30, 45, 60]"
-                      :page-size="formData.pageSize"
-                      layout="prev, pager, next, jumper, total, sizes"
-                      :total="total">
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="formData.pageNumber"
+                        :page-sizes="[15, 30, 45, 60]"
+                        :page-size="formData.pageSize"
+                        layout="prev, pager, next, jumper, total, sizes"
+                        :total="total">
                 </el-pagination>
             </div>
         </el-main>
@@ -167,12 +167,12 @@
                     let data = result.result;
                     let error = result.error;
                     if(error){
-                      TipUtil.error(error);
-                      return;
+                        TipUtil.error(error);
+                        return;
                     }
                     if(data){
-                      this.tableData = data.rows;
-                      this.total = data.total;
+                        this.tableData = data.rows;
+                        this.total = data.total;
                     }
                 }, () => {
 

@@ -17,6 +17,13 @@
                 </el-col>
             </el-row>
             <el-row>
+                <el-col :span="12">
+                    <el-form-item label="业务域：" prop="firmType" :label-width="formLabelWidth">
+                        {{formatFirmType(formData.firmType)}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="24">
                     <el-form-item label="出差事由：" prop="content" :label-width="formLabelWidth">
                         {{formData.content}}
@@ -31,7 +38,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="出差人数：" prop="peopleNumber" :label-width="formLabelWidth">
-                        {{formData.peopleNumber}}
+                        {{formatPeople(formData.peopleNumber)}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -100,6 +107,9 @@
                                  :title="item.title" />
                     </el-steps>
                 </div>
+            </el-row>
+            <el-row>
+                <div style="height: 20px;"></div>
             </el-row>
         </el-form>
     </el-dialog>
@@ -180,6 +190,12 @@
             },
             formatTravelTool(cellValue){
                 return CodeUtil.getName(2, cellValue);
+            },
+            formatFirmType(cellValue){
+                return CodeUtil.getName(5, cellValue);
+            },
+            formatPeople(cellValue){
+                return cellValue + '人';
             },
         }
     }

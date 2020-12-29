@@ -17,6 +17,16 @@
                 </el-col>
             </el-row>
             <el-row>
+                <el-col :span="12">
+                    <el-form-item label="业务域：" prop="firmType" :label-width="formLabelWidth">
+                        <yu-code-radio :initValue="formData.firmType"
+                                       @change="firmTypeChange"
+                                       :code="5"
+                                       ref="firmTypeSelect"></yu-code-radio>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="24">
                     <el-form-item label="出差事由：" prop="content" :label-width="formLabelWidth">
                         <el-input type="textarea" :rows="3" v-model.number="formData.content" autocomplete="off"></el-input>
@@ -31,7 +41,8 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="出差人数：" prop="peopleNumber" :label-width="formLabelWidth">
-                        <el-input v-model.number="formData.peopleNumber" autocomplete="off"></el-input>
+                        <el-input style="width: 200px;" v-model.number="formData.peopleNumber" autocomplete="off"></el-input>
+                        人
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -42,7 +53,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="交通工具：" :label-width="formLabelWidth">
+                    <el-form-item label="交通工具：" prop="travelTool" :label-width="formLabelWidth">
                         <yu-code-radio @change="travelToolChange" :code="2" ref="travelToolSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
@@ -150,7 +161,13 @@
                         { required: true, message: '请输入出差目的地', trigger: 'blur' }
                     ],
                     peopleNumber: [
-                        { type: 'number', message: '人数必须为数字值'}
+                        { required: true, type: 'number', message: '人数必须为数字值'}
+                    ],
+                    travelTool: [
+                        { required: true, message: '请选择交通工具', trigger: 'blur' }
+                    ],
+                    firmType: [
+                        { required: true, message: '请选择业务域', trigger: 'blur' }
                     ],
                     startTime: [
                         { required: true, message: '请选择开始日期', trigger: 'blur' },
@@ -177,6 +194,7 @@
                     applyOrgId: user.get('orgId'),
                     applyOrgCodePriv: user.get('orgCodePriv'),
                     userName: user.get('userName'),
+                    firmType: user.get('firmType'),
                     orgName: OrgUtil.getShortNameById(user.get('orgId'))
                 };
                 this.fileList = [];
@@ -215,6 +233,9 @@
             // 交通工具处理
             travelToolChange(key){
                 this.formData.travelTool = key;
+            },
+            firmTypeChange(key){
+                this.formData.firmType = key;
             },
             submit(passFlag){
                 let a = 1;
