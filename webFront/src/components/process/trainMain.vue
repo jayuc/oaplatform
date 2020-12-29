@@ -150,7 +150,7 @@
                     pageNumber: 1,
                     pageSize: 15,
                     stopFlag: 2,
-                    billType: 2
+                    billType: 4
                 },
                 searchBtnStatus: false,
                 total: 0,
