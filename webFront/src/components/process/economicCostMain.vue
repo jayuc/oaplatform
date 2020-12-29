@@ -51,7 +51,7 @@
                             label="事项简述">
                     </el-table-column>
                     <el-table-column
-                            prop="address"
+                            prop="amount"
                             align="center"
                             width="150"
                             label="预计支出金额（元）">
