@@ -17,6 +17,8 @@ public class User extends BaseParam {
 
     private Byte yesChief;
 
+    private Byte yesOffice;
+
     private Integer orgId;
 
     private String orgCode;
