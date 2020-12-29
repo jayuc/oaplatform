@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="驳回处置"
+    <el-dialog title="年休假驳回处置"
                :visible.sync="visible"
                width="700px"
     >
@@ -113,7 +113,7 @@
 
     export default {
         components: {YuCodeRadio},
-        name: 'process-add-leave',
+        name: 'process-reject-leave',
         data(){
             // 开始日期校验
             let validateStartTime = (rule, value, callback) => {
@@ -173,7 +173,6 @@
         methods: {
             initFormData(){
                 this.formData = {
-                    billType: 1,
                     currentStep: '00',
                     applyId: user.get('userId'),
                     applyOrgId: user.get('orgId'),

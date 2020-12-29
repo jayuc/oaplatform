@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="年休假审批"
+    <el-dialog title="经济业务支出审批"
                :visible.sync="visible"
                width="700px"
     >
@@ -22,40 +22,23 @@
                         {{formatFirmType(formData.firmType)}}
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="工龄：" :label-width="formLabelWidth">
-                        {{formatWorkAge(formData.workAge)}}
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="开始日期：" :label-width="formLabelWidth">
-                        {{formData.startTime}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="结束日期：" :label-width="formLabelWidth">
-                        {{formData.endTime}}
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
-                        {{formatHolidayType(formData.holidayType)}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="天数：" :label-width="formLabelWidth">
-                        {{formatDays(formData.days)}}
-                    </el-form-item>
-                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="备注：" prop="content" :label-width="formLabelWidth">
-                        {{formData.mark}}
+                    <el-form-item label="事项简述：" prop="content" :label-width="formLabelWidth">
+                        {{formData.content}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="预计支出金额：" prop="amount" :label-width="formLabelWidth">
+                        {{formData.amount}}元
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="有无年度预算：" prop="days" :label-width="formLabelWidth">
+                        {{formatDays(formData.days)}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -87,9 +70,9 @@
 <script>
 
     import RestUtil from '@/utils/RestUtil';
-    import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
     import handler from './handler';
+    import CodeUtil from '@/utils/CodeUtil';
     import TipUtil from "@/utils/TipUtil";
 
     export default {
@@ -98,7 +81,7 @@
             return {
                 visible: false,
                 submitBtnDisabled: false,
-                formLabelWidth: '110px',
+                formLabelWidth: '130px',
                 formData: {},
                 url: '',
                 fileList: []
@@ -120,9 +103,6 @@
             close(){
                 this.visible = false;
             },
-            formatHolidayType(cellValue){
-                return CodeUtil.getName(3, cellValue);
-            },
             formatOrg(cellValue){
                 if(cellValue){
                     let org = OrgUtil.getOrgById(cellValue);
@@ -135,11 +115,13 @@
             formatFirmType(cellValue){
                 return CodeUtil.getName(5, cellValue);
             },
-            formatWorkAge(cellValue){
-                return cellValue + '年';
-            },
             formatDays(cellValue){
-                return cellValue + '天';
+                if(cellValue == 1){
+                    return '有';
+                }else if(cellValue == 2){
+                    return '无';
+                }
+                return '';
             },
             submit(passFlag){
                 this.$refs['formData'].validate((valid) => {

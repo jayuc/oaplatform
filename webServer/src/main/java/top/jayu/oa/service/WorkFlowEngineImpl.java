@@ -49,6 +49,11 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         String prevStep = bill.getCurrentStep();
         OaProcess process = getProcess(bill);
 
+        if(process == null){
+            result.error("流程未配置，请联系管理员");
+            return result.getResult();
+        }
+
         // 是否是新建工单，区别与驳回后处置工单
         boolean yesNewBill = true;
 

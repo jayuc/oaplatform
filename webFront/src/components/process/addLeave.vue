@@ -177,7 +177,6 @@
         methods: {
             initFormData(){
                 this.formData = {
-                    billType: 1,
                     currentStep: '00',
                     applyId: user.get('userId'),
                     applyOrgId: user.get('orgId'),

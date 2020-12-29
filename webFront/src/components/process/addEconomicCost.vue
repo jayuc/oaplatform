@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="出差驳回处置"
+    <el-dialog :title="title"
                :visible.sync="visible"
                width="700px"
     >
@@ -28,55 +28,22 @@
             </el-row>
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="出差事由：" prop="content" :label-width="formLabelWidth">
+                    <el-form-item label="事项简述：" prop="content" :label-width="formLabelWidth">
                         <el-input type="textarea" :rows="3" v-model.number="formData.content" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="出差人员：" prop="peopleList" :label-width="formLabelWidth">
-                        <el-input v-model="formData.peopleList" autocomplete="off"></el-input>
+                    <el-form-item label="预计支出金额：" prop="amount" :label-width="formLabelWidth">
+                        <el-input style="width: 170px;" v-model.number="formData.amount" autocomplete="off"></el-input>
+                        元
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="出差人数：" prop="peopleNumber" :label-width="formLabelWidth">
-                        <el-input v-model.number="formData.peopleNumber" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="目的地：" prop="address" :label-width="formLabelWidth">
-                        <el-input v-model="formData.address" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="交通工具：" :label-width="formLabelWidth">
-                        <yu-code-radio @change="travelToolChange"
-                                       :initValue="formData.travelTool"
-                                       :code="2"
-                                       ref="travelToolSelect"></yu-code-radio>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="开始日期：" prop="startTime" :label-width="formLabelWidth">
-                        <el-date-picker
-                                v-model="formData.startTime"
-                                type="date"
-                                placeholder="选择日期">
-                        </el-date-picker>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="结束日期：" prop="endTime" style="width: 100%" :label-width="formLabelWidth">
-                        <el-date-picker
-                                v-model="formData.endTime"
-                                type="date"
-                                placeholder="选择日期">
-                        </el-date-picker>
+                    <el-form-item label="有无年度预算：" prop="days" :label-width="formLabelWidth">
+                        <el-radio v-model="formData.days" :label="1">有</el-radio>
+                        <el-radio v-model="formData.days" :label="2">无</el-radio>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -121,54 +88,40 @@
 
     export default {
         components: {ElRow, YuCodeRadio},
-        name: 'process-reject-business-trip',
+        name: 'process-add-economic-cost',
         data(){
-            // 开始日期校验
-            let validateStartTime = (rule, value, callback) => {
-                let endTime = this.formData.endTime;
-                if(endTime && value > endTime){
-                    callback(new Error('开始日期不能大于结束日期'));
-                    return;
-                }
-                callback();
-            };
-            // 结束日期校验
-            let validateEndTime = (rule, value, callback) => {
-                let startTime = this.formData.startTime;
-                if(startTime && value < startTime){
-                    callback(new Error('结束日期不能小于开始日期'));
-                    return;
+            // 金额不能大于1万
+            let validateAmount = (rule, value, callback) => {
+                if(value > 10000){
+                    callback(new Error('金额不能大于10000元'));
                 }
                 callback();
             };
             return {
                 visible: false,
                 submitBtnDisabled: false,
-                formLabelWidth: '110px',
+                formLabelWidth: '130px',
                 formData: {},
+                titleMap: {
+                    add: '经济业务支出申请',
+                    edit: '经济业务支出编辑'
+                },
                 title: '',
                 url: '',
                 rules: {
                     content: [
-                        { required: true, message: '请输入出差事由', trigger: 'blur' }
+                        { required: true, message: '请输入事项简述', trigger: 'blur' }
                     ],
-                    peopleList: [
-                        { required: true, message: '请输入出差人员', trigger: 'blur' }
+                    amount: [
+                        { required: true, type: 'number', message: '金额必须为数字值'},
+                        { validator: validateAmount, trigger: 'change' }
                     ],
-                    address: [
-                        { required: true, message: '请输入出差目的地', trigger: 'blur' }
+                    days: [
+                        { required: true, message: '请选择有无年度预算', trigger: 'blur' }
                     ],
-                    peopleNumber: [
-                        { type: 'number', message: '人数必须为数字值'}
+                    firmType: [
+                        { required: true, message: '请选择业务域', trigger: 'blur' }
                     ],
-                    startTime: [
-                        { required: true, message: '请选择开始日期', trigger: 'blur' },
-                        { validator: validateStartTime, trigger: 'change' }
-                    ],
-                    endTime: [
-                        { required: true, message: '请选择结束日期', trigger: 'blur' },
-                        { validator: validateEndTime, trigger: 'change' }
-                    ]
                 },
                 uploadUrl: Config.get('restRoot') + 'upload/file/one',  // 图片上传地址
                 fileokIcon: false,  // 文件 成功标识
@@ -185,22 +138,18 @@
                     applyOrgId: user.get('orgId'),
                     applyOrgCodePriv: user.get('orgCodePriv'),
                     userName: user.get('userName'),
-                    orgName: OrgUtil.getShortNameById(user.get('orgId')),
-                    content: '',
-                    peopleList: '',
-                    address: '',
-                    peopleNumber: '',
-                    startTime: '',
-                    endTime: ''
+                    firmType: user.get('firmType'),
+                    orgName: OrgUtil.getShortNameById(user.get('orgId'))
                 };
                 this.fileList = [];
                 this.fileArr = [];
             },
-            open(data, url){
+            open(data, url, titleType){
                 this.initFormData();
                 this.visible = true;
                 Object.assign(this.formData, data);
                 this.url = url;
+                this.title = this.titleMap[titleType];
             },
             close(){
                 this.visible = false;
@@ -220,10 +169,6 @@
             },
             beforeRemove(file) {
                 return this.$confirm(`确定移除 ${ file.name }？`);
-            },
-            // 交通工具处理
-            travelToolChange(key){
-                this.formData.travelTool = key;
             },
             firmTypeChange(key){
                 this.formData.firmType = key;
@@ -245,14 +190,6 @@
                         }
                     }
                     a++;
-                }
-                delete this.formData.createTime;
-                delete this.formData.updateTime;
-                if(typeof this.formData.startTime == 'string'){  // 当为字符串时，说明此时此值并没有被修改
-                    this.formData.startTime = new Date(this.formData.startTime);
-                }
-                if(typeof this.formData.endTime == 'string'){    // 当为字符串时，说明此时此值并没有被修改
-                    this.formData.endTime = new Date(this.formData.endTime);
                 }
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {

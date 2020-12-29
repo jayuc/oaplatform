@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="年休假详情"
+    <el-dialog title="经济业务支出详情"
                :visible.sync="visible"
                width="700px"
     >
@@ -22,40 +22,23 @@
                         {{formatFirmType(formData.firmType)}}
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="工龄：" :label-width="formLabelWidth">
-                        {{formatWorkAge(formData.workAge)}}
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="开始日期：" :label-width="formLabelWidth">
-                        {{formData.startTime}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="结束日期：" :label-width="formLabelWidth">
-                        {{formData.endTime}}
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
-                        {{formatHolidayType(formData.holidayType)}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="天数：" :label-width="formLabelWidth">
-                        {{formatDays(formData.days)}}
-                    </el-form-item>
-                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="备注：" prop="content" :label-width="formLabelWidth">
-                        {{formData.mark}}
+                    <el-form-item label="事项简述：" prop="content" :label-width="formLabelWidth">
+                        {{formData.content}}
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="预计支出金额：" prop="amount" :label-width="formLabelWidth">
+                        {{formData.amount}}元
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="有无年度预算：" prop="days" :label-width="formLabelWidth">
+                        {{formatDays(formData.days)}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -111,22 +94,24 @@
 <script>
 
     import RestUtil from '@/utils/RestUtil';
-    import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
     import ElRow from "element-ui/packages/row/src/row";
     import ElStep from "../../../node_modules/element-ui/packages/steps/src/step.vue";
+    import ElCol from "element-ui/packages/col/src/col";
     import handler from './handler';
+    import CodeUtil from '@/utils/CodeUtil';
     import TipUtil from "@/utils/TipUtil";
 
     export default {
         components: {
+            ElCol,
             ElStep,
             ElRow},
         name: 'process-details-leave',
         data(){
             return {
                 visible: false,
-                formLabelWidth: '110px',
+                formLabelWidth: '130px',
                 formData: {},
                 stepActive: 1,
                 stepList: [
@@ -145,7 +130,7 @@
                 this.visible = true;
                 Object.assign(this.formData, data);
                 this.fileList = handler.handleFileList(this.formData);
-                if(this.formData.passFlag != 2){
+                if(this.formData.passFlag != 2) {
                     this.showReject = false;
                     let param = {};
                     Object.assign(param, this.formData);
@@ -155,7 +140,7 @@
                     delete param.updateTime;
                     RestUtil.post('oa/bill/simulateDeliver', param).then((result) => {
                         let data = result.result;
-                        if(data){
+                        if (data) {
                             this.stepActive = data.total;
                             this.stepList = data.rows;
                         }
@@ -170,24 +155,23 @@
             close(){
                 this.visible = false;
             },
-            formatHolidayType(cellValue){
-                return CodeUtil.getName(3, cellValue);
-            },
-            formatFirmType(cellValue){
-                return CodeUtil.getName(5, cellValue);
-            },
-            formatWorkAge(cellValue){
-                return cellValue + '年';
-            },
-            formatDays(cellValue){
-                return cellValue + '天';
-            },
             formatOrg(cellValue){
                 if(cellValue){
                     let org = OrgUtil.getOrgById(cellValue);
                     if(org && org.attribute){
                         return org.attribute.shortOrgName;
                     }
+                }
+                return '';
+            },
+            formatFirmType(cellValue){
+                return CodeUtil.getName(5, cellValue);
+            },
+            formatDays(cellValue){
+                if(cellValue == 1){
+                    return '有';
+                }else if(cellValue == 2){
+                    return '无';
                 }
                 return '';
             },

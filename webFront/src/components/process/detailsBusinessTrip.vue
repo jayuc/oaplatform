@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="详情"
+    <el-dialog title="出差详情"
                :visible.sync="visible"
                width="700px"
     >

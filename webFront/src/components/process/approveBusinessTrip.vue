@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="审批"
+    <el-dialog title="出差审批"
                :visible.sync="visible"
                width="700px"
     >

@@ -15,7 +15,7 @@
                         <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
                     <el-form-item style="margin-left: 10px;">
-                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">经济业务支出前申请</el-button>
+                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">培训申请</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -24,50 +24,49 @@
         <el-main>
             <div class="form-table-container" :style="tableContainerStyle">
                 <el-table
-                        ref="elTable"
-                        :data="tableData"
-                        border
-                        :height="tableHeight"
-                        header-row-class-name="form-table-header"
-                        header-cell-class-name="form-table-header-cell"
-                        style="width: 100%">
+                      ref="elTable"
+                      :data="tableData"
+                      border
+                      :height="tableHeight"
+                      header-row-class-name="form-table-header"
+                      header-cell-class-name="form-table-header-cell"
+                      style="width: 100%">
                     <el-table-column
-                            prop="applyName"
-                            label="申请人"
-                            align="center"
-                            width="100">
+                          prop="applyName"
+                          label="申请人"
+                          align="center"
+                          width="100">
                     </el-table-column>
                     <el-table-column
-                            prop="applyOrgId"
-                            label="申请人单位"
-                            align="center"
-                            :formatter="formatOrg"
-                            width="210">
+                          prop="applyOrgId"
+                          label="申请人单位"
+                          align="center"
+                          :formatter="formatOrg"
+                          width="210">
                     </el-table-column>
                     <el-table-column
-                            prop="content"
-                            align="center"
-                            width="200"
-                            label="事项简述">
+                          prop="content"
+                          align="center"
+                          width="200"
+                          label="培训内容">
                     </el-table-column>
                     <el-table-column
-                            prop="amount"
+                            prop="peopleList"
                             align="center"
-                            width="150"
-                            label="预计支出金额（元）">
+                            width="160"
+                            label="培训对象">
                     </el-table-column>
                     <el-table-column
-                            prop="days"
-                            align="center"
-                            width="120"
-                            :formatter="formatDays"
-                            label="有无年度预算">
+                          prop="startTime"
+                          align="center"
+                          width="100"
+                          label="培训师资">
                     </el-table-column>
                     <el-table-column
-                            prop="createTime"
-                            align="center"
-                            width="100"
-                            label="申请日期">
+                          prop="endTime"
+                          align="center"
+                          width="100"
+                          label="计划课时">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
@@ -77,38 +76,38 @@
                             label="是否完成">
                     </el-table-column>
                     <el-table-column
-                            prop="operation"
-                            align="center"
-                            label="操作">
-                        <template slot-scope="scope">
-                            <el-button v-if="ifShowDetailButton(scope.row)" @click="showBill(scope.row)"
-                                       plain
-                                       type="success"
-                                       size="small">查看</el-button>
-                            <el-button v-if="ifShowDetailButton(scope.row)" @click="showApproveList(scope.row)"
-                                       plain
-                                       type="info"
-                                       size="small">审批记录</el-button>
-                            <el-button v-if="ifShowApproveButton(scope.row)" @click="approveBill(scope.row)"
-                                       plain
-                                       type="warning"
-                                       size="small">审批</el-button>
-                            <el-button v-if="ifShowHandleRejectButton(scope.row)" @click="handleRejectBill(scope.row)"
-                                       plain
-                                       type="primary"
-                                       size="small">驳回处置</el-button>
-                        </template>
+                          prop="operation"
+                          align="center"
+                          label="操作">
+                      <template slot-scope="scope">
+                          <el-button v-if="ifShowDetailButton(scope.row)" @click="showBill(scope.row)"
+                                     plain
+                                     type="success"
+                                     size="small">查看</el-button>
+                          <el-button v-if="ifShowDetailButton(scope.row)" @click="showApproveList(scope.row)"
+                                     plain
+                                     type="info"
+                                     size="small">审批记录</el-button>
+                          <el-button v-if="ifShowApproveButton(scope.row)" @click="approveBill(scope.row)"
+                                     plain
+                                     type="warning"
+                                     size="small">审批</el-button>
+                          <el-button v-if="ifShowHandleRejectButton(scope.row)" @click="handleRejectBill(scope.row)"
+                                     plain
+                                     type="primary"
+                                     size="small">驳回处置</el-button>
+                      </template>
                     </el-table-column>
                 </el-table>
                 <div style="height: 10px;"></div>
                 <el-pagination
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :current-page="formData.pageNumber"
-                        :page-sizes="[15, 30, 45, 60]"
-                        :page-size="formData.pageSize"
-                        layout="prev, pager, next, jumper, total, sizes"
-                        :total="total">
+                      @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                      :current-page="formData.pageNumber"
+                      :page-sizes="[15, 30, 45, 60]"
+                      :page-size="formData.pageSize"
+                      layout="prev, pager, next, jumper, total, sizes"
+                      :total="total">
                 </el-pagination>
             </div>
         </el-main>
@@ -128,10 +127,10 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import AddBusinessTrip from './addEconomicCost.vue';
-    import ApproveBusinessTrip from './approveEconomicCost.vue';
-    import DetailsBusinessTrip from './detailsEconomicCost.vue';
-    import RejectDialog from './handleRejectEconomicCost.vue';
+    import AddBusinessTrip from './addBusinessTrip.vue';
+    import ApproveBusinessTrip from './approveBusinessTrip.vue';
+    import DetailsBusinessTrip from './detailsBusinessTrip.vue';
+    import RejectDialog from './handleRejectBusinessTrip.vue';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
 
@@ -151,7 +150,7 @@
                     pageNumber: 1,
                     pageSize: 15,
                     stopFlag: 2,
-                    billType: 3
+                    billType: 2
                 },
                 searchBtnStatus: false,
                 total: 0,
@@ -172,12 +171,12 @@
                     let data = result.result;
                     let error = result.error;
                     if(error){
-                        TipUtil.error(error);
-                        return;
+                      TipUtil.error(error);
+                      return;
                     }
                     if(data){
-                        this.tableData = data.rows;
-                        this.total = data.total;
+                      this.tableData = data.rows;
+                      this.total = data.total;
                     }
                 }, (error) => {
                     console.error(error);
@@ -202,14 +201,6 @@
                         return '未完成';
                     }
                     return '';
-                }
-                return '';
-            },
-            formatDays(row, column, cellValue){
-                if(cellValue == 1){
-                    return '有';
-                }else if(cellValue == 2){
-                    return '无';
                 }
                 return '';
             },

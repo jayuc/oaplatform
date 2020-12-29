@@ -119,7 +119,7 @@
 
     export default {
         components: {ElRow, YuCodeRadio},
-        name: 'process-add-leave',
+        name: 'process-add-business-trip',
         data(){
             // 开始日期校验
             let validateStartTime = (rule, value, callback) => {
@@ -188,7 +188,6 @@
         methods: {
             initFormData(){
                 this.formData = {
-                    billType: 2,
                     currentStep: '00',
                     applyId: user.get('userId'),
                     applyOrgId: user.get('orgId'),

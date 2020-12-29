@@ -15,7 +15,7 @@
                         <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
                     <el-form-item style="margin-left: 10px;">
-                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">申 请</el-button>
+                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">出差申请</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -84,6 +84,10 @@
                                      plain
                                      type="success"
                                      size="small">查看</el-button>
+                          <el-button v-if="ifShowDetailButton(scope.row)" @click="showApproveList(scope.row)"
+                                     plain
+                                     type="info"
+                                     size="small">审批记录</el-button>
                           <el-button v-if="ifShowApproveButton(scope.row)" @click="approveBill(scope.row)"
                                      plain
                                      type="warning"
@@ -174,8 +178,9 @@
                       this.tableData = data.rows;
                       this.total = data.total;
                     }
-                }, () => {
-
+                }, (error) => {
+                    console.error(error);
+                    TipUtil.error('请求出错，请检查您的网络是否正常');
                 });
             },
             formatOrg(row, column, cellValue){
@@ -225,10 +230,13 @@
                 this.$refs.rejectDialog.open(row, 'oa/bill/deliver');
             },
             openAddLeave(){
-                this.$refs.addLeave.open({}, 'oa/bill/deliver', 'add');
+                this.$refs.addLeave.open({billType: this.formData.billType}, 'oa/bill/deliver', 'add');
             },
             showBill(row){
                 this.$refs.detailsLeave.open(row);
+            },
+            showApproveList(row){
+                console.log(row);
             },
             approveBill(row){
                 this.$refs.approveLeave.open(row, 'oa/bill/deliver');
