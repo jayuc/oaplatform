@@ -10,10 +10,10 @@
       <div style="height: 40px;"></div>
       <div style="width: 340px;margin: 0 auto;">
           <el-form :model="ruleForm" label-width="100px" class="loginForm" @keyup.enter.native="submit">
-              <el-form-item label="用户名　：" >
+              <el-form-item label="用户名：" >
                   <el-input type="loginName" v-model="ruleForm.loginName"></el-input>
               </el-form-item>
-              <el-form-item label="确认密码：" style="color: #ffffff;">
+              <el-form-item label="密码：" style="color: #ffffff;">
                   <el-input type="password" v-model="ruleForm.password" show-password></el-input>
               </el-form-item>
               <el-form-item>
@@ -91,6 +91,8 @@
                           errorStr += errorArr[i].defaultMessage + "；";
                       }
                       TipUtil.error(errorStr);
+                  }else {
+                      TipUtil.error('请求出错，请检查您的网络是否正常');
                   }
               });
           }

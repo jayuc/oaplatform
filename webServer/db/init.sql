@@ -96,6 +96,7 @@ CREATE TABLE `t_oa_bill` (
   `apply_org_code_priv` varchar(32) DEFAULT NULL COMMENT '申请人机构权限编码,用来判断机构层级',
   `approve_org_code_priv` varchar(32) DEFAULT NULL COMMENT '审批人机构权限编码,用来判断机构层级',
   `pass_flag` tinyint DEFAULT NULL COMMENT '是否同意 1同意，2不同意，0创建申请单',
+  `firm_type` tinyint NOT NULL COMMENT '业务域,数据字典：5',
   `approve_id` int(11) DEFAULT NULL COMMENT '最近一次的审批人id',
   `approve_name` varchar(16) DEFAULT NULL COMMENT '最近一次的审批人姓名',
   `approve_content` varchar(256) DEFAULT NULL COMMENT '最近一次审批意见',

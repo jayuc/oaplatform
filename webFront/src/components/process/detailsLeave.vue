@@ -104,6 +104,7 @@
     import ElRow from "element-ui/packages/row/src/row";
     import ElStep from "../../../node_modules/element-ui/packages/steps/src/step.vue";
     import handler from './handler';
+    import TipUtil from "@/utils/TipUtil";
 
     export default {
         components: {
@@ -146,6 +147,9 @@
                             this.stepActive = data.total;
                             this.stepList = data.rows;
                         }
+                    }, (error) => {
+                        console.error(error);
+                        TipUtil.error('请求出错，请检查您的网络是否正常');
                     });
                 }else {
                     this.showReject = true;

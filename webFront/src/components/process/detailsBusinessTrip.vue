@@ -114,6 +114,7 @@
     import ElCol from "element-ui/packages/col/src/col";
     import handler from './handler';
     import CodeUtil from '@/utils/CodeUtil';
+    import TipUtil from "@/utils/TipUtil";
 
     export default {
         components: {
@@ -157,6 +158,9 @@
                             this.stepActive = data.total;
                             this.stepList = data.rows;
                         }
+                    }, (error) => {
+                        console.error(error);
+                        TipUtil.error('请求出错，请检查您的网络是否正常');
                     });
                 }else {
                     this.showReject = true;

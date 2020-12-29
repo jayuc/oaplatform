@@ -14,6 +14,8 @@ public class OaBill extends BaseParam {
 
     private Byte billType;
 
+    private Byte firmType;
+
     private String currentStep;
 
     private Byte stopFlag;

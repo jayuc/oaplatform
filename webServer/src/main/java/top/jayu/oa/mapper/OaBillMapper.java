@@ -34,7 +34,7 @@ public interface OaBillMapper {
             "      work_age, days, holiday_type, people_number, \n" +
             "      pass_flag, content, address, travel_tool, \n" +
             "      amount, file_url1, file_url2, \n" +
-            "      file_url3, extend_content, create_time, \n" +
+            "      firm_type, file_url3, extend_content, create_time, \n" +
             "      people_list, update_time, mark)\n" +
             "    values (#{billCode,jdbcType=VARCHAR}, #{billType,jdbcType=TINYINT}, \n" +
             "      #{currentStep,jdbcType=VARCHAR}, #{stopFlag,jdbcType=TINYINT}, #{applyId,jdbcType=INTEGER}, \n" +
@@ -43,7 +43,7 @@ public interface OaBillMapper {
             "      #{workAge,jdbcType=TINYINT}, #{days,jdbcType=SMALLINT}, #{holidayType,jdbcType=SMALLINT}, #{peopleNumber,jdbcType=SMALLINT}, \n" +
             "      #{passFlag,jdbcType=TINYINT}, #{content,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{travelTool,jdbcType=TINYINT}, \n" +
             "      #{amount,jdbcType=INTEGER}, #{fileUrl1,jdbcType=VARCHAR}, #{fileUrl2,jdbcType=VARCHAR}, \n" +
-            "      #{fileUrl3,jdbcType=VARCHAR}, #{extendContent,jdbcType=VARCHAR}, now(), \n" +
+            "      #{firmType,jdbcType=TINYINT}, #{fileUrl3,jdbcType=VARCHAR}, #{extendContent,jdbcType=VARCHAR}, now(), \n" +
             "      #{peopleList,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{mark,jdbcType=VARCHAR})")
     int insert(OaBill record);
 

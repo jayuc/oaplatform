@@ -246,6 +246,9 @@
                             }
                             this.$emit('complete');
                             this.close();
+                        }, (error) => {
+                            console.error(error);
+                            TipUtil.error('请求出错，请检查您的网络是否正常');
                         });
                     } else {
                         return false;

@@ -18,14 +18,14 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="工龄：" prop="workAge" :label-width="formLabelWidth">
-                        <el-input style="width: 200px;" v-model.number="formData.workAge" autocomplete="off"></el-input>
-                        年
+                    <el-form-item label="业务域：" prop="workAge" :label-width="formLabelWidth">
+                        <yu-code-radio @change="holidayTypeChange" :code="5" ref="holidayTypeSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="休假标准：" prop="holidayType" :label-width="formLabelWidth">
-                        <yu-code-radio @change="holidayTypeChange" :code="3" ref="holidayTypeSelect"></yu-code-radio>
+                    <el-form-item label="工龄：" prop="workAge" :label-width="formLabelWidth">
+                        <el-input style="width: 200px;" v-model.number="formData.workAge" autocomplete="off"></el-input>
+                        年
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -51,13 +51,15 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
+                    <el-form-item label="休假标准：" prop="holidayType" :label-width="formLabelWidth">
+                        <yu-code-radio @change="holidayTypeChange" :code="3" ref="holidayTypeSelect"></yu-code-radio>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
                     <el-form-item label="天数：" prop="days" :label-width="formLabelWidth">
                         <el-input style="width: 200px;" v-model.number="formData.days" autocomplete="off"></el-input>
                         天
                     </el-form-item>
-                </el-col>
-                <el-col :span="12">
-
                 </el-col>
             </el-row>
             <el-row>
@@ -250,6 +252,9 @@
                             }
                             this.$emit('complete');
                             this.close();
+                        }, (error) => {
+                            console.error(error);
+                            TipUtil.error('请求出错，请检查您的网络是否正常');
                         });
                     } else {
                         return false;

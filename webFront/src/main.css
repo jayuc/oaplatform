@@ -31,11 +31,6 @@ a {
     padding: 0;
 }
 
-/** 导航样式 **/
-.el-menu-item:hover, .el-menu-item:focus{
-    color: #409eff;
-}
-
 .form-search-container span.form-search-title{
     position: absolute;
     left: 20px;
@@ -131,7 +126,7 @@ a {
 }
 
 .el-dialog__body{
-    padding: 30px 30px 5px 10px;
+    padding: 30px 30px 0px 10px;
 }
 
 .el-date-editor.el-input, .el-date-editor.el-input__inner {
