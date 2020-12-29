@@ -27,7 +27,7 @@
                   <el-menu-item index="/main/errand">出差</el-menu-item>
                   <el-menu-item index="/main/cost">经济业务支出</el-menu-item>
             </el-submenu>
-              <el-submenu index="2">
+              <el-submenu index="2" v-if="userName == '超级管理员'">
                   <template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>
                       <el-menu-item index="/main/orgManage">机构管理</el-menu-item>
                       <el-menu-item index="/main/userManage">用户管理</el-menu-item>
