@@ -161,7 +161,7 @@
                         { required: true, message: '请输入出差目的地', trigger: 'blur' }
                     ],
                     peopleNumber: [
-                        { required: true, type: 'number', message: '人数必须为数字值'}
+                        { required: true, type: 'number', message: '人数必须为数字值', trigger: 'blur'}
                     ],
                     travelTool: [
                         { required: true, message: '请选择交通工具', trigger: 'blur' }

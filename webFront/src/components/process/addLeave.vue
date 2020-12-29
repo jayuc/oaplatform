@@ -67,7 +67,7 @@
             </el-row>
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="备注：" prop="content" :label-width="formLabelWidth">
+                    <el-form-item label="备注：" :label-width="formLabelWidth">
                         <el-input type="textarea" :rows="3" v-model.number="formData.mark" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>

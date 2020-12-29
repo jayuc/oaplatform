@@ -57,13 +57,13 @@
                             label="培训对象">
                     </el-table-column>
                     <el-table-column
-                          prop="startTime"
+                          prop="address"
                           align="center"
                           width="100"
                           label="培训师资">
                     </el-table-column>
                     <el-table-column
-                          prop="endTime"
+                          prop="peopleNumber"
                           align="center"
                           width="100"
                           label="计划课时">
@@ -127,10 +127,10 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import AddBusinessTrip from './addBusinessTrip.vue';
-    import ApproveBusinessTrip from './approveBusinessTrip.vue';
-    import DetailsBusinessTrip from './detailsBusinessTrip.vue';
-    import RejectDialog from './handleRejectBusinessTrip.vue';
+    import AddBusinessTrip from './addTrain.vue';
+    import ApproveBusinessTrip from './approveTrain.vue';
+    import DetailsBusinessTrip from './detailsTrain.vue';
+    import RejectDialog from './handleRejectTrain.vue';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
 

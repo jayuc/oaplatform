@@ -1,7 +1,8 @@
 <template>
-    <el-dialog :title="title"
+    <el-dialog title="培训申请驳回处置"
                :visible.sync="visible"
                width="700px"
+               top="5vh"
     >
         <el-form :model="formData" ref="formData" :rules="rules">
             <el-row>
@@ -28,22 +29,60 @@
             </el-row>
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="事项简述：" prop="content" :label-width="formLabelWidth">
+                    <el-form-item label="培训内容：" prop="content" :label-width="formLabelWidth">
                         <el-input type="textarea" :rows="3" v-model.number="formData.content" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="预计支出金额：" prop="amount" :label-width="formLabelWidth">
-                        <el-input style="width: 170px;" v-model.number="formData.amount" autocomplete="off"></el-input>
-                        元
+                    <el-form-item label="培训对象：" prop="peopleList" :label-width="formLabelWidth">
+                        <el-input v-model="formData.peopleList" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="有无年度预算：" prop="days" :label-width="formLabelWidth">
-                        <el-radio v-model="formData.days" :label="1">有</el-radio>
-                        <el-radio v-model="formData.days" :label="2">无</el-radio>
+                    <el-form-item label="培训师资：" prop="address" :label-width="formLabelWidth">
+                        <el-input v-model="formData.address" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="开始时间：" prop="startTime" :label-width="formLabelWidth">
+                        <el-date-picker
+                                v-model="formData.startTime"
+                                type="datetime"
+                                placeholder="选择时间">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="结束时间：" prop="endTime" style="width: 100%" :label-width="formLabelWidth">
+                        <el-date-picker
+                                v-model="formData.endTime"
+                                type="datetime"
+                                placeholder="选择时间">
+                        </el-date-picker>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="计划课时：" prop="peopleNumber" :label-width="formLabelWidth">
+                        <el-input v-model.number="formData.peopleNumber" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="预计费用：" prop="amount" :label-width="formLabelWidth">
+                        <el-input style="width: 200px;" v-model.number="formData.amount" autocomplete="off"></el-input>
+                        元
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="备注：" :label-width="formLabelWidth">
+                        <el-input type="textarea" :rows="2" v-model.number="formData.mark" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -88,40 +127,60 @@
 
     export default {
         components: {ElRow, YuCodeRadio},
-        name: 'process-add-economic-cost',
+        name: 'process-reject-train',
         data(){
-            // 金额不能大于1万
-            let validateAmount = (rule, value, callback) => {
-                if(value > 10000){
-                    callback(new Error('金额不能大于10000元'));
+            // 开始日期校验
+            let validateStartTime = (rule, value, callback) => {
+                let endTime = this.formData.endTime;
+                if(endTime && value > endTime){
+                    callback(new Error('开始时间不能大于结束时间'));
+                    return;
+                }
+                callback();
+            };
+            // 结束日期校验
+            let validateEndTime = (rule, value, callback) => {
+                let startTime = this.formData.startTime;
+                if(startTime && value < startTime){
+                    callback(new Error('结束时间不能小于开始时间'));
+                    return;
                 }
                 callback();
             };
             return {
                 visible: false,
                 submitBtnDisabled: false,
-                formLabelWidth: '130px',
+                formLabelWidth: '110px',
                 formData: {},
-                titleMap: {
-                    add: '经济业务支出申请',
-                    edit: '经济业务支出编辑'
-                },
                 title: '',
                 url: '',
                 rules: {
                     content: [
-                        { required: true, message: '请输入事项简述', trigger: 'blur' }
+                        { required: true, message: '请输入培训内容', trigger: 'blur' }
                     ],
-                    amount: [
-                        { required: true, type: 'number', message: '金额必须为数字值', trigger: 'blur'},
-                        { validator: validateAmount, trigger: 'change' }
+                    peopleList: [
+                        { required: true, message: '请输入培训对象', trigger: 'blur' }
                     ],
-                    days: [
-                        { required: true, message: '请选择有无年度预算', trigger: 'blur' }
+                    address: [
+                        { required: true, message: '请输入培训师资', trigger: 'blur' }
+                    ],
+                    peopleNumber: [
+                        { required: true, type: 'number', message: '计划课时必须为数字值', trigger: 'blur'}
                     ],
                     firmType: [
                         { required: true, message: '请选择业务域', trigger: 'blur' }
                     ],
+                    amount: [
+                        { required: true, type: 'number', message: '金额必须为数字值', trigger: 'blur'}
+                    ],
+                    startTime: [
+                        { required: true, message: '请选择开始时间', trigger: 'blur' },
+                        { validator: validateStartTime, trigger: 'change' }
+                    ],
+                    endTime: [
+                        { required: true, message: '请选择结束时间', trigger: 'blur' },
+                        { validator: validateEndTime, trigger: 'change' }
+                    ]
                 },
                 uploadUrl: Config.get('restRoot') + 'upload/file/one',  // 图片上传地址
                 fileokIcon: false,  // 文件 成功标识
@@ -138,18 +197,22 @@
                     applyOrgId: user.get('orgId'),
                     applyOrgCodePriv: user.get('orgCodePriv'),
                     userName: user.get('userName'),
-                    firmType: user.get('firmType'),
-                    orgName: OrgUtil.getShortNameById(user.get('orgId'))
+                    orgName: OrgUtil.getShortNameById(user.get('orgId')),
+                    content: '',
+                    peopleList: '',
+                    address: '',
+                    peopleNumber: '',
+                    startTime: '',
+                    endTime: ''
                 };
                 this.fileList = [];
                 this.fileArr = [];
             },
-            open(data, url, titleType){
+            open(data, url){
                 this.initFormData();
                 this.visible = true;
                 Object.assign(this.formData, data);
                 this.url = url;
-                this.title = this.titleMap[titleType];
             },
             close(){
                 this.visible = false;
@@ -190,6 +253,14 @@
                         }
                     }
                     a++;
+                }
+                delete this.formData.createTime;
+                delete this.formData.updateTime;
+                if(typeof this.formData.startTime == 'string'){  // 当为字符串时，说明此时此值并没有被修改
+                    this.formData.startTime = new Date(this.formData.startTime);
+                }
+                if(typeof this.formData.endTime == 'string'){    // 当为字符串时，说明此时此值并没有被修改
+                    this.formData.endTime = new Date(this.formData.endTime);
                 }
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
