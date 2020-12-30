@@ -15,7 +15,7 @@
                         <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
                     <el-form-item style="margin-left: 10px;">
-                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">出差申请</el-button>
+                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">因私出国申请</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -45,16 +45,16 @@
                           width="210">
                     </el-table-column>
                     <el-table-column
+                            prop="address"
+                            align="center"
+                            width="120"
+                            label="拟到国家或地址">
+                    </el-table-column>
+                    <el-table-column
                           prop="content"
                           align="center"
                           width="200"
-                          label="出差事由">
-                    </el-table-column>
-                    <el-table-column
-                            prop="address"
-                            align="center"
-                            width="100"
-                            label="出差目的地">
+                          label="因私出国（境）理由">
                     </el-table-column>
                     <el-table-column
                           prop="startTime"
@@ -129,10 +129,10 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import AddBusinessTrip from './addBusinessTrip.vue';
-    import ApproveBusinessTrip from './approveBusinessTrip.vue';
-    import DetailsBusinessTrip from './detailsBusinessTrip.vue';
-    import RejectDialog from './handleRejectBusinessTrip.vue';
+    import AddBusinessTrip from './addGoAbroad.vue';
+    import ApproveBusinessTrip from './approveGoAbroad.vue';
+    import DetailsBusinessTrip from './detailsGoAbroad.vue';
+    import RejectDialog from './handleRejectGoAbroad.vue';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
 

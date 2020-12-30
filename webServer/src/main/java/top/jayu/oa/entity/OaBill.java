@@ -42,10 +42,8 @@ public class OaBill extends BaseParam {
 
     private String approveContent;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endTime;
 
     private Byte workAge;
@@ -74,7 +72,6 @@ public class OaBill extends BaseParam {
 
     private String extendContent;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
 
     private Date updateTime;

@@ -57,12 +57,12 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="开始日期：" :label-width="formLabelWidth">
-                        {{formData.startTime}}
+                        {{formatTime(formData.startTime)}}
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="结束日期：" :label-width="formLabelWidth">
-                        {{formData.endTime}}
+                        {{formatTime(formData.endTime)}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -143,7 +143,16 @@
                 return CodeUtil.getName(5, cellValue);
             },
             formatPeople(cellValue){
-                return cellValue + '人';
+                if(cellValue){
+                    return cellValue + '人';
+                }
+                return '';
+            },
+            formatTime(cellValue){
+                if(cellValue){
+                    return cellValue.split(' ')[0];
+                }
+                return '';
             },
             submit(passFlag){
                 this.$refs['formData'].validate((valid) => {

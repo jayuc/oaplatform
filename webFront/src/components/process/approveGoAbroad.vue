@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="年休假审批"
+    <el-dialog title="因私出国审批"
                :visible.sync="visible"
                width="700px"
     >
@@ -22,40 +22,35 @@
                         {{formatFirmType(formData.firmType)}}
                     </el-form-item>
                 </el-col>
-                <el-col :span="12">
-                    <el-form-item label="工龄：" :label-width="formLabelWidth">
-                        {{formatWorkAge(formData.workAge)}}
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-form-item label="出国理由：" prop="content" :label-width="formLabelWidth">
+                        {{formData.content}}
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
+                <el-col :span="12">
+                    <el-form-item label="拟到国家或地址：" prop="address" :label-width="formLabelWidth">
+                        {{formData.address}}
+                    </el-form-item>
+                </el-col>
                 <el-col :span="12">
                     <el-form-item label="开始日期：" :label-width="formLabelWidth">
                         {{formatTime(formData.startTime)}}
                     </el-form-item>
                 </el-col>
+            </el-row>
+            <el-row>
                 <el-col :span="12">
                     <el-form-item label="结束日期：" :label-width="formLabelWidth">
                         {{formatTime(formData.endTime)}}
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
-                    <el-form-item label="休假标准：" :label-width="formLabelWidth">
-                        {{formatHolidayType(formData.holidayType)}}
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="天数：" :label-width="formLabelWidth">
+                    <el-form-item label="停留时间：" :label-width="formLabelWidth">
                         {{formatDays(formData.days)}}
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="24">
-                    <el-form-item label="备注：" prop="content" :label-width="formLabelWidth">
-                        {{formData.mark}}
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -87,9 +82,9 @@
 <script>
 
     import RestUtil from '@/utils/RestUtil';
-    import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
     import handler from './handler';
+    import CodeUtil from '@/utils/CodeUtil';
     import TipUtil from "@/utils/TipUtil";
 
     export default {
@@ -98,7 +93,7 @@
             return {
                 visible: false,
                 submitBtnDisabled: false,
-                formLabelWidth: '110px',
+                formLabelWidth: '140px',
                 formData: {},
                 url: '',
                 fileList: []
@@ -120,9 +115,6 @@
             close(){
                 this.visible = false;
             },
-            formatHolidayType(cellValue){
-                return CodeUtil.getName(3, cellValue);
-            },
             formatOrg(cellValue){
                 if(cellValue){
                     let org = OrgUtil.getOrgById(cellValue);
@@ -132,24 +124,27 @@
                 }
                 return '';
             },
+            formatTravelTool(cellValue){
+                return CodeUtil.getName(2, cellValue);
+            },
             formatFirmType(cellValue){
                 return CodeUtil.getName(5, cellValue);
             },
-            formatWorkAge(cellValue){
+            formatPeople(cellValue){
                 if(cellValue){
-                    return cellValue + '年';
-                }
-                return '';
-            },
-            formatDays(cellValue){
-                if(cellValue){
-                    return cellValue + '天';
+                    return cellValue + '人';
                 }
                 return '';
             },
             formatTime(cellValue){
                 if(cellValue){
                     return cellValue.split(' ')[0];
+                }
+                return '';
+            },
+            formatDays(cellValue){
+                if(cellValue){
+                    return cellValue + '天';
                 }
                 return '';
             },

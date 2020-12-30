@@ -61,12 +61,14 @@
                           prop="startTime"
                           align="center"
                           width="100"
+                          :formatter="formatTime"
                           label="开始日期">
                     </el-table-column>
                     <el-table-column
                           prop="endTime"
                           align="center"
                           width="100"
+                          :formatter="formatTime"
                           label="结束日期">
                     </el-table-column>
                     <el-table-column
@@ -209,6 +211,12 @@
                         return '未完成';
                     }
                     return '';
+                }
+                return '';
+            },
+            formatTime(row, column, cellValue){
+                if(cellValue){
+                    return cellValue.split(' ')[0];
                 }
                 return '';
             },

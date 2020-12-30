@@ -15,7 +15,7 @@
                         <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
                     <el-form-item style="margin-left: 10px;">
-                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">出差申请</el-button>
+                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">出差交通工具调整申请</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -45,30 +45,24 @@
                           width="210">
                     </el-table-column>
                     <el-table-column
+                            prop="travelTool"
+                            align="center"
+                            width="140"
+                            :formatter="formatTravelTool"
+                            label="规定交通工具">
+                    </el-table-column>
+                    <el-table-column
+                            prop="holidayType"
+                            align="center"
+                            width="140"
+                            :formatter="formatTravelTool"
+                            label="调整交通工具">
+                    </el-table-column>
+                    <el-table-column
                           prop="content"
                           align="center"
-                          width="200"
-                          label="出差事由">
-                    </el-table-column>
-                    <el-table-column
-                            prop="address"
-                            align="center"
-                            width="100"
-                            label="出差目的地">
-                    </el-table-column>
-                    <el-table-column
-                          prop="startTime"
-                          align="center"
-                          width="100"
-                          :formatter="formatTime"
-                          label="开始日期">
-                    </el-table-column>
-                    <el-table-column
-                          prop="endTime"
-                          align="center"
-                          width="100"
-                          :formatter="formatTime"
-                          label="结束日期">
+                          width="220"
+                          label="原因说明">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
@@ -129,11 +123,12 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import AddBusinessTrip from './addBusinessTrip.vue';
-    import ApproveBusinessTrip from './approveBusinessTrip.vue';
-    import DetailsBusinessTrip from './detailsBusinessTrip.vue';
-    import RejectDialog from './handleRejectBusinessTrip.vue';
+    import AddBusinessTrip from './addTravelToolSet.vue';
+    import ApproveBusinessTrip from './approveTravelToolSet.vue';
+    import DetailsBusinessTrip from './detailsTravelToolSet.vue';
+    import RejectDialog from './handleRejectTravelToolSet.vue';
     import OrgUtil from '@/utils/OrgUtil';
+    import CodeUtil from '@/utils/CodeUtil';
     import user from '@/user';
 
     export default {
@@ -152,7 +147,7 @@
                     pageNumber: 1,
                     pageSize: 15,
                     stopFlag: 2,
-                    billType: 2
+                    billType: 6
                 },
                 searchBtnStatus: false,
                 total: 0,
@@ -194,12 +189,6 @@
                 }
                 return '';
             },
-            formatTime(row, column, cellValue){
-                if(cellValue){
-                    return cellValue.split(' ')[0];
-                }
-                return '';
-            },
             formatStopFlag(row, column, cellValue){
                 if(cellValue){
                     if(cellValue == 1){
@@ -211,6 +200,9 @@
                     return '';
                 }
                 return '';
+            },
+            formatTravelTool(row, column, cellValue){
+                return CodeUtil.getName(2, cellValue);
             },
             // 是否显示审批按钮
             ifShowApproveButton(row){
