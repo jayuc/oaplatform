@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="出差交通工具调整驳回处置"
+    <el-dialog :title="title"
                :visible.sync="visible"
                width="700px"
     >
@@ -25,57 +25,37 @@
                                        ref="firmTypeSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
-                    <el-form-item label="规定交通工具：" prop="travelTool" :label-width="formLabelWidth">
-                        <yu-code-radio @change="travelToolChange"
-                                       :code="2"
-                                       :initValue="formData.travelTool"
-                                       ref="travelToolSelect"></yu-code-radio>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="调整交通工具：" prop="holidayType" :label-width="formLabelWidth">
-                        <yu-code-radio @change="holidayTypeChange"
-                                       :code="2"
-                                       :initValue="formData.holidayType"
-                                       ref="holidayTypeSelect"></yu-code-radio>
+                    <el-form-item label="申请时间：" :label-width="formLabelWidth">
+                        {{formatNow()}}
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="24">
-                    <el-form-item label="原因说明：" prop="content" :label-width="formLabelWidth">
+                    <el-form-item label="调阅内容：" prop="content" :label-width="formLabelWidth">
                         <el-input type="textarea" :rows="3" v-model.number="formData.content" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="实际开始日期：" prop="startTime" :label-width="formLabelWidth">
-                        <el-date-picker
-                                v-model="formData.startTime"
-                                type="date"
-                                placeholder="选择日期">
-                        </el-date-picker>
+                    <el-form-item label="是否复印：" prop="holidayType" :label-width="formLabelWidth">
+                        <el-radio v-model="formData.holidayType" :label="1">是</el-radio>
+                        <el-radio v-model="formData.holidayType" :label="2">否</el-radio>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="实际结束日期：" prop="endTime" style="width: 100%" :label-width="formLabelWidth">
-                        <el-date-picker
-                                v-model="formData.endTime"
-                                type="date"
-                                placeholder="选择日期">
-                        </el-date-picker>
+                    <el-form-item label="是否外借：" prop="days" :label-width="formLabelWidth">
+                        <el-radio v-model="formData.days" :label="1">是</el-radio>
+                        <el-radio v-model="formData.days" :label="2">否</el-radio>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
-                <el-col :span="12">
-                    <el-form-item label="共计天数：" prop="days" :label-width="formLabelWidth">
-                        <el-input style="width: 180px;" v-model.number="formData.days" autocomplete="off"></el-input>
-                        天
+                <el-col :span="24">
+                    <el-form-item label="备注：" :label-width="formLabelWidth">
+                        <el-input type="textarea" :rows="3" v-model.number="formData.mark" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -117,56 +97,35 @@
     import Config from '@/config';
     import YuCodeRadio from "../public/yu-code-radio.vue";
     import TipUtil from "@/utils/TipUtil";
+    import DateUtil from "@/utils/DateUtil";
 
     export default {
         components: {ElRow, YuCodeRadio},
-        name: 'process-reject-travel-tool-set',
+        name: 'process-add-business-trip',
         data(){
-            // 开始日期校验
-            let validateStartTime = (rule, value, callback) => {
-                let endTime = this.formData.endTime;
-                if(endTime && value > endTime){
-                    callback(new Error('开始日期不能大于结束日期'));
-                    return;
-                }
-                callback();
-            };
-            // 结束日期校验
-            let validateEndTime = (rule, value, callback) => {
-                let startTime = this.formData.startTime;
-                if(startTime && value < startTime){
-                    callback(new Error('结束日期不能小于开始日期'));
-                    return;
-                }
-                callback();
-            };
             return {
                 visible: false,
                 submitBtnDisabled: false,
-                formLabelWidth: '130px',
+                formLabelWidth: '110px',
                 formData: {},
+                titleMap: {
+                    add: '调阅会计档案申请',
+                    edit: '调阅会计档案编辑'
+                },
                 title: '',
                 url: '',
                 rules: {
                     content: [
-                        { required: true, message: '请输入原因说明', trigger: 'blur' }
-                    ],
-                    travelTool: [
-                        { required: true, message: '请选择规定交通工具', trigger: 'blur' }
+                        { required: true, message: '请输入调阅文档内容', trigger: 'blur' }
                     ],
                     holidayType: [
-                        { required: true, message: '请选择调整交通工具', trigger: 'blur' }
+                        { required: true, message: '请选择是否复印', trigger: 'blur' }
+                    ],
+                    days: [
+                        { required: true, message: '请选择是否外借', trigger: 'blur' }
                     ],
                     firmType: [
                         { required: true, message: '请选择业务域', trigger: 'blur' }
-                    ],
-                    startTime: [
-                        { required: true, message: '请选择开始日期', trigger: 'blur' },
-                        { validator: validateStartTime, trigger: 'change' }
-                    ],
-                    endTime: [
-                        { required: true, message: '请选择结束日期', trigger: 'blur' },
-                        { validator: validateEndTime, trigger: 'change' }
                     ]
                 },
                 uploadUrl: Config.get('restRoot') + 'upload/file/one',  // 图片上传地址
@@ -184,22 +143,22 @@
                     applyOrgId: user.get('orgId'),
                     applyOrgCodePriv: user.get('orgCodePriv'),
                     userName: user.get('userName'),
-                    orgName: OrgUtil.getShortNameById(user.get('orgId')),
-                    content: '',
-                    address: '',
-                    peopleNumber: '',
-                    startTime: '',
-                    endTime: '',
-                    days: ''
+                    firmType: user.get('firmType'),
+                    orgName: OrgUtil.getShortNameById(user.get('orgId'))
                 };
                 this.fileList = [];
                 this.fileArr = [];
+                // 交通工具下拉框复位
+                if(this.$refs.travelToolSelect){
+                    this.$refs.travelToolSelect.reset();
+                }
             },
-            open(data, url){
+            open(data, url, titleType){
                 this.initFormData();
                 this.visible = true;
                 Object.assign(this.formData, data);
                 this.url = url;
+                this.title = this.titleMap[titleType];
             },
             close(){
                 this.visible = false;
@@ -220,15 +179,11 @@
             beforeRemove(file) {
                 return this.$confirm(`确定移除 ${ file.name }？`);
             },
-            // 交通工具处理
-            travelToolChange(key){
-                this.formData.travelTool = key;
-            },
-            holidayTypeChange(key){
-                this.formData.holidayType = key;
-            },
             firmTypeChange(key){
                 this.formData.firmType = key;
+            },
+            formatNow(){
+                return DateUtil.format(new Date().getTime(), 'YYYY-MM-DD HH:mm:ss');
             },
             submit(passFlag){
                 let a = 1;
@@ -247,14 +202,6 @@
                         }
                     }
                     a++;
-                }
-                delete this.formData.createTime;
-                delete this.formData.updateTime;
-                if(typeof this.formData.startTime == 'string'){  // 当为字符串时，说明此时此值并没有被修改
-                    this.formData.startTime = new Date(this.formData.startTime);
-                }
-                if(typeof this.formData.endTime == 'string'){    // 当为字符串时，说明此时此值并没有被修改
-                    this.formData.endTime = new Date(this.formData.endTime);
                 }
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {

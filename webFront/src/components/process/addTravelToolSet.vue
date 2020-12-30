@@ -147,10 +147,7 @@
                 url: '',
                 rules: {
                     content: [
-                        { required: true, message: '请输入出差事由', trigger: 'blur' }
-                    ],
-                    peopleList: [
-                        { required: true, message: '请输入出差人员', trigger: 'blur' }
+                        { required: true, message: '请输入原因说明', trigger: 'blur' }
                     ],
                     travelTool: [
                         { required: true, message: '请选择规定交通工具', trigger: 'blur' }

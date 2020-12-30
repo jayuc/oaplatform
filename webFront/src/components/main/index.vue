@@ -29,6 +29,7 @@
                 <el-menu-item index="/main/train">培训</el-menu-item>
                 <el-menu-item index="/main/travelToolSet">出差交通工具调整</el-menu-item>
                 <el-menu-item index="/main/goAbroad">因私出国</el-menu-item>
+                <el-menu-item index="/main/lookDoc">调阅会计档案</el-menu-item>
             </el-submenu>
               <el-submenu index="2" v-if="userName == '超级管理员'">
                   <template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>

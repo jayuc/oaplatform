@@ -136,20 +136,14 @@
                 url: '',
                 rules: {
                     content: [
-                        { required: true, message: '请输入出差事由', trigger: 'blur' }
-                    ],
-                    peopleList: [
-                        { required: true, message: '请输入出差人员', trigger: 'blur' }
+                        { required: true, message: '请输入出国理由', trigger: 'blur' }
                     ],
                     address: [
-                        { required: true, message: '请输入出差目的地', trigger: 'blur' }
+                        { required: true, message: '请输入拟到国家或地址', trigger: 'blur' }
                     ],
                     days: [
                         { required: true, message: '请输入天数', trigger: 'blur' },
                         { type: 'number', message: '天数必须为数字值'}
-                    ],
-                    peopleNumber: [
-                        { required: true, type: 'number', message: '人数必须为数字值', trigger: 'blur'}
                     ],
                     firmType: [
                         { required: true, message: '请选择业务域', trigger: 'blur' }
@@ -180,9 +174,7 @@
                     userName: user.get('userName'),
                     orgName: OrgUtil.getShortNameById(user.get('orgId')),
                     content: '',
-                    peopleList: '',
                     address: '',
-                    peopleNumber: '',
                     startTime: '',
                     endTime: '',
                     days: ''
