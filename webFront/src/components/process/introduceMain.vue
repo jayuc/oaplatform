@@ -15,7 +15,7 @@
                         <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
                     <el-form-item style="margin-left: 10px;">
-                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">因私出国申请</el-button>
+                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">市局（公司）介绍信开具申请</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -45,30 +45,17 @@
                           width="210">
                     </el-table-column>
                     <el-table-column
-                            prop="address"
-                            align="center"
-                            width="120"
-                            label="拟到国家或地址">
-                    </el-table-column>
-                    <el-table-column
                           prop="content"
                           align="center"
-                          width="200"
-                          label="因私出国（境）理由">
+                          width="280"
+                          label="申请原因">
                     </el-table-column>
                     <el-table-column
-                          prop="startTime"
+                          prop="createTime"
                           align="center"
-                          width="100"
+                          width="120"
                           :formatter="formatTime"
-                          label="开始日期">
-                    </el-table-column>
-                    <el-table-column
-                          prop="endTime"
-                          align="center"
-                          width="100"
-                          :formatter="formatTime"
-                          label="结束日期">
+                          label="申请日期">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
@@ -129,15 +116,15 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import AddBusinessTrip from './addGoAbroad.vue';
-    import ApproveBusinessTrip from './approveGoAbroad.vue';
-    import DetailsBusinessTrip from './detailsGoAbroad.vue';
-    import RejectDialog from './handleRejectGoAbroad.vue';
+    import AddBusinessTrip from './addIntroduce.vue';
+    import ApproveBusinessTrip from './approveIntroduce.vue';
+    import DetailsBusinessTrip from './detailIntroduce.vue';
+    import RejectDialog from './handleRejectIntroduce.vue';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
 
     export default {
-        name: 'process-go-abroad',
+        name: 'process-introduce',
         components: {
             AddBusinessTrip,
             ApproveBusinessTrip,
@@ -152,7 +139,7 @@
                     pageNumber: 1,
                     pageSize: 15,
                     stopFlag: 2,
-                    billType: 2
+                    billType: 10
                 },
                 searchBtnStatus: false,
                 total: 0,

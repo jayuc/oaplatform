@@ -132,7 +132,7 @@
     import user from '@/user';
 
     export default {
-        name: 'process-leave',
+        name: 'process-travel-tool',
         components: {
             AddBusinessTrip,
             ApproveBusinessTrip,

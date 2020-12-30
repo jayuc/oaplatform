@@ -23,13 +23,15 @@
           >
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-edit"></i>流程</template>
-                  <el-menu-item index="/main/leave">年休假</el-menu-item>
-                  <el-menu-item index="/main/errand">出差</el-menu-item>
-                  <el-menu-item index="/main/cost">经济业务支出</el-menu-item>
-                <el-menu-item index="/main/train">培训</el-menu-item>
-                <el-menu-item index="/main/travelToolSet">出差交通工具调整</el-menu-item>
-                <el-menu-item index="/main/goAbroad">因私出国</el-menu-item>
-                <el-menu-item index="/main/lookDoc">调阅会计档案</el-menu-item>
+                <el-menu-item index="/main/errand">出差申请</el-menu-item>
+                <el-menu-item index="/main/leave">年休假申请</el-menu-item>
+                <el-menu-item style="padding-left: 10px;" index="/main/cost">经济业务支出事前申请</el-menu-item>
+                <el-menu-item index="/main/train">培训申请</el-menu-item>
+                <el-menu-item style="padding-left: 10px;" index="/main/travelToolSet">出差交通工具调整申请</el-menu-item>
+                <el-menu-item style="padding-left: 10px;" index="/main/goAbroad">员工因私出国申请</el-menu-item>
+                <el-menu-item style="padding-left: 10px;" index="/main/introduce">市局介绍信开具申请</el-menu-item>
+                <el-menu-item style="padding-left: 10px;" index="/main/certificate">市局证件使用申请</el-menu-item>
+                <el-menu-item index="/main/lookDoc">调阅会计档案申请</el-menu-item>
             </el-submenu>
               <el-submenu index="2" v-if="userName == '超级管理员'">
                   <template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>

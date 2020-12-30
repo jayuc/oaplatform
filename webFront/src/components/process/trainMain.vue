@@ -135,7 +135,7 @@
     import user from '@/user';
 
     export default {
-        name: 'process-leave',
+        name: 'process-train',
         components: {
             AddBusinessTrip,
             ApproveBusinessTrip,

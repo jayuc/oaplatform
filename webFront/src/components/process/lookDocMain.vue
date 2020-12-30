@@ -54,13 +54,14 @@
                             prop="holidayType"
                             align="center"
                             width="100"
+                            :formatter="formatYesFlag"
                             label="是否复印">
                     </el-table-column>
                     <el-table-column
                           prop="days"
                           align="center"
                           width="100"
-                          :formatter="formatTime"
+                          :formatter="formatYesFlag"
                           label="是否外借">
                     </el-table-column>
                     <el-table-column
@@ -130,14 +131,14 @@
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
     import AddBusinessTrip from './addLookDoc.vue';
-    import ApproveBusinessTrip from './approveBusinessTrip.vue';
-    import DetailsBusinessTrip from './detailsBusinessTrip.vue';
-    import RejectDialog from './handleRejectBusinessTrip.vue';
+    import ApproveBusinessTrip from './approveLookDoc.vue';
+    import DetailsBusinessTrip from './detailsLookDoc.vue';
+    import RejectDialog from './handleRejectLookDoc.vue';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
 
     export default {
-        name: 'process-leave',
+        name: 'process-look-doc',
         components: {
             AddBusinessTrip,
             ApproveBusinessTrip,
@@ -152,7 +153,7 @@
                     pageNumber: 1,
                     pageSize: 15,
                     stopFlag: 2,
-                    billType: 2
+                    billType: 8
                 },
                 searchBtnStatus: false,
                 total: 0,
@@ -197,6 +198,14 @@
             formatTime(row, column, cellValue){
                 if(cellValue){
                     return cellValue.split(' ')[0];
+                }
+                return '';
+            },
+            formatYesFlag(row, column, cellValue){
+                if(cellValue == 1){
+                    return '是';
+                }else if(cellValue == 2){
+                    return '否';
                 }
                 return '';
             },

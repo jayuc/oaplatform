@@ -15,7 +15,7 @@
                         <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
                     <el-form-item style="margin-left: 10px;">
-                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">因私出国申请</el-button>
+                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">市局（公司）证件（复印件）使用申请</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -47,28 +47,29 @@
                     <el-table-column
                             prop="address"
                             align="center"
-                            width="120"
-                            label="拟到国家或地址">
+                            width="100"
+                            :formatter="formatTime"
+                            label="使用证件">
                     </el-table-column>
                     <el-table-column
                           prop="content"
                           align="center"
                           width="200"
-                          label="因私出国（境）理由">
+                          label="使用用途">
                     </el-table-column>
                     <el-table-column
-                          prop="startTime"
-                          align="center"
-                          width="100"
-                          :formatter="formatTime"
-                          label="开始日期">
+                            prop="holidayType"
+                            align="center"
+                            width="100"
+                            :formatter="formatYesFlag"
+                            label="是否复印">
                     </el-table-column>
                     <el-table-column
-                          prop="endTime"
+                          prop="days"
                           align="center"
                           width="100"
-                          :formatter="formatTime"
-                          label="结束日期">
+                          :formatter="formatYesFlag"
+                          label="是否外借">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
@@ -129,15 +130,15 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import AddBusinessTrip from './addGoAbroad.vue';
-    import ApproveBusinessTrip from './approveGoAbroad.vue';
-    import DetailsBusinessTrip from './detailsGoAbroad.vue';
-    import RejectDialog from './handleRejectGoAbroad.vue';
+    import AddBusinessTrip from './addCertificate.vue';
+    import ApproveBusinessTrip from './approveCertificate.vue';
+    import DetailsBusinessTrip from './detailsCertificate.vue';
+    import RejectDialog from './handleRejectCertificate.vue';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
 
     export default {
-        name: 'process-go-abroad',
+        name: 'process-look-certificate',
         components: {
             AddBusinessTrip,
             ApproveBusinessTrip,
@@ -152,7 +153,7 @@
                     pageNumber: 1,
                     pageSize: 15,
                     stopFlag: 2,
-                    billType: 2
+                    billType: 11
                 },
                 searchBtnStatus: false,
                 total: 0,
@@ -197,6 +198,14 @@
             formatTime(row, column, cellValue){
                 if(cellValue){
                     return cellValue.split(' ')[0];
+                }
+                return '';
+            },
+            formatYesFlag(row, column, cellValue){
+                if(cellValue == 1){
+                    return '是';
+                }else if(cellValue == 2){
+                    return '否';
                 }
                 return '';
             },
