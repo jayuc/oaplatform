@@ -11,6 +11,7 @@ INSERT t_sys_code_type (code,name) VALUE (2,'交通工具');
 INSERT t_sys_code_type (code,name) VALUE (3,'休假标准');
 INSERT t_sys_code_type (code,name) VALUE (4,'性别');
 INSERT t_sys_code_type (code,name) VALUE (5,'业务域');
+INSERT t_sys_code_type (code,name) VALUE (6,'会场类型');
 
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,1,'公休假',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,2,'出差',1);
@@ -49,3 +50,8 @@ INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (5,9,'信息中心',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (5,10,'纪检监察',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (5,11,'法规',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (5,12,'党建群团',1);
+
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,1,'2302会议室',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,2,'2208会议室',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,3,'2207会议室',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,4,'2107会议室',1);

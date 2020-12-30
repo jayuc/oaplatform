@@ -14,6 +14,8 @@ import GoAbroad from '@/components/process/goAbroadMain';
 import LookDoc from '@/components/process/lookDocMain';
 import Introduce from '@/components/process/introduceMain';
 import Certificate from '@/components/process/certificateMain';
+import Meeting from '@/components/process/meetingMain';
+import MainMain from '@/components/main/main';
 import Doing from '@/components/process/doing';
 
 Vue.use(Router);
@@ -30,6 +32,7 @@ export default new Router({
         name: 'Main',
         component: Main,
         children: [
+            {path: 'main', component: MainMain},   // 首页
             {path: 'leave', component: LeaveBill},   // 请假
             {path: 'errand', component: BusinessTrip},  // 出差
             {path: 'cost', component: EconomicCost},  // 经济支出
@@ -39,6 +42,7 @@ export default new Router({
             {path: 'lookDoc', component: LookDoc},  // 调阅会计档案
             {path: 'introduce', component: Introduce},  // 介绍信
             {path: 'certificate', component: Certificate},  // 使用证件
+            {path: 'meeting', component: Meeting},  // 会议室
             {path: 'userManage', component: UserManage},  // 用户管理
             {path: 'orgManage', component: OrgManage},  // 机构管理
             {path: 'doing', component: Doing},  // 正在开发

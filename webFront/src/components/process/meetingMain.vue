@@ -15,7 +15,7 @@
                         <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
                     <el-form-item style="margin-left: 10px;">
-                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">因私出国申请</el-button>
+                        <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">市局机关会议室申请</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -45,35 +45,29 @@
                           width="210">
                     </el-table-column>
                     <el-table-column
-                            prop="address"
+                            prop="peopleNumber"
                             align="center"
-                            width="120"
-                            label="拟到国家或地址">
+                            width="80"
+                            label="参会人数">
                     </el-table-column>
                     <el-table-column
-                          prop="content"
-                          align="center"
-                          width="200"
-                          label="因私出国（境）理由">
+                            prop="startTime"
+                            align="center"
+                            width="200"
+                            :formatter="formatTime"
+                            label="使用时间">
                     </el-table-column>
                     <el-table-column
-                          prop="startTime"
-                          align="center"
-                          width="100"
-                          :formatter="formatTime"
-                          label="开始日期">
-                    </el-table-column>
-                    <el-table-column
-                          prop="endTime"
+                          prop="holidayType"
                           align="center"
                           width="100"
-                          :formatter="formatTime"
-                          label="结束日期">
+                          :formatter="handleHolidayType"
+                          label="会场类型">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
                             align="center"
-                            width="80"
+                            width="100"
                             :formatter="formatStopFlag"
                             label="是否完成">
                     </el-table-column>
@@ -114,13 +108,13 @@
             </div>
         </el-main>
 
-        <add-business-trip ref="addLeave" @complete="submit" />
+        <add-leave ref="addLeave" @complete="submit" />
 
-        <approve-business-trip ref="approveLeave" @complete="submit" />
+        <approve-leave ref="approveLeave" @complete="submit" />
 
         <reject-dialog ref="rejectDialog" @complete="submit" />
 
-        <details-business-trip ref="detailsLeave" />
+        <details-leave ref="detailsLeave" />
 
     </el-container>
 </template>
@@ -129,19 +123,20 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import AddBusinessTrip from './addGoAbroad.vue';
-    import ApproveBusinessTrip from './approveGoAbroad.vue';
-    import DetailsBusinessTrip from './detailsGoAbroad.vue';
-    import RejectDialog from './handleRejectGoAbroad.vue';
+    import AddLeave from './addMeeting.vue';
+    import ApproveLeave from './approveMeeting.vue';
+    import DetailsLeave from './detailsMeeting.vue';
+    import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
+    import RejectDialog from './handleRejectMeeting.vue';
 
     export default {
-        name: 'process-go-abroad',
+        name: 'process-leave',
         components: {
-            AddBusinessTrip,
-            ApproveBusinessTrip,
-            DetailsBusinessTrip,
+            AddLeave,
+            ApproveLeave,
+            DetailsLeave,
             RejectDialog
         },
         data(){
@@ -152,7 +147,7 @@
                     pageNumber: 1,
                     pageSize: 15,
                     stopFlag: 2,
-                    billType: 7
+                    billType: 5
                 },
                 searchBtnStatus: false,
                 total: 0,
@@ -194,12 +189,6 @@
                 }
                 return '';
             },
-            formatTime(row, column, cellValue){
-                if(cellValue){
-                    return cellValue.split(' ')[0];
-                }
-                return '';
-            },
             formatStopFlag(row, column, cellValue){
                 if(cellValue){
                     if(cellValue == 1){
@@ -209,6 +198,14 @@
                         return '未完成';
                     }
                     return '';
+                }
+                return '';
+            },
+            formatTime(row){
+                let sTimes = row.startTime.split(' ');
+                let eTimes = row.endTime.split(' ');
+                if(sTimes.length > 1 && eTimes.length > 1){
+                    return sTimes[0] + '　' + sTimes[1].substring(0,5) + ' - ' + eTimes[1].substring(0,5);
                 }
                 return '';
             },
@@ -248,6 +245,9 @@
             },
             approveBill(row){
                 this.$refs.approveLeave.open(row, 'oa/bill/deliver');
+            },
+            handleHolidayType(row, column, cellValue){
+                return CodeUtil.getName(6, cellValue);
             },
             handleSizeChange(currentPageSize) {
                 this.formData.pageSize = currentPageSize;

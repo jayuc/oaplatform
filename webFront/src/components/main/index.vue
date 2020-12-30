@@ -21,12 +21,17 @@
                    :router="true"
                    style="overflow: hidden;"
           >
+              <el-menu-item index="/main/main">
+                  <i class="el-icon-house"></i>
+                  <span slot="title">首页</span>
+              </el-menu-item>
             <el-submenu index="1">
               <template slot="title"><i class="el-icon-edit"></i>流程</template>
                 <el-menu-item index="/main/errand">出差申请</el-menu-item>
                 <el-menu-item index="/main/leave">年休假申请</el-menu-item>
                 <el-menu-item style="padding-left: 10px;" index="/main/cost">经济业务支出事前申请</el-menu-item>
                 <el-menu-item index="/main/train">培训申请</el-menu-item>
+                <el-menu-item style="padding-left: 10px;" index="/main/meeting">市局机关会议室申请</el-menu-item>
                 <el-menu-item style="padding-left: 10px;" index="/main/travelToolSet">出差交通工具调整申请</el-menu-item>
                 <el-menu-item style="padding-left: 10px;" index="/main/goAbroad">员工因私出国申请</el-menu-item>
                 <el-menu-item style="padding-left: 10px;" index="/main/introduce">市局介绍信开具申请</el-menu-item>
@@ -59,27 +64,32 @@
 <script>
     import Config from '@/config';
     import User from '@/user';
+    import ElSubmenu from "../../../node_modules/element-ui/packages/menu/src/submenu.vue";
 
     export default {
-      name: 'the-main',
-      data() {
-          return {
-              activeOpeneds: ['1'],
-              mainTitle: Config.get('mainTitle'),
-              userName: User.get('userName'),
-          };
-      },
-      methods: {
-          handleOpen(index, path) {
-              this.activeOpeneds = path;
-          },
-          handleClose(index, path) {
-              console.log(index, path);
-          },
-          selectItem(index, path){
-              console.log(index, path);
-          }
-      }
+        components: {ElSubmenu},
+        name: 'the-main',
+        data() {
+            return {
+                activeOpeneds: [],
+                mainTitle: Config.get('mainTitle'),
+                userName: User.get('userName'),
+            };
+        },
+        methods: {
+            handleOpen(index, path) {
+                this.activeOpeneds = path;
+            },
+            handleClose(index, path) {
+                console.log(index, path);
+            },
+            selectItem(index, path){
+                console.log(index, path);
+            }
+        },
+        mounted(){
+            this.$router.push("/main/main");
+        }
     }
 </script>
 
