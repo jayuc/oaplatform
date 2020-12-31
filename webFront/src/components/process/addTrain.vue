@@ -197,6 +197,7 @@
             initFormData(){
                 this.formData = {
                     currentStep: '00',
+                    applyOrgYesOffice: user.get('yesOffice'),
                     applyId: user.get('userId'),
                     applyOrgId: user.get('orgId'),
                     applyOrgCodePriv: user.get('orgCodePriv'),

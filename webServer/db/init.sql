@@ -93,6 +93,7 @@ CREATE TABLE `t_oa_bill` (
   `next_approve_list` varchar(128) DEFAULT NULL COMMENT '下一步审批人id列表，中间用英文逗号隔开，例如,2,34,',
   `history_approve_list` varchar(256) DEFAULT NULL COMMENT '历史审批人id列表，中间用英文逗号隔开，例如,2,34,',
   `apply_org_id` int(11) DEFAULT NULL COMMENT '申请人机构id',
+  `apply_org_yes_office` tinyint DEFAULT NULL COMMENT '申请人机构是否是机关,1表示是',
   `apply_org_code_priv` varchar(32) DEFAULT NULL COMMENT '申请人机构权限编码,用来判断机构层级',
   `approve_org_code_priv` varchar(32) DEFAULT NULL COMMENT '审批人机构权限编码,用来判断机构层级',
   `pass_flag` tinyint DEFAULT NULL COMMENT '是否同意 1同意，2不同意，0创建申请单',
@@ -184,19 +185,19 @@ CREATE TABLE `t_oa_bill_opera` (
 
 # 模拟数据
 INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('applyOrgId', 'Integer', 'orgService', 'findOrgLeader', '部门负责人');
+VALUE ('OaBill', 'OaBill', 'orgService', 'findOrgLeader', '部门负责人');
 INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findCompanyDeputy', '市局分管领导');
+VALUE ('OaBill', 'OaBill', 'orgService', 'findCompanyDeputy', '市局分管领导');
 INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findCompanyLeader', '市局负责人');
+VALUE ('OaBill', 'OaBill', 'orgService', 'findCompanyLeader', '市局负责人');
 INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findUnitDeputy', '单位分管领导');
+VALUE ('OaBill', 'OaBill', 'orgService', 'findUnitDeputy', '单位分管领导');
 INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('applyOrgCodePriv', 'String', 'orgService', 'findUnitLeader', '单位负责人');
+VALUE ('OaBill', 'OaBill', 'orgService', 'findUnitLeader', '单位负责人');
 
 # 出差
 INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE (6, 'applyOrgCodePriv', 'String', 'orgService', 'findUnitLeader', '单位/部门负责人');
+VALUE (6, 'OaBill', 'OaBill', 'orgService', 'findUnitLeader', '单位/部门负责人');
 INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
 VALUE (7, 'applyOrgCodePriv', 'String', 'orgService', 'findCompanyDeputy', '市局分管领导');
 

@@ -7,4 +7,4 @@ use `oa`;
 
 SET NAMES utf8mb4;
 
-ALTER TABLE t_oa_bill ADD COLUMN `firm_type` tinyint NOT NULL;
+ALTER TABLE t_oa_bill ADD COLUMN `apply_org_yes_office` tinyint DEFAULT NULL

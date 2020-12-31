@@ -173,8 +173,8 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 if(processName != null){
                     bill.setCurrentStep(processName);
                     bill.setStopFlag((byte) 2);
-                    if(level.approveId > 0){
-                        bill.setNextApproveList("," + level.approveId + ",");
+                    if(!StrUtil.isBlank(level.approveId)){
+                        bill.setNextApproveList(level.approveId);
                     }else {
                         result.error(level.stepName + "未配置，请联系管理员进行配置");
                         // 不入库

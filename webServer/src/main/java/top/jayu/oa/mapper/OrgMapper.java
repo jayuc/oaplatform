@@ -76,4 +76,7 @@ public interface OrgMapper {
     @Select("select * from t_sys_org where LENGTH (org_code_priv) = 12")
     List<Org> list4();
 
+    @Select("select * from t_sys_org where length(org_code_priv) = 6 and yes_office = 1 and org_name like concat(#{firmTypeName},'%')")
+    Org getOrgByFirmTypeName(String firmTypeName);
+
 }

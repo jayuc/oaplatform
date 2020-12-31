@@ -22,6 +22,8 @@ public class OaBill extends BaseParam {
 
     private Byte passFlag;  // 是否同意 1表示同意，2表示不同意，0表示创建表单
 
+    private Byte applyOrgYesOffice;
+
     private Integer applyId;
 
     private String applyName;

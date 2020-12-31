@@ -3,8 +3,11 @@ package top.jayu.oa.service;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.jayu.oa.entity.Code;
+import top.jayu.oa.entity.OaBill;
 import top.jayu.oa.entity.Org;
 import top.jayu.oa.entity.OrgTree;
+import top.jayu.oa.mapper.CodeMapper;
 import top.jayu.oa.mapper.OrgMapper;
 
 import java.util.Arrays;
@@ -21,6 +24,8 @@ public class OrgService {
 
     @Autowired
     OrgMapper orgMapper;
+    @Autowired
+    CodeMapper codeMapper;
 
     /**
      * 是否是机关
@@ -46,23 +51,35 @@ public class OrgService {
     }
 
     // 查询市局分管领导
-    public String findCompanyDeputy(String orgCodePriv){
+    public String findCompanyDeputy(OaBill oaBill){
+        String orgCodePriv = oaBill.getApplyOrgCodePriv();
         if(StrUtil.isBlank(orgCodePriv)){
             return null;
         }
-        String orgPriv = orgCodePriv.substring(0, 6);
-        Integer deputyId = orgMapper.findOrgDeputyByPriv(orgPriv);
-        return "," + deputyId + ",";
+        if(oaBill.getApplyOrgYesOffice() == 1){
+            String orgPriv = orgCodePriv.substring(0, 6);
+            Integer deputyId = orgMapper.findOrgDeputyByPriv(orgPriv);
+            return "," + deputyId + ",";
+        }
+        Byte firmType = oaBill.getFirmType();
+        Code code = new Code();
+        code.setCode((short) 5);
+        code.setCodeNo(firmType);
+        Code codeList = codeMapper.getCode(code);
+        String codeName = codeList.getName();
+        Org orgByFirmTypeName = orgMapper.getOrgByFirmTypeName(codeName);
+        return "," + orgByFirmTypeName.getDeputyId() + ",";
     }
 
     // 查询市局负责人
-    public String findCompanyLeader(String orgCodePriv){
+    public String findCompanyLeader(OaBill oaBill){
         Integer deputyId = orgMapper.findOrgLeaderByPriv("340000");
         return "," + deputyId + ",";
     }
 
     // 查询单位分管领导
-    public String findUnitDeputy(String orgCodePriv){
+    public String findUnitDeputy(OaBill oaBill){
+        String orgCodePriv = oaBill.getApplyOrgCodePriv();
         if(StrUtil.isBlank(orgCodePriv)){
             return null;
         }
@@ -72,7 +89,8 @@ public class OrgService {
     }
 
     // 查询单位负责人
-    public String findUnitLeader(String orgCodePriv){
+    public String findUnitLeader(OaBill oaBill){
+        String orgCodePriv = oaBill.getApplyOrgCodePriv();
         if(StrUtil.isBlank(orgCodePriv)){
             return null;
         }

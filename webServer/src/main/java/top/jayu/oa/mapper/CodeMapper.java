@@ -18,4 +18,7 @@ public interface CodeMapper {
     })
     List<Code> list(Code code);
 
+    @Select("select * from t_sys_code where code = #{code} and code_no = #{codeNo}")
+    Code getCode(Code code);
+
 }
