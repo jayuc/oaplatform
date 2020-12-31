@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.jayu.oa.entity.OaBill;
 import top.jayu.oa.iter.WorkFlowEngine;
 import top.jayu.oa.mapper.OaBillMapper;
+import top.jayu.oa.param.BaseParam;
 import top.jayu.oa.param.OaBillParam;
 import top.jayu.oa.util.ResultUtil;
 
@@ -39,6 +40,14 @@ public class OaBillController {
             result.total(page.getTotal());
         }
         return result.getResult();
+    }
+
+    @GetMapping("/pending")
+    public List<OaBill> pending(OaBill dto){
+        if(dto.getStopFlag() == null){
+            dto.setStopFlag((byte) 2);
+        }
+        return oaBillMapper.list(dto);
     }
 
     /**

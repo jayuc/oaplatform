@@ -6,10 +6,17 @@
 
 <script>
 
+    import RestUtil from '@/utils/RestUtil';
+
     export default {
         name: 'main-main',
         methods: {
 
+        },
+        mounted(){
+            RestUtil.get('oa/bill/pending').then((list) => {
+                console.log(list);
+            });
         }
     }
 </script>
