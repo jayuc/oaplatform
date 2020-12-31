@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.jayu.oa.entity.Code;
 import top.jayu.oa.entity.OaBill;
+import top.jayu.oa.entity.OaBillPending;
 import top.jayu.oa.iter.WorkFlowEngine;
+import top.jayu.oa.mapper.CodeMapper;
 import top.jayu.oa.mapper.OaBillMapper;
 import top.jayu.oa.param.BaseParam;
 import top.jayu.oa.param.OaBillParam;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/oa/bill")
@@ -26,6 +30,8 @@ public class OaBillController {
 
     @Autowired
     OaBillMapper oaBillMapper;
+    @Autowired
+    CodeMapper codeMapper;
     @Autowired
     WorkFlowEngine workFlowEngine;
 
@@ -43,11 +49,38 @@ public class OaBillController {
     }
 
     @GetMapping("/pending")
-    public List<OaBill> pending(OaBill dto){
+    public List<OaBillPending> pending(OaBill dto){
         if(dto.getStopFlag() == null){
             dto.setStopFlag((byte) 2);
         }
-        return oaBillMapper.list(dto);
+        List<OaBill> list = oaBillMapper.list(dto);
+        List<OaBillPending> pendingList = new ArrayList<>();
+        Code code = new Code();
+        code.setCode((short) 1);
+        List<Code> codeList = codeMapper.list(code);
+        Map<Byte, String> codeMap = codeList.stream().collect(Collectors.toMap(Code::getCodeNo, Code::getName));
+        list.forEach((item) -> {
+            Byte billType = item.getBillType();
+            if(codeMap.containsKey(billType)){
+                String billTypeName = codeMap.get(billType);
+                OaBillPending pending = new OaBillPending();
+                pending.setApplyName(item.getApplyName());
+                pending.setApplyTime(item.getCreateTime());
+                pending.setBillId(item.getBillId());
+                pending.setBillType(item.getBillType());
+                pending.setBillTypeName(billTypeName);
+                pending.setTitle(billTypeName + "申请");
+                if((int)dto.getCurrentUserId() == (int)item.getApplyId()){
+                    pending.setType(1);
+                    pending.setTypeName("我的申请");
+                }else {
+                    pending.setType(2);
+                    pending.setTypeName("我的审批");
+                }
+                pendingList.add(pending);
+            }
+        });
+        return pendingList;
     }
 
     /**

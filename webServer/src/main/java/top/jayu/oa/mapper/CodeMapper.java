@@ -9,7 +9,13 @@ import java.util.List;
 @Mapper
 public interface CodeMapper {
 
-    @Select("select * from t_sys_code where enable_flag = 1")
-    List<Code> list();
+    @Select({
+            "<script> ",
+            "select * from t_sys_code ",
+            " where enable_flag = 1 ",
+            "    <if test='code != null and code != 0'> and code = #{code} </if> ",
+            "</script> "
+    })
+    List<Code> list(Code code);
 
 }

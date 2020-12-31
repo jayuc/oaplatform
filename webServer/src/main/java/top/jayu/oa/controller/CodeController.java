@@ -17,8 +17,8 @@ public class CodeController {
     CodeMapper codeMapper;
 
     @GetMapping("/list")
-    public List<Code> list(){
-        return codeMapper.list();
+    public List<Code> list(Code dto){
+        return codeMapper.list(dto);
     };
 
 }
