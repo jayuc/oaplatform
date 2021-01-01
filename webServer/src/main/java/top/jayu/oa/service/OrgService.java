@@ -3,10 +3,7 @@ package top.jayu.oa.service;
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.jayu.oa.entity.Code;
-import top.jayu.oa.entity.OaBill;
-import top.jayu.oa.entity.Org;
-import top.jayu.oa.entity.OrgTree;
+import top.jayu.oa.entity.*;
 import top.jayu.oa.mapper.CodeMapper;
 import top.jayu.oa.mapper.OrgMapper;
 
@@ -51,15 +48,18 @@ public class OrgService {
     }
 
     // 查询市局分管领导
-    public String findCompanyDeputy(OaBill oaBill){
+    public OaProcessFunctionResult findCompanyDeputy(OaBill oaBill){
         String orgCodePriv = oaBill.getApplyOrgCodePriv();
         if(StrUtil.isBlank(orgCodePriv)){
             return null;
         }
         if(oaBill.getApplyOrgYesOffice() == 1){
             String orgPriv = orgCodePriv.substring(0, 6);
-            Integer deputyId = orgMapper.findOrgDeputyByPriv(orgPriv);
-            return "," + deputyId + ",";
+            Org org = orgMapper.findOrgDeputyByPriv(orgPriv);
+            OaProcessFunctionResult result = new OaProcessFunctionResult();
+            result.setApproveNameList(org.getDeputyName());
+            result.setApproveList("," + org.getDeputyId() + ",");
+            return result;
         }
         Byte firmType = oaBill.getFirmType();
         Code code = new Code();
@@ -68,35 +68,47 @@ public class OrgService {
         Code codeList = codeMapper.getCode(code);
         String codeName = codeList.getName();
         Org orgByFirmTypeName = orgMapper.getOrgByFirmTypeName(codeName);
-        return "," + orgByFirmTypeName.getDeputyId() + ",";
+        OaProcessFunctionResult result = new OaProcessFunctionResult();
+        result.setApproveList("," + orgByFirmTypeName.getDeputyId() + ",");
+        result.setApproveNameList(orgByFirmTypeName.getDeputyName());
+        return result;
     }
 
     // 查询市局负责人
-    public String findCompanyLeader(OaBill oaBill){
-        Integer deputyId = orgMapper.findOrgLeaderByPriv("340000");
-        return "," + deputyId + ",";
+    public OaProcessFunctionResult findCompanyLeader(OaBill oaBill){
+        Org org = orgMapper.findOrgLeaderByPriv("340000");
+        OaProcessFunctionResult result = new OaProcessFunctionResult();
+        result.setApproveNameList(org.getLeaderName());
+        result.setApproveList("," + org.getLeaderId() + ",");
+        return result;
     }
 
     // 查询单位分管领导
-    public String findUnitDeputy(OaBill oaBill){
+    public OaProcessFunctionResult findUnitDeputy(OaBill oaBill){
         String orgCodePriv = oaBill.getApplyOrgCodePriv();
         if(StrUtil.isBlank(orgCodePriv)){
             return null;
         }
         String orgPriv = orgCodePriv.substring(0, 8);
-        Integer deputyId = orgMapper.findOrgDeputyByPriv(orgPriv);
-        return "," + deputyId + ",";
+        Org org = orgMapper.findOrgDeputyByPriv(orgPriv);
+        OaProcessFunctionResult result = new OaProcessFunctionResult();
+        result.setApproveNameList(org.getDeputyName());
+        result.setApproveList("," + org.getDeputyId() + ",");
+        return result;
     }
 
     // 查询单位负责人
-    public String findUnitLeader(OaBill oaBill){
+    public OaProcessFunctionResult findUnitLeader(OaBill oaBill){
         String orgCodePriv = oaBill.getApplyOrgCodePriv();
         if(StrUtil.isBlank(orgCodePriv)){
             return null;
         }
         String orgPriv = orgCodePriv.substring(0, 6);
-        Integer deputyId = orgMapper.findOrgLeaderByPriv(orgPriv);
-        return "," + deputyId + ",";
+        Org org = orgMapper.findOrgLeaderByPriv(orgPriv);
+        OaProcessFunctionResult result = new OaProcessFunctionResult();
+        result.setApproveNameList(org.getLeaderName());
+        result.setApproveList("," + org.getLeaderId() + ",");
+        return result;
     }
 
     public List<OrgTree> orgTree(){

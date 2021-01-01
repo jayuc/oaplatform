@@ -48,11 +48,13 @@ public interface OrgMapper {
     @Select("select leader_id from t_sys_org where org_id = #{id}")
     Integer findOrgLeaderById(Integer id);
 
-    @Select("select deputy_id from t_sys_org where org_code_priv = #{orgCodePriv}")
-    Integer findOrgDeputyByPriv(String orgCodePriv);
+    @Select("select o.*,u.user_name deputy_name from t_sys_org o left join t_sys_user u on o.deputy_id = u.user_id " +
+            " where o.org_code_priv = #{orgCodePriv}")
+    Org findOrgDeputyByPriv(String orgCodePriv);
 
-    @Select("select leader_id from t_sys_org where org_code_priv = #{orgCodePriv}")
-    Integer findOrgLeaderByPriv(String orgCodePriv);
+    @Select("select o.*,u.user_name leader_name from t_sys_org o left join t_sys_user u on o.leader_id = u.user_id " +
+            "where o.org_code_priv = #{orgCodePriv}")
+    Org findOrgLeaderByPriv(String orgCodePriv);
 
     @Select("select org_id from t_sys_org where org_code_priv = #{orgCodePriv}")
     Integer getOrgIdByPriv(String orgCodePriv);
@@ -76,7 +78,8 @@ public interface OrgMapper {
     @Select("select * from t_sys_org where LENGTH (org_code_priv) = 12")
     List<Org> list4();
 
-    @Select("select * from t_sys_org where length(org_code_priv) = 6 and yes_office = 1 and org_name like concat(#{firmTypeName},'%')")
+    @Select("select o.*,u.user_name deputy_name from t_sys_org o left join t_sys_user u on o.deputy_id = u.user_id " +
+            " where length(o.org_code_priv) = 6 and o.yes_office = 1 and o.org_name like concat(#{firmTypeName},'%')")
     Org getOrgByFirmTypeName(String firmTypeName);
 
 }

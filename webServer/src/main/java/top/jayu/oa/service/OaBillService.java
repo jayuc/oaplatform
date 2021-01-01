@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.jayu.oa.entity.OaBill;
 import top.jayu.oa.entity.OaProcess;
+import top.jayu.oa.entity.OaProcessFunctionResult;
 import top.jayu.oa.entity.Org;
 import top.jayu.oa.mapper.OrgMapper;
 
@@ -30,8 +31,8 @@ public class OaBillService {
             approveOrgCodePriv = bill.getApplyOrgCodePriv();
         }
         String upOrgCodePriv = approveOrgCodePriv.substring(0, approveOrgCodePriv.length() - 2);
-        Integer upOrgLeader = orgMapper.findOrgLeaderByPriv(upOrgCodePriv);
-        return "," + upOrgLeader + ",";
+        Org org = orgMapper.findOrgLeaderByPriv(upOrgCodePriv);
+        return "," + org.getLeaderId() + ",";
     }
 
     // 判断是否循环查找部门负责人
@@ -115,24 +116,32 @@ public class OaBillService {
         String candidateOrgCodePriv = applyOrgCodePriv;
         switch (level){
             case 1:
-                l.approveId = orgService.findCompanyLeader(bill);
+                OaProcessFunctionResult functionResult = orgService.findCompanyLeader(bill);
+                l.approveId = functionResult.getApproveList();
+                l.approveName = functionResult.getApproveNameList();
                 l.stepName = "市局负责人";
                 break;
             case 2:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
-                l.approveId = orgService.findCompanyDeputy(bill);
+                OaProcessFunctionResult functionResult1 = orgService.findCompanyDeputy(bill);
+                l.approveId = functionResult1.getApproveList();
+                l.approveName = functionResult1.getApproveNameList();
                 l.stepName = "市局分管领导";
                 break;
             case 3:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
-                l.approveId = orgService.findUnitLeader(bill);
+                OaProcessFunctionResult functionResult2 = orgService.findUnitLeader(bill);
+                l.approveId = functionResult2.getApproveList();
+                l.approveName = functionResult2.getApproveNameList();
                 l.stepName = "部门/单位负责人";
                 break;
             case 4:
                 if(bill.getApplyOrgYesOffice() == 1){
                     l.level = 3;
                     candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
-                    l.approveId = orgService.findUnitLeader(bill);
+                    OaProcessFunctionResult functionResult3 = orgService.findUnitLeader(bill);
+                    l.approveId = functionResult3.getApproveList();
+                    l.approveName = functionResult3.getApproveNameList();
                     l.stepName = "部门/单位负责人";
                 }else {
                     OaProcess process = new OaProcess();
@@ -146,32 +155,39 @@ public class OaBillService {
                     }
                     if(has4){
                         candidateOrgCodePriv = applyOrgCodePriv.substring(0, 8);
-                        l.approveId = orgService.findUnitDeputy(bill);
+                        OaProcessFunctionResult functionResult3 = orgService.findUnitDeputy(bill);
+                        l.approveId = functionResult3.getApproveList();
+                        l.approveName = functionResult3.getApproveNameList();
                         l.stepName = "单位分管领导";
                     }else {
                         l.level = 3;
                         candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
-                        l.approveId = orgService.findUnitLeader(bill);
+                        OaProcessFunctionResult unitLeader = orgService.findUnitLeader(bill);
+                        l.approveId = unitLeader.getApproveList();
+                        l.approveName = unitLeader.getApproveNameList();
                         l.stepName = "部门/单位负责人";
                     }
                 }
                 break;
             case 5:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 8);
-                Integer orgLeaderByPriv = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
-                l.approveId = "," + orgLeaderByPriv + ",";
+                Org org = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+                l.approveId = "," + org.getLeaderId() + ",";
+                l.approveName = org.getLeaderName();
                 l.stepName = "二级部门负责人";
                 break;
             case 6:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 10);
-                Integer orgLeaderByPriv1 = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
-                l.approveId = "," + orgLeaderByPriv1 + ",";
+                Org org1 = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+                l.approveId = "," + org1.getLeaderId() + ",";
+                l.approveName = org1.getLeaderName();
                 l.stepName = "三级部门负责人";
                 break;
             case 7:
                 candidateOrgCodePriv = applyOrgCodePriv.substring(0, 12);
-                Integer orgLeaderByPriv2 = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
-                l.approveId = "," + orgLeaderByPriv2 + ",";
+                Org org2 = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+                l.approveId = "," + org2.getLeaderId() + ",";
+                l.approveName = org2.getLeaderName();
                 l.stepName = "四级部门负责人";
                 break;
         }
@@ -185,6 +201,7 @@ public class OaBillService {
         public int level;
         public String approveId;
         public String stepName;
+        public String approveName;
     }
 
     private Integer generateLevel(int candidateLevel, int applyId, Org org){

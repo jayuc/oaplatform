@@ -95,6 +95,7 @@ public class OaBillController {
     public Map<String, Object> simulateDeliver(OaBill dt){
         ResultUtil.Result result = ResultUtil.build();
         List<String> stepList = new ArrayList<>();
+        List<String> approveNameList = new ArrayList<>();
         OaBill dto = oaBillMapper.getById(dt.getBillId());
         boolean stopFlag = true;
         if(1 == dto.getStopFlag()){
@@ -104,7 +105,10 @@ public class OaBillController {
         if(!StrUtil.isBlank(historyProcessList)){
             String[] processNodes = historyProcessList.split(",");
             for (int i=0; i<processNodes.length; i++){
-                stepList.add(processNodes[i]);
+                String processNode = processNodes[i];
+                String[] nodeItem = processNode.split("@");
+                stepList.add(nodeItem[0]);
+                approveNameList.add(nodeItem[1]);
             }
             result.total(processNodes.length);
         }
@@ -118,6 +122,7 @@ public class OaBillController {
                 stopFlag = false;
             }
             stepList.add((String) properties.get("processDesc"));
+            approveNameList.add((String) properties.get("approveName"));
         }
         List<Map<String, Object>> rows = new ArrayList<>();
         // 汇总进度
@@ -125,7 +130,7 @@ public class OaBillController {
             Map<String, Object> row = new HashMap<>();
             Integer key = i+1;
             row.put("key", key);
-            row.put("title", "步骤 " + key);
+            row.put("title", approveNameList.get(i));
             row.put("desc", stepList.get(i));
             rows.add(row);
         }

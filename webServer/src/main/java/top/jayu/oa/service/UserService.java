@@ -30,13 +30,20 @@ public class UserService {
         User user = userMapper.getUserById(userId);
         String orgCode = user.getOrgCode();
         String candidateOrgCodePriv = orgCode.substring(0, 6);
-        Integer leaderId = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
-        return (int)userId == (int)leaderId;
+        Org org = orgMapper.findOrgLeaderByPriv(candidateOrgCodePriv);
+        return (int)userId == (int) org.getLeaderId();
     }
 
     // 判断是否是市局负责人
     public boolean userIfCompanyLeader(Integer userId){
         return (int)userId == 2;
+    }
+
+    // 获取审批人姓名
+    public String getApproveName(String approveList){
+        Integer approveId = Integer.valueOf(approveList.substring(1,approveList.length()-1));
+        User user = userMapper.getUserById(approveId);
+        return user.getUserName();
     }
 
 }

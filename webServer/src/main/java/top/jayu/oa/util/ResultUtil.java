@@ -31,6 +31,9 @@ public class ResultUtil {
             properties.put(key, value);
             return this;
         }
+        public Object getProperty(String key){
+            return properties.get(key);
+        }
         public Map<String, Object> getResult(){
             return map;
         }

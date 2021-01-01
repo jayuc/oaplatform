@@ -33,6 +33,8 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     @Autowired
     OaBillService oaBillService;
     @Autowired
+    UserService userService;
+    @Autowired
     SpringInvokeMethod springInvokeMethod;
     @Autowired
     OaBillMapper oaBillMapper;
@@ -52,6 +54,12 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         if(process == null){
             result.error("流程未配置，请联系管理员");
             return result.getResult();
+        }
+
+        if(!autoDb){  // 流程模拟时候找本步骤审批人
+            result.property("approveName", userService.getApproveName(bill.getNextApproveList()));
+        }else {
+            result.property("approveName", bill.getCurrentUserName());
         }
 
         // 是否是新建工单，区别与驳回后处置工单
@@ -109,6 +117,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 if(!StrUtil.isBlank(approveResult.approveList) && !",0,".equals(approveResult.approveList)){   // 找到了审批人
                     bill.setNextApproveList(approveResult.approveList);
                     result.property("approveIdList", approveResult.approveList);
+                    result.property("nextApproveName", approveResult.approveNameList);
                 }else {
                     result.error(approveResult.stepName + "未配置，请联系管理员进行配置");
                     // 不入库
@@ -158,6 +167,8 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             int processLevel = level.level;
             log.info("pass flag: 0, step2: process level ===> " + level);
 
+            bill.setApproveName(bill.getCurrentUserName());
+
             if(processLevel == 0){
 
                 bill.setStopFlag((byte) 1);
@@ -175,6 +186,8 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                     bill.setStopFlag((byte) 2);
                     if(!StrUtil.isBlank(level.approveId)){
                         bill.setNextApproveList(level.approveId);
+                        result.property("approveIdList", level.approveId);
+                        result.property("nextApproveName", level.approveName);
                     }else {
                         result.error(level.stepName + "未配置，请联系管理员进行配置");
                         // 不入库
@@ -267,8 +280,11 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             }
             log.info("step3-1: find approve (" + functionName + ") ===> serviceName: " + serviceName + " methodName: "
                     + methodName + " param: " + obj);
-            approveResult.approveList = (String) springInvokeMethod.invokeMethod(serviceName, methodName, new Object[]{obj});
-            log.info("step3-1: find approve result (" + functionName + ") ===> " + approveResult.approveList);
+            OaProcessFunctionResult oaProcessFunctionResult = (OaProcessFunctionResult) springInvokeMethod.invokeMethod(serviceName, methodName, new Object[]{obj});
+            approveResult.approveList = oaProcessFunctionResult.getApproveList();
+            approveResult.approveNameList = oaProcessFunctionResult.getApproveNameList();
+            log.info("step3-1: find approve result (" + functionName + ") ===> " + approveResult.approveList +
+              ", approve name ===>" + approveResult.approveNameList);
             return approveResult;
         } catch (Exception e) {
             e.printStackTrace();
@@ -281,9 +297,9 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         // 入库前处理流程节点流转历史
         String processNodeHistory = bill.getHistoryProcessList();
         if(StrUtil.isBlank(processNodeHistory)){
-            processNodeHistory = process.getProcessDesc();
+            processNodeHistory = process.getProcessDesc() + "@" + bill.getApproveName();
         }else {
-            processNodeHistory = processNodeHistory + "," + process.getProcessDesc();
+            processNodeHistory = processNodeHistory + "," + process.getProcessDesc() + "@" + bill.getApproveName();
         }
         if(!yesNewBill){  // 工单驳回后处置
             processNodeHistory = process.getProcessDesc();
@@ -398,6 +414,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     @ToString
     private class ApproveResult{
         String approveList;
+        String approveNameList;
         String stepName;
     }
 
