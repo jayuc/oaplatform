@@ -67,6 +67,7 @@
                             prop="createTime"
                             align="center"
                             width="100"
+                            :formatter="formatTime"
                             label="申请日期">
                     </el-table-column>
                     <el-table-column
@@ -210,6 +211,12 @@
                     return '有';
                 }else if(cellValue == 2){
                     return '无';
+                }
+                return '';
+            },
+            formatTime(row, column, cellValue){
+                if(cellValue){
+                    return cellValue.split(' ')[0];
                 }
                 return '';
             },

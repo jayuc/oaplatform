@@ -24,6 +24,11 @@ public class OaBillService {
     @Autowired
     OrgService orgService;
 
+    // 是否 5000元（不含）以内
+    public boolean yesLess5000(OaBill bill){
+        return bill.getAmount() < 5000;
+    }
+
     // 查找上级部门负责人
     public String findUpOrgLeader(OaBill bill){
         String approveOrgCodePriv = bill.getApproveOrgCodePriv();
