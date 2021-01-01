@@ -9,7 +9,15 @@ SET NAMES utf8mb4;
 
 # 查找上级部门负责人
 INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE (8, 'OaBill', 'OaBill', 'oaBillService', 'findUpOrgLeader', '上级部门负责人');
+VALUE (8, 'OaBill', 'OaBill', 'orgService', 'findUpOrgLeader', '上级部门负责人');
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (9, 'OaBill', 'OaBill', 'orgService', 'findHumanResourceLeader', '人力资源科负责人');
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (10, 'OaBill', 'OaBill', 'orgService', 'findOfficeHouseLeader', '市局公司办公室主任');
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (11, 'OaBill', 'OaBill', 'orgService', 'findFinanceLeader', '财务科负责人');
+
+
 INSERT t_oa_process_condition (process_condition_id,input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc)
 VALUE (9, 'applyOrgId', 'Integer', 'orgService', 'orgIfOffice', '00', '01', '是否是机关');
 
@@ -97,3 +105,77 @@ INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,ne
 VALUE (34, 3, '00010000000000', '000100000000', '00', 3, '市局分管领导审批', 2);
 INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
 VALUE (35, 3, '0001000000000000', '00010000000000', 'end', '市局负责人审批', 1);
+
+# 培训申请
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (36, 4, '00', 'root', '00', '工单申请', 0);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (37, 4, '0000', '00', '00', 8, '四级部门负责人审批', 7);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (38, 4, '000000', '0000', '00', 8, '三级部门负责人审批', 6);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (39, 4, '00000000', '000000', '00', 6, '二级部门负责人审批', 5);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (40, 4, '0000000000', '00000000', '00', 9, '单位/部门负责人审批', 3);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (41, 4, '000000000000', '0000000000', '00', 2, '人力资源科负责人审批', 0);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_condition_id,process_desc,org_priv_len)
+VALUE (42, 4, '00000000000000', '000000000000', '00', 10, '市局分管领导审批', 2);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (43, 4, '0000000000000000', '00000000000000', 'end', '市局负责人审批', 1);
+
+# 市局介绍信开具
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (44, 10, '00', 'root', '00', '工单申请', 0);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (45, 10, '0000', '00', '00', 8, '四级部门负责人审批', 7);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (46, 10, '000000', '0000', '00', 8, '三级部门负责人审批', 6);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (47, 10, '00000000', '000000', '00', 6, '二级部门负责人审批', 5);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (48, 10, '0000000000', '00000000', '00', 10, '单位/部门负责人审批', 3);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (49, 10, '000000000000', '0000000000', 'end', '市局办公室主任审批', 0);
+
+# 市局证件
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (50, 11, '00', 'root', '00', '工单申请', 0);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (51, 11, '0000', '00', '00', 8, '四级部门负责人审批', 7);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (52, 11, '000000', '0000', '00', 8, '三级部门负责人审批', 6);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (53, 11, '00000000', '000000', '00', 6, '二级部门负责人审批', 5);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (54, 11, '0000000000', '00000000', '00', 10, '单位/部门负责人审批', 3);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (55, 11, '000000000000', '0000000000', 'end', '市局办公室主任审批', 0);
+
+# 交通工具调整
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (56, 6, '00', 'root', '00', '工单申请', 0);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (57, 6, '0000', '00', '00', 8, '四级部门负责人审批', 7);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (58, 6, '000000', '0000', '00', 8, '三级部门负责人审批', 6);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (59, 6, '00000000', '000000', '00', 6, '二级部门负责人审批', 5);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (60, 6, '0000000000', '00000000', '00', 3, '单位/部门负责人审批', 3);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (61, 6, '000000000000', '0000000000', 'end', '市局负责人审批', 0);
+
+# 调阅会计档案
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (62, 8, '00', 'root', '00', '工单申请', 0);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (63, 8, '0000', '00', '00', 8, '四级部门负责人审批', 7);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (64, 8, '000000', '0000', '00', 8, '三级部门负责人审批', 6);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (65, 8, '00000000', '000000', '00', 6, '二级部门负责人审批', 5);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,next_approve_function_id,process_desc,org_priv_len)
+VALUE (66, 8, '0000000000', '00000000', '00', 11, '单位/部门负责人审批', 3);
+INSERT t_oa_process (process_id, bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
+VALUE (67, 8, '000000000000', '0000000000', 'end', '财务科负责人审批', 0);

@@ -192,6 +192,9 @@
                 if(this.$refs.travelToolSelect){
                     this.$refs.travelToolSelect.reset();
                 }
+                if(this.$refs.holidayTypeSelect){
+                    this.$refs.holidayTypeSelect.reset();
+                }
             },
             open(data, url, titleType){
                 this.initFormData();

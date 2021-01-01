@@ -47,6 +47,47 @@ public class OrgService {
         return null;
     }
 
+    // 查询人力资源科负责人
+    public OaProcessFunctionResult findHumanResourceLeader(OaBill oaBill){
+        Org org = orgMapper.findOrgLeaderByPriv("340004");
+        OaProcessFunctionResult result = new OaProcessFunctionResult();
+        result.setApproveNameList(org.getLeaderName());
+        result.setApproveList("," + org.getLeaderId() + ",");
+        return result;
+    }
+
+    // 查询办公室主任
+    public OaProcessFunctionResult findOfficeHouseLeader(OaBill oaBill){
+        Org org = orgMapper.findOrgLeaderByPriv("340001");
+        OaProcessFunctionResult result = new OaProcessFunctionResult();
+        result.setApproveNameList(org.getLeaderName());
+        result.setApproveList("," + org.getLeaderId() + ",");
+        return result;
+    }
+
+    // 查询财务科负责人
+    public OaProcessFunctionResult findFinanceLeader(OaBill oaBill){
+        Org org = orgMapper.findOrgLeaderByPriv("340008");
+        OaProcessFunctionResult result = new OaProcessFunctionResult();
+        result.setApproveNameList(org.getLeaderName());
+        result.setApproveList("," + org.getLeaderId() + ",");
+        return result;
+    }
+
+    // 查找上级部门负责人
+    public OaProcessFunctionResult findUpOrgLeader(OaBill bill){
+        String approveOrgCodePriv = bill.getApproveOrgCodePriv();
+        if(StrUtil.isBlank(approveOrgCodePriv)){  // 没有审批过的
+            approveOrgCodePriv = bill.getApplyOrgCodePriv();
+        }
+        String upOrgCodePriv = approveOrgCodePriv.substring(0, approveOrgCodePriv.length() - 2);
+        Org org = orgMapper.findOrgLeaderByPriv(upOrgCodePriv);
+        OaProcessFunctionResult result = new OaProcessFunctionResult();
+        result.setApproveNameList(org.getLeaderName());
+        result.setApproveList("," + org.getLeaderId() + ",");
+        return result;
+    }
+
     // 查询市局分管领导
     public OaProcessFunctionResult findCompanyDeputy(OaBill oaBill){
         String orgCodePriv = oaBill.getApplyOrgCodePriv();

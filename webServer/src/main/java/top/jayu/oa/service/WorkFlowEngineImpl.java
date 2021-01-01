@@ -179,7 +179,10 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             }else if(processLevel > 0){
 
                 // 第三步：找到对应的流程
-                String processName = findProcess(bill, processLevel, preStep);
+                String processName = level.currentStep;
+                if(processName == null){
+                    processName = findProcess(bill, processLevel, preStep);
+                }
                 log.info("pass flag: 0, step3: process name ===> " + processName);
                 if(processName != null){
                     bill.setCurrentStep(processName);

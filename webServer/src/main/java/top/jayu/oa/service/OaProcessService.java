@@ -21,4 +21,8 @@ public class OaProcessService {
         return oaProcessMapper.list(process);
     }
 
+    OaProcess getProcessByOrgPrivLen(OaProcess process){
+        return oaProcessMapper.getProcessByOrgPrivLen(process);
+    }
+
 }

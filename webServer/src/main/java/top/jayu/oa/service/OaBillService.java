@@ -4,10 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.jayu.oa.entity.OaBill;
-import top.jayu.oa.entity.OaProcess;
-import top.jayu.oa.entity.OaProcessFunctionResult;
-import top.jayu.oa.entity.Org;
+import top.jayu.oa.entity.*;
+import top.jayu.oa.iter.SpringInvokeMethod;
 import top.jayu.oa.mapper.OrgMapper;
 
 import java.util.HashMap;
@@ -22,22 +20,15 @@ public class OaBillService {
     @Autowired
     OaProcessService oaProcessService;
     @Autowired
+    OaProcessFunctionService oaProcessFunctionService;
+    @Autowired
     OrgService orgService;
+    @Autowired
+    SpringInvokeMethod springInvokeMethod;
 
     // 是否 5000元（不含）以内
     public boolean yesLess5000(OaBill bill){
         return bill.getAmount() < 5000;
-    }
-
-    // 查找上级部门负责人
-    public String findUpOrgLeader(OaBill bill){
-        String approveOrgCodePriv = bill.getApproveOrgCodePriv();
-        if(StrUtil.isBlank(approveOrgCodePriv)){  // 没有审批过的
-            approveOrgCodePriv = bill.getApplyOrgCodePriv();
-        }
-        String upOrgCodePriv = approveOrgCodePriv.substring(0, approveOrgCodePriv.length() - 2);
-        Org org = orgMapper.findOrgLeaderByPriv(upOrgCodePriv);
-        return "," + org.getLeaderId() + ",";
     }
 
     // 判断是否循环查找部门负责人
@@ -83,25 +74,25 @@ public class OaBillService {
                 map.put("org", org);
                 return map;
             }
-            int level = generateLevel(3, applyId, org);
+            Level level = generateLevel(3, applyId, org, bill);
             map.put("level", level);
             map.put("org", org);
             return map;
         }else {
             if(length == 8){
                 if(org.getYesLeader() != null && org.getYesLeader() == 1){   // 领导机构
-                    int level = generateLevel(3, applyId, org);
+                    Level level = generateLevel(3, applyId, org, bill);
                     map.put("level", level);
                     map.put("org", org);
                     return map;
                 }
-                int level = generateLevel(5, applyId, org);
+                Level level = generateLevel(5, applyId, org, bill);
                 map.put("level", level);
                 map.put("org", org);
                 return map;
             }else if(length > 8){
                 int level = 5 + (length - 8)/2;
-                int lev = generateLevel(level, applyId, org);
+                Level lev = generateLevel(level, applyId, org, bill);
                 map.put("level", lev);
                 map.put("org", org);
                 return map;
@@ -115,7 +106,11 @@ public class OaBillService {
     public Level computeOrgLevels(OaBill bill){
         Map<String, Object> map = computeOrgLevel(bill);
         Level l = new Level();
-        int level = (int) map.get("level");
+        Level ll = (Level) map.get("level");
+        if(ll.approveId != null){
+            return ll;
+        }
+        int level = ll.level;
         l.level = level;
         String applyOrgCodePriv = bill.getApplyOrgCodePriv();
         String candidateOrgCodePriv = applyOrgCodePriv;
@@ -205,15 +200,56 @@ public class OaBillService {
     public static class Level{
         public int level;
         public String approveId;
+        public String currentStep;
         public String stepName;
         public String approveName;
     }
 
-    private Integer generateLevel(int candidateLevel, int applyId, Org org){
+    private Level generateLevel(int candidateLevel, int applyId, Org org, OaBill bill){
+        Level level = new Level();
         if(applyId == org.getLeaderId()){
-            return candidateLevel - 1;
+            level.level = candidateLevel - 1;
+            Level nextApproveIdStrLevel = getOriginNextApproveId(candidateLevel, bill.getBillType(), bill);
+            if(nextApproveIdStrLevel != null){
+                int nextApproveId = Integer.valueOf(nextApproveIdStrLevel.approveId.substring(1,nextApproveIdStrLevel.approveId.length()-1));
+                if(applyId == nextApproveId){
+                    level.level = candidateLevel - 1;
+                }else {
+                    level.level = candidateLevel - 1;
+//                    level.approveId = nextApproveIdStrLevel.approveId;
+//                    level.approveName = nextApproveIdStrLevel.approveName;
+//                    level.currentStep = nextApproveIdStrLevel.currentStep;
+                }
+                return level;
+            }
         }
-        return candidateLevel;
+        level.level = candidateLevel;
+        return level;
+    }
+
+    private Level getOriginNextApproveId(int candidateLevel, Byte billType, OaBill bill){
+        OaProcess process = new OaProcess();
+        Level level = new Level();
+        process.setBillType(billType);
+        process.setOrgPrivLen((byte) candidateLevel);
+        OaProcess process1 = oaProcessService.getProcessByOrgPrivLen(process);
+        Integer nextApproveFunctionId = process1.getNextApproveFunctionId();
+        if(nextApproveFunctionId != null && nextApproveFunctionId > 0){
+            OaProcessFunction processFunction = oaProcessFunctionService.getById(nextApproveFunctionId);
+            String serviceName = processFunction.getIocEntityName();
+            String methodName = processFunction.getIocEntityMethod();
+            try {
+                OaProcessFunctionResult oaProcessFunctionResult = (OaProcessFunctionResult) springInvokeMethod.invokeMethod(serviceName, methodName, new Object[]{bill});
+                String approveList = oaProcessFunctionResult.getApproveList();
+                level.approveId = approveList;
+                level.approveName = oaProcessFunctionResult.getApproveNameList();
+                level.currentStep = process1.getNextStep();
+                return level;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
     // 获取流程步骤
