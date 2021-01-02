@@ -31,9 +31,9 @@
                 <el-menu-item index="/main/leave">年休假申请</el-menu-item>
                 <el-menu-item style="padding-left: 10px;" index="/main/cost">经济业务支出事前申请</el-menu-item>
                 <el-menu-item index="/main/train">培训申请</el-menu-item>
-                <el-menu-item style="padding-left: 10px;" index="/main/meeting">市局机关会议室申请</el-menu-item>
+                <el-menu-item v-if="userYesOffice == 1" style="padding-left: 10px;" index="/main/meeting">市局机关会议室申请</el-menu-item>
                 <el-menu-item style="padding-left: 10px;" index="/main/travelToolSet">出差交通工具调整申请</el-menu-item>
-                <el-menu-item style="padding-left: 10px;display: none;" index="/main/goAbroad">员工因私出国申请</el-menu-item>
+                <el-menu-item v-if="false" style="padding-left: 10px;" index="/main/goAbroad">员工因私出国申请</el-menu-item>
                 <el-menu-item style="padding-left: 10px;" index="/main/introduce">市局介绍信开具申请</el-menu-item>
                 <el-menu-item style="padding-left: 10px;" index="/main/certificate">市局证件使用申请</el-menu-item>
                 <el-menu-item index="/main/lookDoc">调阅会计档案申请</el-menu-item>
@@ -74,6 +74,7 @@
                 activeOpeneds: [],
                 mainTitle: Config.get('mainTitle'),
                 userName: User.get('userName'),
+                userYesOffice: User.get('yesOffice')
             };
         },
         methods: {

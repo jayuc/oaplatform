@@ -48,10 +48,10 @@ public class UserService {
             if(!StrUtil.isBlank(approveId)){
                 Integer id = Integer.valueOf(approveId);
                 User user = userMapper.getUserById(id);
-                userName += user.getUserName() + ",";
+                userName += user.getUserName() + "　";
             }
         }
-        return userName.substring(0, userName.length()-1);
+        return userName;
     }
 
 }
