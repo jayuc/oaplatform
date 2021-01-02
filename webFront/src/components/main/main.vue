@@ -3,21 +3,20 @@
         <div class="tab_1">
             <header>待办动态</header>
             <div class="panel_list">
-                <p v-for="(item,index) in applyList" :key="index">
+                <p v-for="(item,index) in applyArr" :key="index" @click="selectRow(item.billType)">
                     <span class="row_name">【{{item.billTypeName}}】{{item.title}}</span>
                     <span class="row_type">{{item.applyName}}</span>
                     <span class="row_time">{{item.applyTime}}</span>
                 </p>
-                <div class="none" v-if="applyList.length === 0">暂无数据</div>
+                <div class="none" v-if="applyArr.length === 0">暂无数据</div>
             </div>
         </div>
         <div class="tab_2">
             <header>快捷菜单</header>
             <div class="panel_menu">
-                <div @click="$router.push('/main/errand')">出差申请</div>
-                <div @click="$router.push('/main/leave')">年休假申请</div>
-                <div @click="$router.push('/main/train')">培训申请</div>
-                <div @click="$router.push('/main/meeting')">市局机关会议室申请</div>
+                <div v-for="(item,index) in menuObj" :key="index" @click="$router.push('/main/' + item.path)">
+                    {{item.name}}
+                </div>
             </div>
         </div>
     </div>
@@ -32,7 +31,18 @@
         name: 'main-main',
         data() {
             return {
-                applyList: []
+                menuObj: {
+                    "1": {name: '年休假申请', path: 'leave'},
+                    "2": {name: '出差申请', path: 'errand'},
+                    "3": {name: '经济业务支出事前申请', path: 'cost'},
+                    "4": {name: '培训申请', path: 'train'},
+                    "5": {name: '市局（公司）机关会议室申请', path: 'meeting'},
+                    "6": {name: '出差交通工具调整申请', path: 'travelToolSet'},
+                    "8": {name: '调阅会计档案申请', path: 'lookDoc'},
+                    "10": {name: '市局（公司）介绍信开具申请', path: 'introduce'},
+                    "11": {name: '市局（公司）证件（复印件）使用申请', path: 'certificate'}
+                },
+                applyArr: []
             }
         },
         mounted() {
@@ -43,8 +53,16 @@
             });
             RestUtil.get('oa/bill/pending').then((list) => {
                 this.loadingInstance.close();
-                this.applyList = list;
+                this.applyArr = list;
             });
+        },
+        methods: {
+            selectRow(type) {
+                let path = (this.menuObj[type] || {}).path;
+                if (path) {
+                    this.$router.push('/main/' + path);
+                }
+            }
         }
     }
 </script>
