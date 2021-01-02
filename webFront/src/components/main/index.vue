@@ -79,7 +79,7 @@
         },
         methods: {
             handleOpen(index, path) {
-                this.activeOpeneds = path;
+                console.log(index, path);
             },
             handleClose(index, path) {
                 console.log(index, path);
