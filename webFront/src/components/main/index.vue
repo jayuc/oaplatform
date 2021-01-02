@@ -19,6 +19,7 @@
                    @close="handleClose"
                    @select="selectItem"
                    :router="true"
+                   :defaultActive="activeNode"
                    ref="global_menu"
                    style="overflow: hidden;"
           >
@@ -73,6 +74,7 @@
         data() {
             return {
                 activeOpeneds: [],
+                activeNode: null,
                 mainTitle: Config.get('mainTitle'),
                 userName: User.get('userName'),
                 userYesOffice: User.get('yesOffice')
