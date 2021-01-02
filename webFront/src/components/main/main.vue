@@ -3,7 +3,7 @@
         <div class="tab_1">
             <header>待办动态</header>
             <div class="panel_list">
-                <p v-for="(item,index) in applyArr" :key="index" @click="selectRow(item.billType)">
+                <p v-for="(item,index) in applyArr" :key="index" @click="selectRow((menuObj[item.billType] || {}).path)">
                     <span class="row_name">【{{item.billTypeName}}】{{item.title}}</span>
                     <span class="row_type">{{item.applyName}}</span>
                     <span class="row_time">{{item.applyTime}}</span>
@@ -14,7 +14,7 @@
         <div class="tab_2">
             <header>快捷菜单</header>
             <div class="panel_menu">
-                <div v-for="(item,index) in menuObj" :key="index" @click="$router.push('/main/' + item.path)">
+                <div v-for="(item,index) in menuObj" :key="index" @click="selectRow(item.path)">
                     {{item.name}}
                 </div>
             </div>
@@ -57,8 +57,7 @@
             });
         },
         methods: {
-            selectRow(type) {
-                let path = (this.menuObj[type] || {}).path;
+            selectRow(path) {
                 if (path) {
                     this.$router.push('/main/' + path);
                     this.$emit("openMenu", ['1'], '/main/' + path );
