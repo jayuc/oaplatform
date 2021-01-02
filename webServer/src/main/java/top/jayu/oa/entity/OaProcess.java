@@ -12,7 +12,7 @@ public class OaProcess {
 
     private Byte billType;
 
-    private Byte orgPrivLen;
+    private Float orgPrivLen;
 
     private String currentStep;
 

@@ -153,7 +153,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
 
             // 第一步：获取步骤条件
             OaProcessCondition condition = getCondition(process.getProcessConditionId());
-            log.info("pass flag: 0, step1-1: process level ===> " + condition);
+            log.info("pass flag: 0, step1-1: process condition ===> " + condition);
 
             String preStep = "";
             if(condition != null){
@@ -163,8 +163,8 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             }
 
             //  第二步: 查询流程层级
-            OaBillService.Level level = oaBillService.computeOrgLevels(bill);
-            int processLevel = level.level;
+            OaBillService.Level level = oaBillService.computeOrgLevels(bill, process);
+            float processLevel = level.level;
             log.info("pass flag: 0, step2: process level ===> " + level);
 
             bill.setApproveName(bill.getCurrentUserName());
@@ -174,7 +174,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 bill.setStopFlag((byte) 1);
                 bill.setCurrentStep("end");
                 result.property("info", "流程已经完成了");
-                log.info("pass flag: 0, step1: end ===> 流程已经完成了");
+                log.info("pass flag: 0, step3: end ===> 流程已经完成了");
 
             }else if(processLevel > 0){
 
@@ -203,7 +203,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 }
 
             }else {
-                log.warn("pass flag: 0, step1: 找不到流程层级");
+                log.warn("pass flag: 0, step3: 找不到流程层级");
                 result.error("找不到对应的流程");
                 // 不入库
                 autoDb = false;
@@ -238,7 +238,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     }
 
     // 找到对应的流程
-    private String findProcess(OaBill bill, int processLevel, String preStep){
+    private String findProcess(OaBill bill, float processLevel, String preStep){
         OaProcess process = new OaProcess();
         process.setBillType(bill.getBillType());
         List<OaProcess> list = oaProcessService.list(process);
@@ -248,6 +248,12 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                 if(oaProcess.getOrgPrivLen() == processLevel
                         && oaProcess.getCurrentStep().startsWith(pStep)){
                     return oaProcess.getCurrentStep();
+                }
+            }
+            for (int i=0; i<list.size()-1; i++){
+                if(processLevel > list.get(i).getOrgPrivLen() &&
+                        processLevel < list.get(i+1).getOrgPrivLen()){
+                    return list.get(i+1).getCurrentStep();
                 }
             }
         }
@@ -320,9 +326,9 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             // 处理历史审批人
             String approveList = bill.getHistoryApproveList();
             if(StrUtil.isBlank(approveList)){
-                approveList = bill.getNextApproveList();
+                approveList = "," + bill.getCurrentUserId() + ",";
             }else {
-                approveList = approveList + "," + bill.getNextApproveList();
+                approveList = approveList + "," + bill.getCurrentUserId() + ",";
             }
             bill.setHistoryApproveList(approveList);
             if(bill.getStopFlag() == 1){  // 流程结束

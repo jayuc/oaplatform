@@ -128,7 +128,7 @@ CREATE TABLE `t_oa_process` (
   `process_id` int(11) NOT NULL AUTO_INCREMENT,
   `bill_type` tinyint NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
   `current_step` varchar(32) DEFAULT NULL COMMENT '当前步骤',
-  `org_priv_len` tinyint NOT NULL COMMENT '机构权限长度，通过机构权限长度判断机构所处的层级',
+  `org_priv_len` FLOAT NOT NULL COMMENT '机构权限长度，通过机构权限长度判断机构所处的层级',
   `next_step` varchar(32) DEFAULT NULL COMMENT '下一步骤名称',
   `next_approve_function_id` int(11) DEFAULT NULL COMMENT '下一步审批人查询方法id',
   `parent_step` varchar(32) DEFAULT NULL COMMENT '父步骤',

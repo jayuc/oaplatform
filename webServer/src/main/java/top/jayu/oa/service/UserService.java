@@ -1,5 +1,6 @@
 package top.jayu.oa.service;
 
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.jayu.oa.entity.Org;
@@ -41,9 +42,16 @@ public class UserService {
 
     // 获取审批人姓名
     public String getApproveName(String approveList){
-        Integer approveId = Integer.valueOf(approveList.substring(1,approveList.length()-1));
-        User user = userMapper.getUserById(approveId);
-        return user.getUserName();
+        String[] approveIdList = approveList.split(",");
+        String userName = "";
+        for (String approveId:approveIdList){
+            if(!StrUtil.isBlank(approveId)){
+                Integer id = Integer.valueOf(approveId);
+                User user = userMapper.getUserById(id);
+                userName += user.getUserName() + ",";
+            }
+        }
+        return userName.substring(0, userName.length()-1);
     }
 
 }

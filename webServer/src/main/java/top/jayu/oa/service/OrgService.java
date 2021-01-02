@@ -56,6 +56,14 @@ public class OrgService {
         return result;
     }
 
+    // 查询办公室 马明敏、苗倩
+    public OaProcessFunctionResult findMaMIngMin(OaBill oaBill){
+        OaProcessFunctionResult result = new OaProcessFunctionResult();
+        result.setApproveList(",28,23,");
+        result.setApproveNameList("马明敏、苗倩");
+        return result;
+    }
+
     // 查询办公室主任
     public OaProcessFunctionResult findOfficeHouseLeader(OaBill oaBill){
         Org org = orgMapper.findOrgLeaderByPriv("340001");
