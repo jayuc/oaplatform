@@ -49,10 +49,34 @@
     import user from '@/user';
     import TipUtil from '@/utils/TipUtil';
     import RestUtil from "../../utils/RestUtil";
+    const pwdReg = /^(?![A-Za-z]+$)(?![A-Z\d]+$)(?![A-Z\W]+$)(?![a-z\d]+$)(?![a-z\W]+$)(?![\d\W]+$)\S{8,}$/;
 
     export default {
         name: 'password-setting',
         data(){
+            let validatePwd = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.formData.againPassword !== '') {
+                        this.$refs.ruleForm.validateField('againPassword');
+                    } else if(!pwdReg.test(this.formData.againPassword)) {
+                        callback(new Error('需包含字母、数字、特殊字符，至少8位数'));
+                    }
+                    callback();
+                }
+            };
+            let validateCheckPwd = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.formData.newPassword) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else if(!pwdReg.test(this.formData.againPassword)) {
+                    callback(new Error('需包含字母、数字、特殊字符，至少8位数'));
+                } else {
+                    callback();
+                }
+            };
             return {
                 formLabelWidth: '120px',
                 loginName: user.get('loginName'),
@@ -62,10 +86,10 @@
                         { required: true, message: '请输入原密码', trigger: 'blur' }
                     ],
                     newPassword: [
-                        { required: true, message: '请输入新密码', trigger: 'blur' }
+                        { required: true, validator: validatePwd, trigger: 'blur' }
                     ],
                     againPassword: [
-                        { required: true, message: '请输入确认新密码', trigger: 'blur' }
+                        { required: true, validator: validateCheckPwd, trigger: 'blur' }
                     ]
                 }
             }
