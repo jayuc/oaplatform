@@ -19,6 +19,7 @@
                    @close="handleClose"
                    @select="selectItem"
                    :router="true"
+                   ref="global_menu"
                    style="overflow: hidden;"
           >
               <el-menu-item index="/main/main" style="font-weight: bold;">
@@ -90,6 +91,7 @@
         },
         mounted(){
             this.$router.push("/main/main");
+            Config.set('global_menu', this.$refs.global_menu);
         }
     }
 </script>
