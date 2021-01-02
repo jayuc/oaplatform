@@ -21,21 +21,21 @@
                    :router="true"
                    style="overflow: hidden;"
           >
-              <el-menu-item index="/main/main">
+              <el-menu-item index="/main/main" style="font-weight: bold;">
                   <i class="el-icon-house"></i>
                   <span slot="title">首页</span>
               </el-menu-item>
             <el-submenu index="1">
-              <template slot="title"><i class="el-icon-edit"></i>流程</template>
+              <template slot="title" style="font-weight: bold;"><i class="el-icon-edit"></i>流程</template>
                 <el-menu-item index="/main/errand">出差申请</el-menu-item>
                 <el-menu-item index="/main/leave">年休假申请</el-menu-item>
-                <el-menu-item style="padding-left: 10px;" index="/main/cost">经济业务支出事前申请</el-menu-item>
+                <el-menu-item index="/main/cost">经济业务支出事前申请</el-menu-item>
                 <el-menu-item index="/main/train">培训申请</el-menu-item>
-                <el-menu-item v-if="userYesOffice == 1" style="padding-left: 10px;" index="/main/meeting">市局机关会议室申请</el-menu-item>
-                <el-menu-item style="padding-left: 10px;" index="/main/travelToolSet">出差交通工具调整申请</el-menu-item>
-                <el-menu-item v-if="false" style="padding-left: 10px;" index="/main/goAbroad">员工因私出国申请</el-menu-item>
-                <el-menu-item style="padding-left: 10px;" index="/main/introduce">市局介绍信开具申请</el-menu-item>
-                <el-menu-item style="padding-left: 10px;" index="/main/certificate">市局证件使用申请</el-menu-item>
+                <el-menu-item style="padding-left: 10px;" v-if="userYesOffice == 1" index="/main/meeting">市局（公司）机关会议室申请</el-menu-item>
+                <el-menu-item index="/main/travelToolSet">出差交通工具调整申请</el-menu-item>
+                <el-menu-item v-if="false" index="/main/goAbroad">员工因私出国（境）申请</el-menu-item>
+                <el-menu-item style="padding-left: 10px;" index="/main/introduce">市局（公司）介绍信开具申请</el-menu-item>
+                <el-menu-item style="padding-left: 0px;" index="/main/certificate">市局（公司）证件（复印件）使用申请</el-menu-item>
                 <el-menu-item index="/main/lookDoc">调阅会计档案申请</el-menu-item>
             </el-submenu>
               <el-submenu index="2" v-if="userName == '超级管理员'">

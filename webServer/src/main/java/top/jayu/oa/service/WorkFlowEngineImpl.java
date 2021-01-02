@@ -57,7 +57,14 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         }
 
         if(!autoDb){  // 流程模拟时候找本步骤审批人
-            result.property("approveName", userService.getApproveName(bill.getNextApproveList()));
+            log.info("simulateDeliver get next approve list ===> " + bill.getNextApproveList());
+            if(StrUtil.isBlank(bill.getNextApproveList())){
+                result.property("approveName", "未配置");
+            }else {
+                String approveName = userService.getApproveName(bill.getNextApproveList());
+                log.info("simulateDeliver get approve name ===> " + approveName);
+                result.property("approveName", approveName);
+            }
         }else {
             result.property("approveName", bill.getCurrentUserName());
         }
@@ -119,6 +126,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
                     result.property("approveIdList", approveResult.approveList);
                     result.property("nextApproveName", approveResult.approveNameList);
                 }else {
+                    bill.setNextApproveList("");
                     result.error(approveResult.stepName + "未配置，请联系管理员进行配置");
                     // 不入库
                     autoDb = false;

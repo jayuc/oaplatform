@@ -140,3 +140,15 @@ a {
 .el-loading-mask.is-fullscreen .el-loading-spinner{
     font-size: 24px;
 }
+
+/**导航样式*/
+.el-submenu .el-menu-item{
+    font-size: 12px;
+    color: #666666;
+}
+.el-submenu  .is-active{
+    color: #409EFF;
+}
+.el-submenu__title{
+    font-weight: bold;
+}
