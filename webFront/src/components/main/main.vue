@@ -90,18 +90,20 @@
     }
 
     .container .panel_menu {
+        max-height: calc(100% - 40px);
         padding: 15px;
         box-sizing: border-box;
         display: flex;
         justify-content: center;
         align-items: flex-start;
         flex-flow: wrap;
+        overflow-x: hidden;
     }
 
     .container .panel_menu > div {
         width: 280px;
-        height: 118px;
-        line-height: 118px;
+        height: 95px;
+        line-height: 95px;
         font-size: 16px;
         font-weight: bold;
         margin: 5px 10px;
