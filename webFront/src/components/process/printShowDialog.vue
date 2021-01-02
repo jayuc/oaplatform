@@ -1,7 +1,7 @@
 <template>
     <el-dialog title="打印预览"
                :visible.sync="visible"
-               width="1500px"
+               width="90%"
     >
         <div ref="tableContainer">
             <table border="1" cellspacing="0" align="center"
@@ -13,13 +13,13 @@
                 </tr>
                 <tr height="65">
                     <th width="35">申请人</th>
-                    <th width="35">张三</th>
+                    <th width="30">张三</th>
                     <th width="35">工龄</th>
-                    <th width="35">3</th>
+                    <th width="20">3</th>
                     <th width="35">休假标准</th>
-                    <th width="35">5天假</th>
+                    <th width="55">5天假</th>
                     <th width="35">休假时间</th>
-                    <th width="35">2020-01-02 ~ 2020-01-07</th>
+                    <th width="65">2020-01-02~2020-01-07</th>
                 </tr>
                 <tr height="65">
                     <th width="35" colspan="3">部门负责人意见</th>
