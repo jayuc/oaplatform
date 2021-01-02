@@ -8,6 +8,7 @@
                     <span class="row_type">{{item.applyName}}</span>
                     <span class="row_time">{{item.applyTime}}</span>
                 </p>
+                <div class="none" v-if="applyList.length === 0">暂无数据</div>
             </div>
         </div>
         <div class="tab_2">
@@ -34,7 +35,7 @@
                 applyList: []
             }
         },
-        mounted(){
+        mounted() {
             this.loadingInstance = Loading.service({
                 target: '.panel_list',
                 background: 'rgba(238, 241, 246, 0.6)',
@@ -62,6 +63,12 @@
         overflow-x: hidden;
         font-size: 14px;
         color: #fff;
+    }
+
+    .container .none {
+        color: red;
+        font-weight: bold;
+        padding-top: 35px;
     }
 
     .container .panel_menu {
