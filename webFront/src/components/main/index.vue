@@ -54,7 +54,7 @@
 
         <el-main style="background-color: rgb(238, 241, 246);">
             <div style="background: #ffffff;height: 100%;" id="main-index-body">
-                <router-view></router-view>
+                <router-view @openMenu="selectMenu"></router-view>
             </div>
         </el-main>
 
@@ -89,6 +89,10 @@
             },
             selectItem(index, path){
                 console.log(index, path);
+            },
+            selectMenu(path, index){
+                this.$refs.global_menu.open(path);
+                this.activeNode = index;
             }
         },
         mounted(){
