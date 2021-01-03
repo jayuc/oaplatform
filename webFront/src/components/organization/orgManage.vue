@@ -104,7 +104,7 @@
     import OrgSetDeputy from './orgSetDeputy.vue';
 
     export default {
-        name: 'user-setting',
+        name: 'org-manage',
         components: {
             OrgSetLeader,
             OrgSetDeputy
