@@ -129,6 +129,8 @@
 
         <details-leave ref="detailsLeave" />
 
+        <PrintLeave ref="tbRef" />
+
     </el-container>
 </template>
 
@@ -139,6 +141,7 @@
     import AddLeave from './addLeave.vue';
     import ApproveLeave from './approveLeave.vue';
     import DetailsLeave from './detailsLeave.vue';
+    import PrintLeave from './printShow/printLeave.vue';
     import CodeUtil from '@/utils/CodeUtil';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
@@ -150,7 +153,8 @@
             AddLeave,
             ApproveLeave,
             DetailsLeave,
-            RejectDialog
+            RejectDialog,
+            PrintLeave
         },
         data(){
             return {
@@ -253,6 +257,7 @@
             },
             showApproveList(row){
                 console.log(row);
+                this.$refs.tbRef.open(row);
             },
             approveBill(row){
                 this.$refs.approveLeave.open(row, 'oa/bill/deliver');

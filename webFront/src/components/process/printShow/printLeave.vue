@@ -1,5 +1,6 @@
+<!--打印预览：年休假申请-->
 <template>
-    <el-dialog title="打印预览"
+    <el-dialog title="年休假申请预览"
                :visible.sync="visible"
                width="90%"
     >
@@ -68,14 +69,16 @@
 
 <script>
     export default {
-        name: "printShowDialog",
+        name: "printLeave",
         data() {
             return {
-                visible: false
+                visible: false,
+                info: {}
             }
         },
         methods: {
-            open() {
+            open(row) {
+                this.info = row;
                 this.visible = true;
             },
             //打印表格
