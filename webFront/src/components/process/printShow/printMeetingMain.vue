@@ -10,19 +10,19 @@
                 <caption align="top"><h2 style="font-size:18px;">部门使用会议室需求表</h2></caption>
                 <tr height="65">
                     <th width="20">使用部门</th>
-                    <th width="35" colspan="3">XX部门</th>
+                    <th width="35" colspan="3">{{formatOrg(item.applyOrgId)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="20">使用时间</th>
-                    <th width="35" colspan="3">XX部门</th>
+                    <th width="35" colspan="3">{{formatTime(item)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="20">参会人数</th>
-                    <th width="35" colspan="3">XX部门</th>
+                    <th width="35" colspan="3">{{item.peopleNumber}}</th>
                 </tr>
                 <tr height="65">
                     <th width="20">选用会场类型</th>
-                    <th width="30" colspan="3">2302会议室</th>
+                    <th width="30" colspan="3">{{handleHolidayType(item.holidayType)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="20" rowspan="4">会场安排需求</th>
@@ -48,9 +48,9 @@
                 </tr>
                 <tr height="65">
                     <th width="20">需求部门联系人</th>
-                    <th width="35">张三</th>
+                    <th width="35">{{item.applyName}}</th>
                     <th width="20">联系电话</th>
-                    <th width="35">13611121235</th>
+                    <th width="35"></th>
                 </tr>
             </table>
         </div>
@@ -63,17 +63,19 @@
 </template>
 
 <script>
+    import OrgUtil from '@/utils/OrgUtil';
+    import CodeUtil from '@/utils/CodeUtil';
     export default {
         name: "printMeetingMain",
         data() {
             return {
                 visible: false,
-                info: {}
+                item: {}
             }
         },
         methods: {
             open(row) {
-                this.info = row;
+                this.item = row;
                 this.visible = true;
             },
             //打印表格
@@ -85,7 +87,25 @@
                 newWindow.print();
                 newWindow.close();
                 this.visible = false;
-            }
+            },
+            formatOrg(applyOrgId){
+                let org = OrgUtil.getOrgById(applyOrgId);
+                if(org && org.attribute){
+                    return org.attribute.shortOrgName;
+                }
+                return '';
+            },
+            formatTime(row){
+                let sTimes = row.startTime.split(' ');
+                let eTimes = row.endTime.split(' ');
+                if(sTimes.length > 1 && eTimes.length > 1){
+                    return sTimes[0] + '　' + sTimes[1].substring(0,5) + ' - ' + eTimes[1].substring(0,5);
+                }
+                return '';
+            },
+            handleHolidayType(type){
+                return CodeUtil.getName(6, type);
+            },
         }
     }
 </script>

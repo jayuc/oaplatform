@@ -10,25 +10,25 @@
                 <caption align="top"><h2 style="font-size:18px;">出差交通工具调整申请表</h2></caption>
                 <tr height="65">
                     <th width="35">姓名</th>
-                    <th width="35">张三</th>
+                    <th width="35">{{item.applyName}}</th>
                     <th width="35">单位（部门）</th>
-                    <th width="35">XX部门</th>
+                    <th width="35">{{formatOrg(item.applyOrgId)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">规定交通工具</th>
-                    <th width="30" colspan="3"></th>
+                    <th width="30" colspan="3">{{formatTravelTool(item.travelTool)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">申请调整交通工具</th>
-                    <th width="30" colspan="3"></th>
+                    <th width="30" colspan="3">{{formatTravelTool(item.holidayType)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">原因说明</th>
-                    <th width="30" colspan="3"></th>
+                    <th width="30" colspan="3">{{item.content}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">实际出差时间</th>
-                    <th width="30" colspan="3">2020年1月5日始 2021年1月8日止（计4天）</th>
+                    <th width="30" colspan="3">{{timeCg(item.startTime)}}始 {{timeCg(item.endTime)}}止</th>
                 </tr>
                 <tr height="65">
                     <th width="35" colspan="2">单位（部门）负责人意见</th>
@@ -49,17 +49,20 @@
 </template>
 
 <script>
+    import moment from 'moment';
+    import OrgUtil from '@/utils/OrgUtil';
+    import CodeUtil from '@/utils/CodeUtil';
     export default {
         name: "printTravelToolSetMain",
         data() {
             return {
                 visible: false,
-                info: {}
+                item: {}
             }
         },
         methods: {
             open(row) {
-                this.info = row;
+                this.item = row;
                 this.visible = true;
             },
             //打印表格
@@ -71,6 +74,19 @@
                 newWindow.print();
                 newWindow.close();
                 this.visible = false;
+            },
+            formatOrg(applyOrgId){
+                let org = OrgUtil.getOrgById(applyOrgId);
+                if(org && org.attribute){
+                    return org.attribute.shortOrgName;
+                }
+                return '';
+            },
+            formatTravelTool(type){
+                return CodeUtil.getName(2, type);
+            },
+            timeCg(time) {
+                return moment(time).format('YYYY年MM月DD日');
             }
         }
     }

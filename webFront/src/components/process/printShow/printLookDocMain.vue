@@ -10,23 +10,23 @@
                 <caption align="top"><h2 style="font-size:18px;">安徽省烟草公司合肥市公司<br/>调阅会计档案审批表</h2></caption>
                 <tr height="65">
                     <th width="35">调阅单位（部门）</th>
-                    <th width="35">XX部门</th>
+                    <th width="35">{{formatOrg(item.applyOrgId)}}</th>
                     <th width="35">日期</th>
-                    <th width="35">XX部门</th>
+                    <th width="35">{{formatTime(item.createTime)}}</th>
                 </tr>
                 <tr height="120">
                     <th width="35">调阅内容</th>
-                    <th width="30" colspan="3"></th>
+                    <th width="30" colspan="3">{{item.content}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">是否需复印</th>
-                    <th width="35"></th>
+                    <th width="35">{{formatYesFlag(item.holidayType)}}</th>
                     <th width="35">是否需外借</th>
-                    <th width="35"></th>
+                    <th width="35">{{formatYesFlag(item.days)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">调阅人</th>
-                    <th width="35"></th>
+                    <th width="35">{{item.applyName}}</th>
                     <th width="35">调阅单位（部门）负责人意见</th>
                     <th width="35"></th>
                 </tr>
@@ -36,7 +36,7 @@
                 </tr>
                 <tr height="65">
                     <th width="35">备 注</th>
-                    <th width="30" colspan="3"></th>
+                    <th width="30" colspan="3">{{item.mark}}</th>
                 </tr>
             </table>
         </div>
@@ -49,17 +49,19 @@
 </template>
 
 <script>
+    import moment from 'moment';
+    import OrgUtil from '@/utils/OrgUtil';
     export default {
         name: "printLookDocMain",
         data() {
             return {
                 visible: false,
-                info: {}
+                item: {}
             }
         },
         methods: {
             open(row) {
-                this.info = row;
+                this.item = row;
                 this.visible = true;
             },
             //打印表格
@@ -71,6 +73,30 @@
                 newWindow.print();
                 newWindow.close();
                 this.visible = false;
+            },
+            formatOrg(applyOrgId){
+                let org = OrgUtil.getOrgById(applyOrgId);
+                if(org && org.attribute){
+                    return org.attribute.shortOrgName;
+                }
+                return '';
+            },
+            formatTime(time){
+                if(time){
+                    return time.split(' ')[0];
+                }
+                return '';
+            },
+            formatYesFlag(val){
+                if(val === 1){
+                    return '是';
+                }else if(val === 2){
+                    return '否';
+                }
+                return '';
+            },
+            timeCg(time) {
+                return moment(time).format('YYYY年MM月DD日');
             }
         }
     }

@@ -10,42 +10,42 @@
                 <caption align="top"><h2 style="font-size:18px;">出差审批单</h2></caption>
                 <tr height="65">
                     <th width="35">申请单位（部门）</th>
-                    <th width="35" colspan="2">XX部门</th>
+                    <th width="35" colspan="2">{{formatOrg(item.applyOrgId)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">出差事由</th>
-                    <th width="30" colspan="2"></th>
+                    <th width="30" colspan="2">{{item.content}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">出差人员及人数</th>
                     <th width="35" colspan="2" style="position: relative;">
-                        <span style="color: red;font-weight: bold">张三、李四</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">共计_2_人</em>
+                        <span>{{item.applyName}}</span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;">共计1人</em>
                     </th>
                 </tr>
                 <tr height="65">
                     <th width="35">出差目的地</th>
-                    <th width="30" colspan="2"></th>
+                    <th width="30" colspan="2">{{item.address}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">预计出差时间</th>
-                    <th width="30" colspan="2">自2021年1月4日 至 2021年1月8日</th>
+                    <th width="30" colspan="2">自{{timeCg(item.startTime)}} 至 {{timeCg(item.endTime)}}</th>
                 </tr>
                 <tr height="95">
                     <th width="35" style="position: relative;">
                         <span style="position: absolute;top: 5px;left: 20px;">申请人签字：</span>
-                        <i>张三</i>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <i></i>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                     <th width="35" style="position: relative;">
                         <span style="position: absolute;top: 5px;left: 20px;">单位（部门）审批：</span>
-                        <i>张三</i>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <i></i>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                     <th width="35" style="position: relative;">
                         <span style="position: absolute;top: 5px;left: 20px;">市局（公司）领导审批：</span>
-                        <i>张三</i>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <i></i>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                 </tr>
             </table>
@@ -59,17 +59,19 @@
 </template>
 
 <script>
+    import moment from 'moment';
+    import OrgUtil from '@/utils/OrgUtil';
     export default {
         name: "printBusinessTripMain",
         data() {
             return {
                 visible: false,
-                info: {}
+                item: {}
             }
         },
         methods: {
             open(row) {
-                this.info = row;
+                this.item = row;
                 this.visible = true;
             },
             //打印表格
@@ -81,6 +83,16 @@
                 newWindow.print();
                 newWindow.close();
                 this.visible = false;
+            },
+            formatOrg(applyOrgId){
+                let org = OrgUtil.getOrgById(applyOrgId);
+                if(org && org.attribute){
+                    return org.attribute.shortOrgName;
+                }
+                return '';
+            },
+            timeCg(time) {
+                return moment(time).format('YYYY年MM月DD日');
             }
         }
     }

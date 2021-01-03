@@ -11,61 +11,61 @@
                 <tr height="65">
                     <th width="35">申请单位（部门）</th>
                     <th width="35" colspan="3" style="position: relative;">
-                        <span>XX部门</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">申请人：张三</em>
+                        <span>{{formatOrg(item.applyOrgId)}}</span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;">申请人：{{item.applyName}}</em>
                     </th>
                 </tr>
                 <tr height="65">
                     <th width="35">培训内容</th>
-                    <th width="30" colspan="3"></th>
+                    <th width="30" colspan="3">{{item.content}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">培训对象</th>
-                    <th width="30" colspan="3"></th>
+                    <th width="30" colspan="3">{{item.peopleList}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">培训时间</th>
-                    <th width="30"></th>
+                    <th width="30">{{timeCg(item.startTime)}} 至 {{timeCg(item.endTime)}}</th>
                     <th width="35">计划课时</th>
-                    <th width="30"></th>
+                    <th width="30">{{item.peopleNumber}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">培训师资</th>
-                    <th width="30"></th>
+                    <th width="30">{{item.address}}</th>
                     <th width="35">预计费用（含所有费用）</th>
-                    <th width="30"></th>
+                    <th width="30">{{item.amount}}元</th>
                 </tr>
                 <tr height="65">
                     <th width="35">单位（部门）负责人意见</th>
                     <th width="30" colspan="3" style="position: relative;">
                         <span style="color: red;font-weight: bold">同意</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月4日</em>
                     </th>
                 </tr>
                 <tr height="65">
                     <th width="35">教育培训办公室意见</th>
                     <th width="30" colspan="3" style="position: relative;">
-                        <span style="color: red;font-weight: bold">同意</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <span style="color: red;font-weight: bold"></span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                 </tr>
                 <tr height="65">
                     <th width="35">分管领导意见</th>
                     <th width="30" colspan="3" style="position: relative;">
-                        <span style="color: red;font-weight: bold">同意</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <span style="color: red;font-weight: bold"></span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                 </tr>
                 <tr height="65">
                     <th width="35">局长（经理）意见</th>
                     <th width="30" colspan="3" style="position: relative;">
-                        <span style="color: red;font-weight: bold">同意</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <span style="color: red;font-weight: bold"></span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                 </tr>
                 <tr height="65">
                     <th width="35">备注</th>
-                    <th width="30" colspan="3"></th>
+                    <th width="30" colspan="3">{{item.mark}}</th>
                 </tr>
             </table>
         </div>
@@ -78,17 +78,19 @@
 </template>
 
 <script>
+    import moment from 'moment';
+    import OrgUtil from '@/utils/OrgUtil';
     export default {
         name: "printTrainMain",
         data() {
             return {
                 visible: false,
-                info: {}
+                item: {}
             }
         },
         methods: {
             open(row) {
-                this.info = row;
+                this.item = row;
                 this.visible = true;
             },
             //打印表格
@@ -100,6 +102,16 @@
                 newWindow.print();
                 newWindow.close();
                 this.visible = false;
+            },
+            formatOrg(applyOrgId){
+                let org = OrgUtil.getOrgById(applyOrgId);
+                if(org && org.attribute){
+                    return org.attribute.shortOrgName;
+                }
+                return '';
+            },
+            timeCg(time) {
+                return moment(time).format('YYYY年MM月DD日');
             }
         }
     }

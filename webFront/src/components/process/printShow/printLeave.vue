@@ -10,17 +10,17 @@
                 <caption align="top"><h2 style="font-size:18px;">合肥市烟草专卖局（公司）<br/>年休假申请表</h2></caption>
                 <tr height="65">
                     <th width="35" colspan="2">单位（部门）</th>
-                    <th width="35" colspan="6">XX部门</th>
+                    <th width="35" colspan="6">{{formatOrg(item.applyOrgId)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35">申请人</th>
-                    <th width="30">张三</th>
-                    <th width="35">工龄</th>
-                    <th width="20">3</th>
+                    <th width="30">{{item.applyName}}</th>
+                    <th width="35">工龄（年）</th>
+                    <th width="20">{{item.workAge}}</th>
                     <th width="35">休假标准</th>
-                    <th width="55">5天假</th>
+                    <th width="55">{{handleHolidayType(item.holidayType)}}</th>
                     <th width="35">休假时间</th>
-                    <th width="65">2020-01-02~2020-01-07</th>
+                    <th width="65">{{timeCg(item.startTime)}} ~ {{timeCg(item.endTime)}}</th>
                 </tr>
                 <tr height="65">
                     <th width="35" colspan="3">部门负责人意见</th>
@@ -32,29 +32,29 @@
                 <tr height="65">
                     <th width="35" colspan="3">单位（部门）分管领导意见</th>
                     <th width="35" colspan="5" style="position: relative;">
-                        <span style="color: red;font-weight: bold">同意</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <span style="color: red;font-weight: bold"></span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                 </tr>
                 <tr height="65">
                     <th width="35" colspan="3">单位（部门）负责人意见</th>
                     <th width="35" colspan="5" style="position: relative;">
-                        <span style="color: red;font-weight: bold">同意</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <span style="color: red;font-weight: bold"></span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                 </tr>
                 <tr height="65">
                     <th width="35" colspan="3">市局（公司）分管领导意见</th>
                     <th width="35" colspan="5" style="position: relative;">
-                        <span style="color: red;font-weight: bold">同意</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <span style="color: red;font-weight: bold"></span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                 </tr>
                 <tr height="65">
                     <th width="35" colspan="3">市局（公司）主要领导意见</th>
                     <th width="35" colspan="5" style="position: relative;">
-                        <span style="color: red;font-weight: bold">同意</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <span style="color: red;font-weight: bold"></span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
                     </th>
                 </tr>
             </table>
@@ -68,17 +68,20 @@
 </template>
 
 <script>
+    import moment from 'moment';
+    import OrgUtil from '@/utils/OrgUtil';
+    import CodeUtil from '@/utils/CodeUtil';
     export default {
         name: "printLeave",
         data() {
             return {
                 visible: false,
-                info: {}
+                item: {}
             }
         },
         methods: {
             open(row) {
-                this.info = row;
+                this.item = row;
                 this.visible = true;
             },
             //打印表格
@@ -90,7 +93,20 @@
                 newWindow.print();
                 newWindow.close();
                 this.visible = false;
-            }
+            },
+            formatOrg(applyOrgId){
+                let org = OrgUtil.getOrgById(applyOrgId);
+                if(org && org.attribute){
+                    return org.attribute.shortOrgName;
+                }
+                return '';
+            },
+            timeCg(time) {
+                return moment(time).format('YYYY年MM月DD日');
+            },
+            handleHolidayType(type){
+                return CodeUtil.getName(3, type);
+            },
         }
     }
 </script>
