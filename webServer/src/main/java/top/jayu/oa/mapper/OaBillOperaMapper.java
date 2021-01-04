@@ -2,7 +2,10 @@ package top.jayu.oa.mapper;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import top.jayu.oa.entity.OaBillOpera;
+
+import java.util.List;
 
 @Mapper
 public interface OaBillOperaMapper {
@@ -16,5 +19,15 @@ public interface OaBillOperaMapper {
             "      #{passFlag,jdbcType=TINYINT}, #{content,jdbcType=VARCHAR}, now()\n" +
             "      )")
     int insert(OaBillOpera record);
+
+    @Select({
+            "<script> ",
+            "select * from t_oa_bill_opera ",
+            "  <where>  ",
+            "    <if test='beginTime != null and endTime != null'> and create_time between #{beginTime} and #{endTime} </if> ",
+            "  </where > ",
+            "</script> "
+    })
+    List<OaBillOpera> list(OaBillOpera record);
 
 }
