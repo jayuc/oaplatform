@@ -96,10 +96,12 @@
                 return '';
             },
             formatTime(row){
-                let sTimes = row.startTime.split(' ');
-                let eTimes = row.endTime.split(' ');
-                if(sTimes.length > 1 && eTimes.length > 1){
-                    return sTimes[0] + '　' + sTimes[1].substring(0,5) + ' - ' + eTimes[1].substring(0,5);
+                if(row.startTime && row.endTime){
+                    let sTimes = row.startTime.split(' ');
+                    let eTimes = row.endTime.split(' ');
+                    if(sTimes.length > 1 && eTimes.length > 1){
+                        return sTimes[0] + '　' + sTimes[1].substring(0,5) + ' - ' + eTimes[1].substring(0,5);
+                    }
                 }
                 return '';
             },
