@@ -16,6 +16,7 @@ import Introduce from '@/components/process/introduceMain';
 import Certificate from '@/components/process/certificateMain';
 import Meeting from '@/components/process/meetingMain';
 import MainMain from '@/components/main/main';
+import RoleManage from '@/components/organization/role-manage';
 import Doing from '@/components/process/doing';
 
 Vue.use(Router);
@@ -45,6 +46,7 @@ export default new Router({
             {path: 'meeting', component: Meeting},  // 会议室
             {path: 'userManage', component: UserManage},  // 用户管理
             {path: 'orgManage', component: OrgManage},  // 机构管理
+            {path: 'roleManage', component: RoleManage},  // 角色管理
             {path: 'doing', component: Doing},  // 正在开发
             {path: 'setPassword', component: PasswordSetting},  // 修改密码
         ]
