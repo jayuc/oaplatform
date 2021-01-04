@@ -22,7 +22,7 @@ CREATE TABLE `t_sys_org` (
   `tel` varchar(16) DEFAULT NULL COMMENT '联系方式',
   `sort` tinyint DEFAULT NULL COMMENT '排序',
   PRIMARY KEY (`org_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '机构表';
 
 # 职员表
 CREATE TABLE `t_sys_employ` (
@@ -40,7 +40,7 @@ CREATE TABLE `t_sys_employ` (
   `sex` tinyint DEFAULT NULL COMMENT '性别',
   `address` varchar(255) DEFAULT NULL COMMENT '家庭地址',
   PRIMARY KEY (`employ_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '职员表';
 
 # 用户表
 CREATE TABLE `t_sys_user` (
@@ -60,7 +60,24 @@ CREATE TABLE `t_sys_user` (
   `age` int(11) DEFAULT NULL COMMENT '年龄',
   `sex` tinyint DEFAULT NULL COMMENT '性别',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '用户表';
+
+# 角色表
+CREATE TABLE `t_sys_role` (
+  `role_id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(16) DEFAULT NULL COMMENT '登录名',
+  `enable_flag` tinyint DEFAULT NULL COMMENT '是否启用',
+  `mark` varchar(256) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '角色表';
+
+# 角色用户表
+CREATE TABLE `t_sys_role_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `role_id` int(11) NOT NULL COMMENT '角色id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '角色用户表';
 
 # 数据字典名称表
 CREATE TABLE `t_sys_code_type` (
@@ -69,7 +86,7 @@ CREATE TABLE `t_sys_code_type` (
   `name` varchar(16) DEFAULT NULL COMMENT '字段名称',
   `mark` varchar(128) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '数据字典名称表';
 
 # 数据字典表
 CREATE TABLE `t_sys_code` (
@@ -80,7 +97,7 @@ CREATE TABLE `t_sys_code` (
   `enable_flag` tinyint DEFAULT NULL COMMENT '是否启用,1表示启用',
   `mark` varchar(128) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '数据字典表';
 
 # 流程单表
 CREATE TABLE `t_oa_bill` (
@@ -121,7 +138,7 @@ CREATE TABLE `t_oa_bill` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `mark` varchar(256) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`bill_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程单表';
 
 # 流程步骤表
 CREATE TABLE `t_oa_process` (
@@ -138,7 +155,7 @@ CREATE TABLE `t_oa_process` (
   `process_desc` varchar(32) DEFAULT NULL COMMENT '流程描述',
   `mark` varchar(128) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`process_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程步骤表';
 
 # 流程条件
 CREATE TABLE `t_oa_process_condition` (
@@ -155,7 +172,7 @@ CREATE TABLE `t_oa_process_condition` (
   `fail_approve_function_id` int(11) DEFAULT NULL COMMENT '查询审批人方法id,结果为false时通过此方法查询审批人',
   `condition_desc` varchar(1024) DEFAULT NULL COMMENT '条件描述',
   PRIMARY KEY (`process_condition_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程条件表';
 
 # 流程方法
 CREATE TABLE `t_oa_process_function` (
@@ -167,7 +184,7 @@ CREATE TABLE `t_oa_process_function` (
   `function_name` varchar(32) DEFAULT NULL COMMENT '方法名，例如部门负责人',
   `function_desc` varchar(1024) DEFAULT NULL COMMENT '条件描述',
   PRIMARY KEY (`process_function_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程方法表';
 
 # 流程单操作记录
 CREATE TABLE `t_oa_bill_opera` (
@@ -180,7 +197,7 @@ CREATE TABLE `t_oa_bill_opera` (
   `content` varchar(1024) DEFAULT NULL COMMENT '审批意见',
   `create_time` datetime DEFAULT NULL COMMENT '审批时间',
   PRIMARY KEY (`bill_opera_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程操作记录表';
 
 
 # 模拟数据

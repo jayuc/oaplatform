@@ -56,7 +56,7 @@
     import TipUtil from '@/utils/TipUtil';
     import RestUtil from "../../utils/RestUtil";
     import ElCol from "element-ui/packages/col/src/col";
-    const pwdReg = /^(?![A-Za-z]+$)(?![A-Z\d]+$)(?![A-Z\W]+$)(?![a-z\d]+$)(?![a-z\W]+$)(?![\d\W]+$)\S{8,}$/;
+    const pwdReg = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[\da-zA-Z~!@#$%^&*]{8,}$/;
 
     export default {
         components: {ElCol},
@@ -66,9 +66,7 @@
                 if (value === '') {
                     callback(new Error('请输入密码'));
                 } else {
-                    if (this.formData.againPassword !== '') {
-                        this.$refs.ruleForm.validateField('againPassword');
-                    } else if(!pwdReg.test(this.formData.againPassword)) {
+                    if(!pwdReg.test(this.formData.newPassword)) {
                         callback(new Error('需包含字母、数字、特殊字符，至少8位数'));
                     }
                     callback();
@@ -94,10 +92,12 @@
                         { required: true, message: '请输入原密码', trigger: 'blur' }
                     ],
                     newPassword: [
-                        { required: true, validator: validatePwd, trigger: 'blur' }
+                        { required: true, message: '请输入新密码', trigger: 'blur' },
+                        { validator: validatePwd, trigger: 'blur' }
                     ],
                     againPassword: [
-                        { required: true, validator: validateCheckPwd, trigger: 'blur' }
+                        { required: true, message: '请再次新密码', trigger: 'blur' },
+                        { validator: validateCheckPwd, trigger: 'blur' }
                     ]
                 }
             }
