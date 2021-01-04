@@ -23,7 +23,7 @@
           </el-form>
       </div>
       <div style="height: 100px;"></div>
-      <div>技术支持：安徽天安芯科物联网技术有限公司</div>
+      <div style="display: none;">技术支持：安徽天安芯科物联网技术有限公司</div>
   </div>
 </template>
 

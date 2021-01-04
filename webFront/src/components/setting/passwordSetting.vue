@@ -22,12 +22,18 @@
                         <el-input type="password" v-model="formData.newPassword" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
+                <el-col :span="6">
+                    <div class="password-tip">新密码必须是字母+特殊符号+数字的组合，且不得少于8位</div>
+                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="6" :offset="1">
                     <el-form-item label="确认新密码：" prop="againPassword" :label-width="formLabelWidth">
                         <el-input type="password" v-model="formData.againPassword" autocomplete="off"></el-input>
                     </el-form-item>
+                </el-col>
+                <el-col :span="6">
+                    <div class="password-tip">新密码必须是字母+特殊符号+数字的组合，且不得少于8位</div>
                 </el-col>
             </el-row>
         </el-form>
@@ -49,9 +55,11 @@
     import user from '@/user';
     import TipUtil from '@/utils/TipUtil';
     import RestUtil from "../../utils/RestUtil";
+    import ElCol from "element-ui/packages/col/src/col";
     const pwdReg = /^(?![A-Za-z]+$)(?![A-Z\d]+$)(?![A-Z\W]+$)(?![a-z\d]+$)(?![a-z\W]+$)(?![\d\W]+$)\S{8,}$/;
 
     export default {
+        components: {ElCol},
         name: 'password-setting',
         data(){
             let validatePwd = (rule, value, callback) => {
@@ -127,5 +135,10 @@
 </script>
 
 <style scoped>
-
+    .password-tip{
+        color: red;
+        float: left;
+        margin-left: 10px;
+        line-height: 42px;
+    }
 </style>
