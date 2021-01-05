@@ -1,8 +1,16 @@
 <template>
     <el-container>
 
-        <el-header height="40px">
-            <el-button type="primary" @click="submit()" :disabled="searchBtnStatus">查 询</el-button>
+        <el-header height="104px">
+            <div class="form-search-top-div"></div>
+            <div class="form-search-container">
+                <span class="form-search-title">查询条件</span>
+                <el-form :inline="true" :model="formData" class="demo-form-inline">
+                    <el-form-item>
+                        <el-button type="primary" @click="submit()" :disabled="searchBtnStatus">查 询</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
         </el-header>
 
         <el-main>
@@ -16,16 +24,20 @@
                         header-cell-class-name="form-table-header-cell"
                         style="width: 100%">
                     <el-table-column
+                            type="selection"
+                            width="36">
+                    </el-table-column>
+                    <el-table-column
                             prop="roleName"
                             label="角色名称"
                             align="center"
-                            width="120">
+                            width="300">
                     </el-table-column>
                     <el-table-column
                             prop="mark"
                             label="备注"
                             align="center"
-                            width="100">
+                            width="400">
                     </el-table-column>
                     <el-table-column
                             prop="operation"
