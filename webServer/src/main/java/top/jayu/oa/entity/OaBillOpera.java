@@ -15,6 +15,8 @@ public class OaBillOpera extends BaseParam {
 
     private Byte billType;
 
+    private String billTypeName;
+
     private String billStep;
 
     private String billStepName;

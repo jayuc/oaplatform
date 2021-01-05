@@ -6,7 +6,16 @@
             <div class="form-search-container">
                 <span class="form-search-title">查询条件</span>
                 <el-form :inline="true" :model="formData" class="demo-form-inline">
-                    <el-form-item>
+                    <el-form-item label="操作时间：">
+                        <el-date-picker
+                                v-model="operaTime"
+                                type="datetimerange"
+                                range-separator="至"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期">
+                        </el-date-picker>
+                    </el-form-item>
+                    <el-form-item style="margin-left: 20px;">
                         <el-button type="primary" @click="submit()" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
                 </el-form>
@@ -83,11 +92,16 @@
                 },
                 searchBtnStatus: false,
                 total: 0,
-                tableData: []
+                tableData: [],
+                operaTime: []
             }
         },
         methods: {
             submit(){
+                if(this.operaTime.length > 1){
+                    this.formData.beginTime = this.operaTime[0];
+                    this.formData.endTime = this.operaTime[1];
+                }
                 RestUtil.get('oa/bill/opera/list', this.formData, {
                     enableLoading: true,       // 启动请求期间的正在加载
                     loadingStartFun: () => {   // 请求开始前执行

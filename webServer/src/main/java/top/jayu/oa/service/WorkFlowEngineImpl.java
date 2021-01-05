@@ -8,13 +8,16 @@ import org.springframework.stereotype.Service;
 import top.jayu.oa.entity.*;
 import top.jayu.oa.iter.SpringInvokeMethod;
 import top.jayu.oa.iter.WorkFlowEngine;
+import top.jayu.oa.mapper.CodeMapper;
 import top.jayu.oa.mapper.OaBillMapper;
 import top.jayu.oa.mapper.OaBillOperaMapper;
 import top.jayu.oa.util.ResultUtil;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by 余杰 on 2020/12/18 11:37
@@ -40,9 +43,25 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     OaBillMapper oaBillMapper;
     @Autowired
     OaBillOperaMapper oaBillOperaMapper;
+    @Autowired
+    CodeMapper codeMapper;
+
+    static Map<Byte, Code> BILL_TYPE_MAP = null;
+
+    private void initBillTypeMap(){
+        if(BILL_TYPE_MAP == null){
+            Code dto = new Code();
+            dto.setCode((short) 1);
+            List<Code> list = codeMapper.list(dto);
+            BILL_TYPE_MAP = list.stream().collect(Collectors.toMap(Code::getCodeNo, code -> code));
+        }
+    }
 
     @Override
     public Map<String, Object> deliver(OaBill bill, boolean autoDb) {
+
+        initBillTypeMap();
+
         ResultUtil.Result result = ResultUtil.build();
 
         log.info("");
@@ -366,6 +385,10 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         oaBillOpera.setOperaOrgId(bill.getCurrentOrgId());
         if(bill.getPassFlag() == null){
             bill.setPassFlag((byte) 0);
+        }
+        Code code = BILL_TYPE_MAP.get(bill.getBillType());
+        if(code != null){
+            oaBillOpera.setBillTypeName(code.getName());
         }
         oaBillOpera.setPassFlag(bill.getPassFlag());
         if(StrUtil.isBlank(oaBillOpera.getContent())){
