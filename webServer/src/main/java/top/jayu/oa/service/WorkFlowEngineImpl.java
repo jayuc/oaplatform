@@ -235,7 +235,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             processToDb(bill, yesNewBill);
 
             // 第五步：记录日志
-            processToLog(bill, prevStep);
+            processToLog(bill, prevStep, process.getProcessDesc());
 
         }else {
             result.property("processDesc", process.getProcessDesc());
@@ -353,17 +353,28 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     }
 
     // 第五步：记录日志
-    private int processToLog(OaBill bill, String step){
+    private int processToLog(OaBill bill, String step, String stepName){
         OaBillOpera oaBillOpera = new OaBillOpera();
+        oaBillOpera.setBillId(bill.getBillId());
         oaBillOpera.setBillCode(bill.getBillCode());
         oaBillOpera.setBillType(bill.getBillType());
         oaBillOpera.setBillStep(step);
+        oaBillOpera.setBillStepName(stepName);
         oaBillOpera.setContent(bill.getApproveOpinion());
         oaBillOpera.setOperaId(bill.getCurrentUserId());
+        oaBillOpera.setOperaName(bill.getCurrentUserName());
+        oaBillOpera.setOperaOrgId(bill.getCurrentOrgId());
         if(bill.getPassFlag() == null){
             bill.setPassFlag((byte) 0);
         }
         oaBillOpera.setPassFlag(bill.getPassFlag());
+        if(StrUtil.isBlank(oaBillOpera.getContent())){
+            if(bill.getPassFlag() == 1){
+                oaBillOpera.setContent("同意");
+            }else if(bill.getPassFlag() == 2){
+                oaBillOpera.setContent("不同意");
+            }
+        }
         log.info("step5: oaBillOpera insert ===> " + oaBillOpera);
         return oaBillOperaMapper.insert(oaBillOpera);
     }

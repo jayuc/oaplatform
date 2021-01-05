@@ -114,10 +114,15 @@ CREATE TABLE `t_oa_process_function` (
 # 流程单操作记录
 CREATE TABLE `t_oa_bill_opera` (
   `bill_opera_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_id` int(11) NOT NULL COMMENT '工单id',
   `bill_code` varchar(32) DEFAULT NULL COMMENT '编号',
   `bill_type` tinyint NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
   `bill_step` varchar(32) NOT NULL COMMENT '流程的步骤',
+  `bill_step_name` varchar(32) DEFAULT NULL COMMENT '流程步骤名称',
   `opera_id` int(11) DEFAULT NULL COMMENT '操作人id',
+  `opera_name` varchar(64) DEFAULT NULL COMMENT '操作人名称',
+  `opera_org_id` int(11) DEFAULT NULL COMMENT '操作人机构id',
+  `opera_org_name` varchar(64) DEFAULT NULL COMMENT '操作人机构名称',
   `pass_flag` tinyint NOT NULL COMMENT '是否同意 1同意，2不同意，0创建申请单',
   `content` varchar(1024) DEFAULT NULL COMMENT '审批意见',
   `create_time` datetime DEFAULT NULL COMMENT '审批时间',

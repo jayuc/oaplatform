@@ -52,3 +52,12 @@ CREATE TABLE `t_sys_role_user` (
   `role_id` int(11) NOT NULL COMMENT '角色id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '角色用户表';
+
+ALTER TABLE t_oa_bill_opera ADD COLUMN `bill_id` int(11) NOT NULL;
+ALTER TABLE t_oa_bill_opera ADD COLUMN `bill_step_name` varchar(32) DEFAULT NULL;
+ALTER TABLE t_oa_bill_opera ADD COLUMN `opera_name` varchar(64) DEFAULT NULL;
+ALTER TABLE t_oa_bill_opera ADD COLUMN `opera_org_id` int(11) DEFAULT NULL;
+ALTER TABLE t_oa_bill_opera ADD COLUMN `opera_org_name` varchar(64) DEFAULT NULL;
+
+update t_oa_bill_opera o inner join t_oa_bill b on o.bill_code = b.bill_code set o.bill_id = b.bill_id;
+update t_oa_bill_opera o inner join t_oa_process p on concat(o.bill_type,o.bill_step) = concat(p.bill_type,p.current_step) set o.bill_step_name = p.process_desc;

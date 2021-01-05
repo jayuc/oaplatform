@@ -9,13 +9,23 @@ import java.util.Date;
 public class OaBillOpera extends BaseParam {
     private Integer billOperaId;
 
+    private Integer billId;
+
     private String billCode;
 
     private Byte billType;
 
     private String billStep;
 
+    private String billStepName;
+
     private Integer operaId;
+
+    private String operaName;
+
+    private Integer operaOrgId;
+
+    private String operaOrgName;
 
     private Byte passFlag;
 
