@@ -254,7 +254,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
             processToDb(bill, yesNewBill);
 
             // 第五步：记录日志
-            processToLog(bill, prevStep, process.getProcessDesc());
+            processToLog(bill, prevStep, process.getProcessDesc(), process.getOrgPrivLen());
 
         }else {
             result.property("processDesc", process.getProcessDesc());
@@ -372,7 +372,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     }
 
     // 第五步：记录日志
-    private int processToLog(OaBill bill, String step, String stepName){
+    private int processToLog(OaBill bill, String step, String stepName, Float stepLeve){
         OaBillOpera oaBillOpera = new OaBillOpera();
         oaBillOpera.setBillId(bill.getBillId());
         oaBillOpera.setBillCode(bill.getBillCode());
@@ -390,6 +390,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
         if(code != null){
             oaBillOpera.setBillTypeName(code.getName());
         }
+        oaBillOpera.setStepOrgLevel(stepLeve);
         oaBillOpera.setPassFlag(bill.getPassFlag());
         if(StrUtil.isBlank(oaBillOpera.getContent())){
             if(bill.getPassFlag() == 1){

@@ -121,13 +121,13 @@ public class OaBillService {
             OaProcessFunctionResult functionResult = orgService.findCompanyLeader(bill);
             l.approveId = functionResult.getApproveList();
             l.approveName = functionResult.getApproveNameList();
-            l.stepName = "市局负责人";
+            l.stepName = "市局（公司）负责人";
         }else if(level == 2){
             candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
             OaProcessFunctionResult functionResult1 = orgService.findCompanyDeputy(bill);
             l.approveId = functionResult1.getApproveList();
             l.approveName = functionResult1.getApproveNameList();
-            l.stepName = "市局分管领导";
+            l.stepName = "市局（公司）分管领导";
         }else if(level == 3){
             candidateOrgCodePriv = applyOrgCodePriv.substring(0, 6);
             OaProcessFunctionResult functionResult2 = orgService.findUnitLeader(bill);

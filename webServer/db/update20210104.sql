@@ -59,6 +59,8 @@ ALTER TABLE t_oa_bill_opera ADD COLUMN `opera_name` varchar(64) DEFAULT NULL;
 ALTER TABLE t_oa_bill_opera ADD COLUMN `opera_org_id` int(11) DEFAULT NULL;
 ALTER TABLE t_oa_bill_opera ADD COLUMN `opera_org_name` varchar(64) DEFAULT NULL;
 ALTER TABLE t_oa_bill_opera ADD COLUMN `bill_type_name` varchar(64) DEFAULT NULL;
+ALTER TABLE t_oa_bill_opera ADD COLUMN `step_org_level` FLOAT DEFAULT NULL;
 
 update t_oa_bill_opera o inner join t_oa_bill b on o.bill_code = b.bill_code set o.bill_id = b.bill_id;
 update t_oa_bill_opera o inner join t_oa_process p on concat(o.bill_type,o.bill_step) = concat(p.bill_type,p.current_step) set o.bill_step_name = p.process_desc;
+update t_oa_bill_opera o inner join t_oa_process p on concat(o.bill_type,o.bill_step) = concat(p.bill_type,p.current_step) set o.step_org_level = p.org_priv_len;

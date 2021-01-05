@@ -10,6 +10,7 @@ import top.jayu.oa.entity.OaBillOpera;
 import top.jayu.oa.mapper.OaBillOperaMapper;
 import top.jayu.oa.util.ResultUtil;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,6 +32,11 @@ public class OaBillOperaController {
         result.total(page.getTotal());
         result.rows(page.getResult());
         return result.getResult();
+    }
+
+    @GetMapping("/listAll")
+    public List<OaBillOpera> listAll(OaBillOpera dto){
+        return oaBillOperaMapper.list(dto);
     }
 
 }

@@ -22,39 +22,39 @@
                     <th width="35">休假时间</th>
                     <th width="65">{{timeCg(item.startTime)}} ~ {{timeCg(item.endTime)}}</th>
                 </tr>
-                <tr height="65">
+                <tr height="65" v-if="levelShowMap[5]">
                     <th width="35" colspan="3">部门负责人意见</th>
                     <th width="35" colspan="5" style="position: relative;">
-                        <span style="color: red;font-weight: bold">同意</span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;">2020年1月1日</em>
+                        <span style="color: red;font-weight: bold">{{handleContent(levelShowMap[5])}}</span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(levelShowMap[5])}}</em>
                     </th>
                 </tr>
-                <tr height="65">
+                <tr height="65" v-if="levelShowMap[4]">
                     <th width="35" colspan="3">单位（部门）分管领导意见</th>
                     <th width="35" colspan="5" style="position: relative;">
-                        <span style="color: red;font-weight: bold"></span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
+                        <span style="color: red;font-weight: bold">{{handleContent(levelShowMap[4])}}</span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(levelShowMap[4])}}</em>
                     </th>
                 </tr>
-                <tr height="65">
+                <tr height="65" v-if="levelShowMap[3]">
                     <th width="35" colspan="3">单位（部门）负责人意见</th>
                     <th width="35" colspan="5" style="position: relative;">
-                        <span style="color: red;font-weight: bold"></span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
+                        <span style="color: red;font-weight: bold">{{handleContent(levelShowMap[3])}}</span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(levelShowMap[3])}}</em>
                     </th>
                 </tr>
-                <tr height="65">
+                <tr height="65" v-if="levelShowMap[2]">
                     <th width="35" colspan="3">市局（公司）分管领导意见</th>
                     <th width="35" colspan="5" style="position: relative;">
-                        <span style="color: red;font-weight: bold"></span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
+                        <span style="color: red;font-weight: bold">{{handleContent(levelShowMap[2])}}</span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(levelShowMap[2])}}</em>
                     </th>
                 </tr>
-                <tr height="65">
+                <tr height="65" v-if="levelShowMap[1]">
                     <th width="35" colspan="3">市局（公司）主要领导意见</th>
                     <th width="35" colspan="5" style="position: relative;">
-                        <span style="color: red;font-weight: bold"></span>
-                        <em style="position: absolute;bottom: 5px;right: 20px;"></em>
+                        <span style="color: red;font-weight: bold">{{handleContent(levelShowMap[1])}}</span>
+                        <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(levelShowMap[1])}}</em>
                     </th>
                 </tr>
             </table>
@@ -71,18 +71,38 @@
     import moment from 'moment';
     import OrgUtil from '@/utils/OrgUtil';
     import CodeUtil from '@/utils/CodeUtil';
+    import RestUtil from '@/utils/RestUtil';
     export default {
         name: "printLeave",
         data() {
             return {
                 visible: false,
-                item: {}
+                item: {},
+                levelShowMap: {
+                    3: {}
+                }
             }
         },
         methods: {
             open(row) {
                 this.item = row;
                 this.visible = true;
+                RestUtil.get('oa/bill/opera/listAll', {billCode: row.billCode}).then((list) => {
+                    if(list instanceof Array){
+                        let stepMap = {};
+                        for (let i=0; i<list.length; i++){
+                            let item = list[i];
+                            let step = item.billStep;
+                            if(step != '00' && !stepMap[step]){
+                                let t = {};
+                                t.content = item.content;
+                                t.approveTime = item.createTime;
+                                this.levelShowMap[item.stepOrgLevel] = t;
+                            }
+                            stepMap[step] = step;
+                        }
+                    }
+                });
             },
             //打印表格
             print() {
@@ -107,6 +127,18 @@
             handleHolidayType(type){
                 return CodeUtil.getName(3, type);
             },
+            handleContent(obj){
+                if(obj){
+                    return obj.content;
+                }
+                return '';
+            },
+            handleApproveTime(obj){
+                if(obj){
+                    return obj.approveTime;
+                }
+                return '';
+            }
         }
     }
 </script>

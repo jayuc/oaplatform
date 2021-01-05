@@ -119,6 +119,7 @@ CREATE TABLE `t_oa_bill_opera` (
   `bill_type` tinyint NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
   `bill_type_name` varchar(64) DEFAULT NULL COMMENT '工单类型名称',
   `bill_step` varchar(32) NOT NULL COMMENT '流程的步骤',
+  `step_org_level` FLOAT DEFAULT NULL COMMENT '此次流程在机构中的层级',
   `bill_step_name` varchar(32) DEFAULT NULL COMMENT '流程步骤名称',
   `opera_id` int(11) DEFAULT NULL COMMENT '操作人id',
   `opera_name` varchar(64) DEFAULT NULL COMMENT '操作人名称',

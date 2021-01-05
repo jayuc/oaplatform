@@ -19,6 +19,8 @@ public class OaBillOpera extends BaseParam {
 
     private String billStep;
 
+    private Float stepOrgLevel;
+
     private String billStepName;
 
     private Integer operaId;
