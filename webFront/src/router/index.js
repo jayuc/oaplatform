@@ -17,6 +17,7 @@ import Certificate from '@/components/process/certificateMain';
 import Meeting from '@/components/process/meetingMain';
 import MainMain from '@/components/main/main';
 import RoleManage from '@/components/organization/role-manage';
+import BillOperaLog from '@/components/setting/bill-opera-log';
 import Doing from '@/components/process/doing';
 
 Vue.use(Router);
@@ -49,6 +50,7 @@ export default new Router({
             {path: 'roleManage', component: RoleManage},  // 角色管理
             {path: 'doing', component: Doing},  // 正在开发
             {path: 'setPassword', component: PasswordSetting},  // 修改密码
+            {path: 'billOperaLog', component: BillOperaLog},  // 工单操作日志
         ]
     }
   ]

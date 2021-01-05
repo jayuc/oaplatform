@@ -49,6 +49,7 @@
             <el-submenu index="3">
                 <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
                     <el-menu-item index="/main/setPassword">修改密码</el-menu-item>
+                    <el-menu-item index="/main/billOperaLog">工单操作日志</el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
