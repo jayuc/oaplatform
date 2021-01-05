@@ -36,17 +36,29 @@
                             prop="billCode"
                             label="工单编号"
                             align="center"
+                            width="150">
+                    </el-table-column>
+                    <el-table-column
+                            prop="billTypeName"
+                            label="工单类型"
+                            align="center"
                             width="300">
                     </el-table-column>
                     <el-table-column
                             prop="billStepName"
                             label="操作步骤"
                             align="center"
-                            width="400">
+                            width="300">
                     </el-table-column>
                     <el-table-column
                             prop="operaName"
                             label="操作人"
+                            align="center"
+                            width="100">
+                    </el-table-column>
+                    <el-table-column
+                            prop="content"
+                            label="审批意见"
                             align="center"
                             width="400">
                     </el-table-column>
