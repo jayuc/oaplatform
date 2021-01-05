@@ -53,7 +53,7 @@ CREATE TABLE `t_sys_role_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '角色用户表';
 
-ALTER TABLE t_oa_bill_opera ADD COLUMN `bill_id` int(11) NOT NULL;
+ALTER TABLE t_oa_bill_opera ADD COLUMN `bill_id` int(11) DEFAULT NULL;
 ALTER TABLE t_oa_bill_opera ADD COLUMN `bill_step_name` varchar(32) DEFAULT NULL;
 ALTER TABLE t_oa_bill_opera ADD COLUMN `opera_name` varchar(64) DEFAULT NULL;
 ALTER TABLE t_oa_bill_opera ADD COLUMN `opera_org_id` int(11) DEFAULT NULL;
