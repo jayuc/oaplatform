@@ -2,17 +2,17 @@
 
 #set -eo pipefail
 
-echo "process start ... " >> ./nohup.out
+cd /code/oaplatform/
 
-cd ../
+echo "process start ... " >> ./webServer/nohup.out
 
-echo "setp 1/5: git pull" >> ./nohup.out
+echo "setp 1/5: git pull" >> ./webServer/nohup.out
 git pull > pullResult.text
 
 # 如果没有代码更新，则不部署
 pullR=`cat pullResult.text`
 if [ `echo $pullR | sed s/[[:space:]]//g` = "Alreadyuptodate." ];then
-    echo "Already up to date." >> ./nohup.out
+    echo "Already up to date." >> ./webServer/nohup.out
 	exit 0
 fi
 
