@@ -20,7 +20,8 @@ echo "setp 3/5: git pull"
 git pull > pullResult.text
 
 # 如果没有代码更新，则不部署
-if [ "Already up to date." = `cat pullResult.text` ];then
+pullR=`cat pullResult.text`
+if [ `echo $pullR | sed s/[[:space:]]//g` = "Alreadyuptodate." ];then
     echo "Already up to date."
 	exit 0
 fi
