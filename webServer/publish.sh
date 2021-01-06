@@ -16,8 +16,13 @@ fi
 
 cd ../
 
-echo "setp 3/5: git push"
-git pull
+echo "setp 3/5: git pull"
+git pull > pullResult.text
+
+if [ "Already up to date." = `cat pullResult.text` ];then
+    echo "Already up to date."
+	exit 0
+fi
 
 # 编译项目
 echo "setp 4/5: mvn package"
