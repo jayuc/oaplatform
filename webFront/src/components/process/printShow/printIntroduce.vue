@@ -1,13 +1,13 @@
 <!--打印预览：调阅会计档案申请-->
 <template>
-    <el-dialog title="调阅会计档案申请预览"
+    <el-dialog title="市局（公司）介绍信开具申请预览"
                :visible.sync="visible"
                width="90%"
     >
         <div ref="tableContainer">
             <table border="1" cellspacing="0" align="center"
                    style="font-family:微软雅黑;text-align:center;word-wrap:break-word;word-break:break-all;background:#efefef;color:#333;font-size:13px;border-collapse:collapse;width:100%">
-                <caption align="top"><h2 style="font-size:18px;">合肥市烟草专卖局（公司）<br/>调阅会计档案审批表</h2></caption>
+                <caption align="top"><h2 style="font-size:18px;">合肥市烟草专卖局（公司）<br/>市局（公司）介绍信开具申请表</h2></caption>
                 <tr height="65">
                     <th width="15%">申请人单位（部门）</th>
                     <td width="35%">{{formatOrg(item.applyOrgId)}}</td>
@@ -15,20 +15,12 @@
                     <td colspan="24">{{item.applyName}}</td>
                 </tr>
                 <tr height="120">
-                    <th colspan="1">调阅内容</th>
+                    <th colspan="1">申请原因</th>
                     <td colspan="23">{{item.content}}</td>
                 </tr>
                 <tr height="65">
-                    <th colspan="1">是否需复印</th>
-                    <td colspan="1">{{formatYesFlag(item.holidayType)}}</td>
-                    <th colspan="1">是否需外借</th>
-                    <td colspan="1">{{formatYesFlag(item.days)}}</td>
-                </tr>
-                <tr height="65">
-                    <th colspan="1">调阅人</th>
-                    <td colspan="1">{{item.applyName}}</td>
                     <th colspan="1">日期</th>
-                    <td colspan="1">{{formatTime(item.createTime)}}</td>
+                    <td colspan="23">{{formatTime(item.createTime)}}</td>
                 </tr>
                 <tr height="65">
                     <th colspan="1">备 注</th>
@@ -56,7 +48,7 @@
                     </td>
                 </tr>
                 <tr height="65" v-if="l35">
-                    <th colspan="1">财务部门负责人意见</th>
+                    <th colspan="1">市局办公室主任意见</th>
                     <td colspan="23" style="position: relative;">
                         <span style="color: red;font-weight: bold">{{handleContent(l35map)}}</span>
                         <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(l35map)}}</em>

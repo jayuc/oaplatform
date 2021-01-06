@@ -123,6 +123,8 @@
 
         <details-business-trip ref="detailsLeave" />
 
+        <PrintLeave ref="tbRef" />
+
     </el-container>
 </template>
 
@@ -133,6 +135,7 @@
     import AddBusinessTrip from './addCertificate.vue';
     import ApproveBusinessTrip from './approveCertificate.vue';
     import DetailsBusinessTrip from './detailsCertificate.vue';
+    import PrintLeave from './printShow/printCertificate.vue';
     import RejectDialog from './handleRejectCertificate.vue';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
@@ -143,7 +146,8 @@
             AddBusinessTrip,
             ApproveBusinessTrip,
             DetailsBusinessTrip,
-            RejectDialog
+            RejectDialog,
+            PrintLeave
         },
         data(){
             return {
@@ -254,6 +258,7 @@
             },
             showApproveList(row){
                 console.log(row);
+                this.$refs.tbRef.open(row);
             },
             approveBill(row){
                 this.$refs.approveLeave.open(row, 'oa/bill/deliver');
