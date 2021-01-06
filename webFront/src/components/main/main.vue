@@ -4,7 +4,7 @@
             <header>待办动态</header>
             <div class="panel_list">
                 <p v-for="(item,index) in applyArr" :key="index" @click="selectRow((menuObj[item.billType] || {}).path)">
-                    <span class="row_name">【{{item.billTypeName}}】{{item.title}}</span>
+                    <span class="row_name">【{{item.typeName}}】{{item.title}}</span>
                     <span class="row_type">{{item.applyName}}</span>
                     <span class="row_time">{{item.applyTime}}</span>
                 </p>

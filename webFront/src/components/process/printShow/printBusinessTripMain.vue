@@ -10,7 +10,7 @@
                 <caption align="top"><h2 style="font-size:18px;">合肥市烟草专卖局（公司）<br/>出差审批单</h2></caption>
                 <tr height="65">
                     <th width="15%">申请人单位（部门）</th>
-                    <td width="40%">{{formatOrg(item.applyOrgId)}}</td>
+                    <td width="35%">{{formatOrg(item.applyOrgId)}}</td>
                     <th width="15%">申请人</th>
                     <td colspan="24">{{item.applyName}}</td>
                 </tr>
@@ -88,11 +88,13 @@
                 l5: false,
                 l4: false,
                 l3: false,
+                l35: false,
                 l2: false,
                 l1: false,
                 l5map: {},
                 l4map: {},
                 l3map: {},
+                l35map: {},
                 l2map: {},
                 l1map: {}
             }
@@ -118,6 +120,9 @@
                                 }else if(item.stepOrgLevel == 3){
                                     this.l3 = true;
                                     this.l3map = item;
+                                }else if(item.stepOrgLevel == 3.5){
+                                    this.l35 = true;
+                                    this.l35map = item;
                                 }else if(item.stepOrgLevel == 4){
                                     this.l4 = true;
                                     this.l4map = item;
