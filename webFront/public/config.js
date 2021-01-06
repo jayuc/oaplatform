@@ -4,7 +4,7 @@
 
 var $rootScope = {
 
-    // rest 根路径 
+    // rest 根路径
     restRoot: 'http://127.0.0.1:8056/',
 
     // 登录页标题
