@@ -31,7 +31,7 @@ fi
 # 编译项目
 echo "setp 4/5: mvn package" >> ./nohup.out
 
-mvn clean package -Dmaven.test.skip=true
+mvn clean package -Dmaven.test.skip=true >> ./nohup.out
 
 echo "setp 5/5: run jar" >> ./nohup.out
 nohup java -jar ./target/oa-0.0.1.jar & echo $! > pidfile.txt
