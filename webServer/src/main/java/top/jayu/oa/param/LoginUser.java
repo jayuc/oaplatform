@@ -6,6 +6,9 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class LoginUser extends BaseParam {
+
+    private Integer userId;
+
     @NotBlank(message = "登录名不能为空")
     private String loginName;
 

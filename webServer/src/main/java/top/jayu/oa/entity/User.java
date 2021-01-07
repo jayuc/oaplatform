@@ -11,6 +11,8 @@ public class User extends BaseParam {
 
     private String userName;
 
+    private String password;
+
     private String userCode;
 
     private Integer employId;

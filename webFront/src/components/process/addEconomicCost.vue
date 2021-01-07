@@ -151,6 +151,10 @@
                 Object.assign(this.formData, data);
                 this.url = url;
                 this.title = this.titleMap[titleType];
+                // 表单复位
+                if(this.$refs['formData']){
+                    this.$refs['formData'].resetFields();
+                }
             },
             close(){
                 this.visible = false;

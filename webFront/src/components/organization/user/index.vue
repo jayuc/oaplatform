@@ -28,6 +28,9 @@
                         <el-form-item>
                             <el-button type="primary" @click="submit('')" :disabled="searchBtnStatus">查 询</el-button>
                         </el-form-item>
+                        <el-form-item>
+                            <el-button type="success" @click="add" >新 增</el-button>
+                        </el-form-item>
                     </el-form>
                 </div>
             </el-header>
@@ -92,9 +95,26 @@
                               align="center"
                               label="操作">
                             <template slot-scope="scope">
-                                <el-button v-if="ifShowChief(scope.row)" @click="updateChief(scope.row)"
-                                           plain
-                                           type="primary" size="small">设置科级干部</el-button>
+                                <el-button @click="details(scope.row)"
+                                           icon="el-icon-document"
+                                           title="查看详情"
+                                           type="primary" size="small"></el-button>
+                                <el-button @click="updateChief(scope.row)"
+                                           icon="el-icon-setting"
+                                           title="设置科级干部"
+                                           type="primary" size="small"></el-button>
+                                <el-button @click="updateChief(scope.row)"
+                                           icon="el-icon-tickets"
+                                           title="调整部门"
+                                           type="success" size="small"></el-button>
+                                <el-button @click="resetPassword(scope.row)"
+                                           icon="el-icon-refresh-right"
+                                           title="重置密码"
+                                           type="warning" size="small"></el-button>
+                                <el-button @click="deleteOne(scope.row)"
+                                           icon="el-icon-delete"
+                                           title="删除"
+                                           type="danger" size="small"></el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -115,6 +135,10 @@
 
         <chief-setting ref="chiefSetting" @complete="submit" />
 
+        <detail-dialog ref="detailDialog" />
+
+        <add-dialog ref="addDialog" />
+
     </el-container>
 
 </template>
@@ -125,12 +149,17 @@
     import Config from '@/config';
     import OrgUtil from '@/utils/OrgUtil';
     import CodeUtil from '@/utils/CodeUtil';
-    import ChiefSetting from './userSetChief.vue';
+    import Md5Util from '@/utils/Md5Util';
+    import DetailDialog from './details.vue';
+    import AddDialog from './add.vue';
+    import ChiefSetting from '../userSetChief.vue';
 
     export default {
         name: 'user-setting',
         components: {
-            ChiefSetting
+            ChiefSetting,
+            DetailDialog,
+            AddDialog
         },
         data(){
             return {
@@ -162,6 +191,7 @@
             }
         },
         methods: {
+            // 查询
             submit(orgCodePriv){
                 if(typeof orgCodePriv != 'undefined'){
                     this.formData.orgCodePriv = orgCodePriv;
@@ -187,6 +217,61 @@
                     }
                 }, () => {
 
+                });
+            },
+            // 查看详情
+            details(row){
+                console.log(row);
+                this.$refs.detailDialog.open(row);
+            },
+            // 新增
+            add(){
+                this.$refs.addDialog.open();
+            },
+            // 删除一条记录
+            deleteOne(row){
+                this.$confirm('确定删除 ' + row.userName + ' ?', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    RestUtil.post('user/deleteOne', {id: row.userId}, {enableLoading: true}).then((result) => {
+                        if(result == 1){
+                            TipUtil.success('删除成功!');
+                            this.submit();
+                        }else {
+                            TipUtil.error('删除失败!');
+                        }
+                    }, () => {
+                        TipUtil.error('删除失败!');
+                    });
+                }).catch(() => {
+                    TipUtil.info('已取消删除');
+                });
+            },
+            // 重置密码
+            resetPassword(row){
+                this.$confirm('确定为 ' + row.userName + ' 重置密码?', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    RestUtil.post('user/resetPassword', {
+                            userId: row.userId,
+                            password: Md5Util.encode('hfyc@1234')
+                        },
+                        {enableLoading: true}).then((result) => {
+                        if(result == 1){
+                            TipUtil.success('重置密码成功!');
+                            this.submit();
+                        }else {
+                            TipUtil.error('重置密码失败!');
+                        }
+                    }, () => {
+                        TipUtil.error('重置密码失败!');
+                    });
+                }).catch(() => {
+                    TipUtil.info('已取消重置密码');
                 });
             },
             // 是否显示科级干部

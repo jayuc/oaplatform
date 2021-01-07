@@ -1,5 +1,6 @@
 package top.jayu.oa.mapper;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -53,5 +54,11 @@ public interface UserMapper {
 
     @Update("update t_sys_user set password = #{password} where user_id = #{currentUserId}")
     Integer updatePassword(LoginUser record);
+
+    @Delete("delete from t_sys_user where user_id = #{id}")
+    Integer deleteOne(Integer id);
+
+    @Update("update t_sys_user set password = #{password} where user_id = #{userId}")
+    Integer resetPassword(LoginUser record);
 
 }

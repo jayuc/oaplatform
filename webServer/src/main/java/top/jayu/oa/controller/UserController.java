@@ -121,6 +121,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/deleteOne")
+    public int deleteOne(Integer id){
+        return userMapper.deleteOne(id);
+    }
+
+    @PostMapping("/resetPassword")
+    public int resetPassword(LoginUser dto){
+        return userMapper.resetPassword(dto);
+    }
+
     private void generateUserList(Map<String, List<User>> map, Integer orgId, String orgName){
         User userDto = new User();
         userDto.setOrgId(orgId);
