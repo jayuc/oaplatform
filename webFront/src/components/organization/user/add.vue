@@ -19,7 +19,7 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="所属部门：" :label-width="formLabelWidth">
-                        {{formData.orgId}}
+                        <yu-org-radio></yu-org-radio>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -84,20 +84,22 @@
 
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from "@/utils/TipUtil";
-    import ElRow from "element-ui/packages/row/src/row";
     import YuCodeRadio from "../../public/yu-code-radio.vue";
+    import YuOrgRadio from "../../public/yu-org-radio.vue";
 
     export default {
         components: {
-            ElRow,
-            YuCodeRadio
+            YuCodeRadio,
+            YuOrgRadio
         },
         name: 'user-add',
         data(){
             return {
                 visible: false,
                 formLabelWidth: '110px',
-                formData: {},
+                formData: {
+                    yesChief: 2
+                },
                 submitBtnDisabled: false,
                 rules: {
                     userName: [
@@ -184,11 +186,7 @@
                     }
                 });
             },
-            initFormData(){
-                this.formData = {};
-            },
             open(data){
-                this.initFormData();
                 this.visible = true;
                 Object.assign(this.formData, data);
                 // 表单复位
