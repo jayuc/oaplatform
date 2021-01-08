@@ -11,10 +11,16 @@
                         <el-radio v-model="formData.stopFlag" :label="1">已完成</el-radio>
                         <el-radio v-model="formData.stopFlag" :label="2">未完成</el-radio>
                     </el-form-item>
-                    <el-form-item style="margin-left: 10px;">
+                    <el-form-item style="margin-left: 20px;">
+                        <el-switch
+                                v-model="containMyApprove"
+                                active-text="包括我的审批">
+                        </el-switch>
+                    </el-form-item>
+                    <el-form-item style="margin-left: 20px;">
                         <el-button type="primary" @click="submit" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
-                    <el-form-item style="margin-left: 10px;">
+                    <el-form-item style="margin-left: 20px;">
                         <el-button type="success" @click="openAddLeave" :disabled="searchBtnStatus">市局（公司）证件（复印件）使用申请</el-button>
                     </el-form-item>
                 </el-form>
@@ -35,51 +41,52 @@
                           prop="applyName"
                           label="申请人"
                           align="center"
-                          width="100">
+                          minWidth="100">
                     </el-table-column>
                     <el-table-column
                           prop="applyOrgId"
                           label="申请人单位"
                           align="center"
                           :formatter="formatOrg"
-                          width="210">
+                          minWidth="210">
                     </el-table-column>
                     <el-table-column
                             prop="address"
                             align="center"
-                            width="100"
+                            minWidth="100"
                             :formatter="formatTime"
                             label="使用证件">
                     </el-table-column>
                     <el-table-column
                           prop="content"
                           align="center"
-                          width="200"
+                          minWidth="200"
                           label="使用用途">
                     </el-table-column>
                     <el-table-column
                             prop="holidayType"
                             align="center"
-                            width="100"
+                            minWidth="100"
                             :formatter="formatYesFlag"
                             label="是否复印">
                     </el-table-column>
                     <el-table-column
                           prop="days"
                           align="center"
-                          width="100"
+                          minWidth="100"
                           :formatter="formatYesFlag"
                           label="是否外借">
                     </el-table-column>
                     <el-table-column
                             prop="stopFlag"
                             align="center"
-                            width="80"
+                            minWidth="80"
                             :formatter="formatStopFlag"
                             label="是否完成">
                     </el-table-column>
                     <el-table-column
                           prop="operation"
+                          minWidth="160"
                           align="center"
                           label="操作">
                       <template slot-scope="scope">
@@ -160,12 +167,18 @@
                     billType: 11
                 },
                 searchBtnStatus: false,
+                containMyApprove: false,
                 total: 0,
                 tableData: []
             }
         },
         methods: {
             submit(){
+                if(this.containMyApprove){
+                    this.formData.historyApproveList = '1';
+                }else {
+                    this.formData.historyApproveList = null;
+                }
                 RestUtil.get('oa/bill/list', this.formData, {
                     enableLoading: true,       // 启动请求期间的正在加载
                     loadingStartFun: () => {   // 请求开始前执行

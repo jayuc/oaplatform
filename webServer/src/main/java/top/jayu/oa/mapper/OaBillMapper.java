@@ -18,7 +18,11 @@ public interface OaBillMapper {
             "    <if test='currentStep != null'> and b.current_step = #{currentStep} </if> ",
             "    <if test='stopFlag != 0'> and b.stop_flag = #{stopFlag} </if> ",
             "    <if test='billType != null'> and b.bill_type = #{billType} </if> ",
-            "    <if test='currentUserId != 9999'> and ( b.apply_id = #{currentUserId} or b.next_approve_list like concat('%,', #{currentUserId}, ',%') ) </if> ",
+            "    <if test='currentUserId != 9999'> " +
+            "        and ( b.apply_id = #{currentUserId} or b.next_approve_list like concat('%,', #{currentUserId}, ',%') " +
+            "            <if test='historyApproveList == \"1\"'> or b.history_approve_list like concat('%,', #{currentUserId}, ',%') </if> " +
+            "        ) " +
+            "    </if> ",
             "  </where > ",
             "</script> "
     })
