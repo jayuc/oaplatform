@@ -3,6 +3,7 @@
             v-model="val"
             :options="options"
             :props="defaultProps"
+            :title="orgTitle"
             @change="afterChange"></el-cascader>
 </template>
 
@@ -16,9 +17,11 @@
             return {
                 options: OrgUtil.getOrgTree()[0]['children'],
                 val: null,
+                orgTitle: '',
                 defaultProps: {
                     value: 'orgId',
-                    label: 'orgName'
+                    label: 'shortOrgName',
+                    checkStrictly: true
                 }
             }
         },
@@ -35,8 +38,16 @@
             }
         },
         methods: {
-            afterChange(key){
-                this.$emit('change', key);
+            afterChange(keyArr){
+                let orgId = -1;
+                if(keyArr instanceof Array && keyArr.length > 0){
+                    orgId = keyArr[keyArr.length - 1];
+                }
+                let org = OrgUtil.getOrgById(orgId);
+                if(org){
+                    this.orgTitle = org.orgName;
+                    this.$emit('change', orgId, org['orgCode'], org);
+                }
             },
             reset(){  // 复位
                 this.val = null;

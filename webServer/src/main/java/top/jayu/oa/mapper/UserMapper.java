@@ -1,9 +1,6 @@
 package top.jayu.oa.mapper;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import top.jayu.oa.entity.User;
 import top.jayu.oa.param.LoginUser;
 
@@ -40,6 +37,18 @@ public interface UserMapper {
             "</script> "
     })
     List<User> list(User record);
+
+    @Insert("insert into t_sys_user (login_name, password, \n" +
+            "      user_name, user_code, employ_id, \n" +
+            "      position, yes_chief, org_id, \n" +
+            "      org_code, role_id, tel, mobile_tel, \n" +
+            "      age, sex) \n" +
+            "    values (#{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, \n" +
+            "      #{userName,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, #{employId,jdbcType=INTEGER}, \n" +
+            "      #{position,jdbcType=VARCHAR}, #{yesChief,jdbcType=TINYINT}, #{orgId,jdbcType=INTEGER}, \n" +
+            "      #{orgCode,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, #{tel,jdbcType=VARCHAR}, #{mobileTel,jdbcType=VARCHAR}, \n" +
+            "      #{age,jdbcType=INTEGER}, #{sex,jdbcType=TINYINT})")
+    Integer add(User record);
 
     @Update({
             "<script> ",

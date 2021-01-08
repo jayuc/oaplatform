@@ -50,6 +50,11 @@ public class UserController {
         return result.getResult();
     }
 
+    @PostMapping("/add")
+    public Integer add(User dto){
+        return userMapper.add(dto);
+    }
+
     @PostMapping("/update")
     public Integer update(User dto){
         return userMapper.update(dto);

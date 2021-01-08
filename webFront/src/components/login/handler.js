@@ -31,6 +31,9 @@ const initCode = () => {
 // 加载机构树
 const initOrg = () => {
     RestUtil.get('org/orgTree').then((tree) => {
+        // 清空无数据的子节点
+        OrgUtil.employChildren(tree);
+        // 缓存机构树数据
         Config.set('$org', tree);
         // 生成机构 map
         OrgUtil.loop(tree);

@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="新增用户"
+    <el-dialog :title="dialogTile"
                :visible.sync="visible"
                width="700px"
     >
@@ -18,8 +18,8 @@
             </el-row>
             <el-row>
                 <el-col :span="12">
-                    <el-form-item label="所属部门：" :label-width="formLabelWidth">
-                        <yu-org-radio></yu-org-radio>
+                    <el-form-item label="所属部门：" prop="orgId" :label-width="formLabelWidth">
+                        <yu-org-radio @change="changeOrg" ref="orgSelect"></yu-org-radio>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -75,7 +75,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
-            <el-button :disabled="submitBtnDisabled" type="primary" @click="submit">提 交</el-button>
+            <el-button :disabled="submitBtnDisabled" type="primary" @click="submit()">提 交</el-button>
         </div>
     </el-dialog>
 </template>
@@ -101,9 +101,18 @@
                     yesChief: 2
                 },
                 submitBtnDisabled: false,
+                titleMap: {
+                    add: '新增用户',
+                    edit: '编辑用户'
+                },
+                dialogTile: '',
+                url: '',
                 rules: {
                     userName: [
                         { required: true, message: '请输入姓名', trigger: 'blur' }
+                    ],
+                    orgId: [
+                        { required: true, message: '请选择所属机构', trigger: 'blur' }
                     ],
                     userCode: [
                         { required: true, message: '请输入编号', trigger: 'blur' },
@@ -113,6 +122,7 @@
                                 if(!regular.test(value)){
                                     callback(new Error('编号需是10到16位的数字'));
                                 }
+                                callback();
                             }else {
                                 callback(new Error('请输入编号'));
                             }
@@ -126,6 +136,7 @@
                                 if(!regular.test(value)){
                                     callback(new Error('登录名需是小写字母组成'));
                                 }
+                                callback();
                             }else {
                                 callback(new Error('请输入登录名'));
                             }
@@ -142,6 +153,7 @@
                                     callback(new Error('请输入正确的联系方式'));
                                 }
                             }
+                            callback();
                         }, trigger: 'change' }
                     ],
                     mobileTel: [
@@ -152,6 +164,7 @@
                                     callback(new Error('请输入正确的手机号码'));
                                 }
                             }
+                            callback();
                         }, trigger: 'change' }
                     ]
                 }
@@ -159,7 +172,6 @@
         },
         methods: {
             submit(){
-                console.log(this.formData);
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
                         RestUtil.post(this.url, this.formData, {
@@ -171,9 +183,10 @@
                                 this.submitBtnDisabled = false;
                             }
                         }).then((result) => {
-                            if(result && result.error.length > 0){
-                                TipUtil.error(result.error);
-                                return;
+                            if(result == 1){
+                                TipUtil.success('操作成功!');
+                            }else {
+                                TipUtil.error('操作失败!');
                             }
                             this.$emit('complete');
                             this.close();
@@ -186,12 +199,18 @@
                     }
                 });
             },
-            open(data){
+            open(data, url, titleType){
                 this.visible = true;
                 Object.assign(this.formData, data);
+                this.url = url;
+                this.dialogTile = this.titleMap[titleType];
                 // 表单复位
                 if(this.$refs['formData']){
                     this.$refs['formData'].resetFields();
+                }
+                // 机构复位
+                if(this.$refs['orgSelect']){
+                    this.$refs['orgSelect'].reset();
                 }
             },
             close(){
@@ -200,6 +219,10 @@
             changeSex(cellValue){
                 this.formData.sex = cellValue;
             },
+            changeOrg(orgId, orgCode){
+                this.formData.orgId = orgId;
+                this.formData.orgCode = orgCode;
+            }
         }
     }
 </script>

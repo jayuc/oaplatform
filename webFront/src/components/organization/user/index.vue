@@ -98,15 +98,11 @@
                                 <el-button @click="details(scope.row)"
                                            icon="el-icon-document"
                                            title="查看详情"
-                                           type="primary" size="small"></el-button>
-                                <el-button @click="updateChief(scope.row)"
-                                           icon="el-icon-setting"
-                                           title="设置科级干部"
-                                           type="primary" size="small"></el-button>
-                                <el-button @click="updateChief(scope.row)"
-                                           icon="el-icon-tickets"
-                                           title="调整部门"
                                            type="success" size="small"></el-button>
+                                <el-button @click="update(scope.row)"
+                                           icon="el-icon-edit"
+                                           title="编辑"
+                                           type="warning" size="small"></el-button>
                                 <el-button @click="resetPassword(scope.row)"
                                            icon="el-icon-refresh-right"
                                            title="重置密码"
@@ -133,11 +129,9 @@
 
         </el-container>
 
-        <chief-setting ref="chiefSetting" @complete="submit" />
-
         <detail-dialog ref="detailDialog" />
 
-        <add-dialog ref="addDialog" />
+        <add-dialog ref="addDialog" @complete="submit" />
 
     </el-container>
 
@@ -152,12 +146,10 @@
     import Md5Util from '@/utils/Md5Util';
     import DetailDialog from './details.vue';
     import AddDialog from './add.vue';
-    import ChiefSetting from '../userSetChief.vue';
 
     export default {
         name: 'user-setting',
         components: {
-            ChiefSetting,
             DetailDialog,
             AddDialog
         },
@@ -215,18 +207,22 @@
                         this.tableData = data.rows;
                         this.total = data.total;
                     }
-                }, () => {
-
+                }, (error) => {
+                    console.error(error);
+                    TipUtil.error('请求出错，请检查您的网络是否正常');
                 });
             },
             // 查看详情
             details(row){
-                console.log(row);
                 this.$refs.detailDialog.open(row);
             },
             // 新增
             add(){
-                this.$refs.addDialog.open();
+                this.$refs.addDialog.open(null, 'user/add', 'add');
+            },
+            // 编辑
+            update(row){
+                this.$refs.addDialog.open(row, 'user/update', 'edit');
             },
             // 删除一条记录
             deleteOne(row){
@@ -273,14 +269,6 @@
                 }).catch(() => {
                     TipUtil.info('已取消重置密码');
                 });
-            },
-            // 是否显示科级干部
-            ifShowChief(){
-                return true;
-            },
-            // 设置科级干部
-            updateChief(row){
-                this.$refs.chiefSetting.open(row);
             },
             // 机构树点击事件
             handleNodeClick(data){
