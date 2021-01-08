@@ -19,12 +19,12 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="所属部门：" prop="orgId" :label-width="formLabelWidth">
-                        <yu-org-radio @change="changeOrg" ref="orgSelect"></yu-org-radio>
+                        <yu-org-radio @change="changeOrg" :initValue="formData.orgId" ref="orgSelect"></yu-org-radio>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="性别：" :label-width="formLabelWidth">
-                        <yu-code-radio @change="changeSex" :code="4" ref="sexSelect"></yu-code-radio>
+                        <yu-code-radio @change="changeSex" :initValue="formData.sex" :code="4" ref="sexSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -44,7 +44,7 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="登录名：" prop="loginName" :label-width="formLabelWidth">
-                        <el-input v-model="formData.loginName" autocomplete="off"></el-input>
+                        <el-input :disabled="loginNameDisabled" v-model="formData.loginName" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -84,6 +84,7 @@
 
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from "@/utils/TipUtil";
+    import Md5Util from '@/utils/Md5Util';
     import YuCodeRadio from "../../public/yu-code-radio.vue";
     import YuOrgRadio from "../../public/yu-org-radio.vue";
 
@@ -97,16 +98,16 @@
             return {
                 visible: false,
                 formLabelWidth: '110px',
-                formData: {
-                    yesChief: 2
-                },
+                formData: {},
                 submitBtnDisabled: false,
+                loginNameDisabled: false,
                 titleMap: {
                     add: '新增用户',
                     edit: '编辑用户'
                 },
                 dialogTile: '',
                 url: '',
+                titleType: '',
                 rules: {
                     userName: [
                         { required: true, message: '请输入姓名', trigger: 'blur' }
@@ -174,6 +175,9 @@
             submit(){
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
+                        if(this.titleType == 'add'){
+                            this.formData.password = Md5Util.encode('hfyc@1234')
+                        }
                         RestUtil.post(this.url, this.formData, {
                             enableLoading: true,       // 启动请求期间的正在加载
                             loadingStartFun: () => {   // 请求开始前执行
@@ -199,11 +203,19 @@
                     }
                 });
             },
-            open(data, url, titleType){
-                this.visible = true;
-                Object.assign(this.formData, data);
-                this.url = url;
-                this.dialogTile = this.titleMap[titleType];
+            initFormData(){
+                this.formData = {
+                    yesChief: 2,
+                    userName: null,
+                    userCode: null,
+                    orgId: null,
+                    sex: null,
+                    position: null,
+                    loginName: null,
+                    age: null,
+                    tel: null,
+                    mobileTel: null
+                };
                 // 表单复位
                 if(this.$refs['formData']){
                     this.$refs['formData'].resetFields();
@@ -211,6 +223,26 @@
                 // 机构复位
                 if(this.$refs['orgSelect']){
                     this.$refs['orgSelect'].reset();
+                }
+            },
+            open(data, url, titleType){
+                this.initFormData();
+                this.visible = true;
+                Object.assign(this.formData, data);
+                this.url = url;
+                this.titleType = titleType;
+                this.dialogTile = this.titleMap[titleType];
+                // 性别赋值
+                if(this.$refs['sexSelect']){
+                    this.$refs['sexSelect'].setInitValue(this.formData.sex);
+                }
+                // 机构赋值
+                if(this.$refs['orgSelect']){
+                    this.$refs['orgSelect'].setInitValue(this.formData.orgId);
+                }
+                // 当编辑时禁止修改用户名
+                if(this.titleType == 'edit'){
+                    this.loginNameDisabled = true;
                 }
             },
             close(){

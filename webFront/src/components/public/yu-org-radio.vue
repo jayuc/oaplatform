@@ -26,15 +26,13 @@
             }
         },
         props: {
-            orgId: Number,
             initValue: Number
         },
         created(){
-            let orgId = this.$props.orgId;
-            console.log(orgId);
             let initValue = this.$props.initValue;
             if(initValue){
                 this.val = initValue;
+                this.generateTitleByValue(initValue);
             }
         },
         methods: {
@@ -54,6 +52,13 @@
             },
             setInitValue(initValue){
                 this.val = initValue;
+                this.generateTitleByValue(initValue);
+            },
+            generateTitleByValue(initValue){
+                let org = OrgUtil.getOrgById(initValue);
+                if(org){
+                    this.orgTitle = org.orgName;
+                }
             }
         }
     }

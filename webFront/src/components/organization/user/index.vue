@@ -85,7 +85,7 @@
                         </el-table-column>
                         <el-table-column
                                 prop="yesChief"
-                                label="职级"
+                                label="科级以上"
                                 align="center"
                                 :formatter="formatChief"
                                 width="100">
@@ -297,7 +297,9 @@
             },
             formatChief(row, column, cellValue){
                 if(cellValue == 1){
-                    return '科级以上';
+                    return '是';
+                }else if(cellValue == 2){
+                    return '否';
                 }
                 return '';
             },

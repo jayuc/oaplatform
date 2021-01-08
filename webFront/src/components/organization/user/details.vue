@@ -35,7 +35,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="职级：" :label-width="formLabelWidth">
+                    <el-form-item label="科级以上：" :label-width="formLabelWidth">
                         {{formatChief(formData.yesChief)}}
                     </el-form-item>
                 </el-col>
@@ -122,7 +122,9 @@
             },
             formatChief(cellValue){
                 if(cellValue == 1){
-                    return '科级以上';
+                    return '是';
+                }else if(cellValue == 2){
+                    return '否';
                 }
                 return '';
             },
