@@ -93,7 +93,7 @@
                         <el-table-column
                               prop="operation"
                               align="center"
-                              minWidth="160"
+                              minWidth="180"
                               label="操作">
                             <template slot-scope="scope">
                                 <el-button @click="details(scope.row)"
