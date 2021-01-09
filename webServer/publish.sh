@@ -19,8 +19,11 @@ fi
 cd ./webServer/
 
 echo "setp 2/5: kill pidfile.txt" >> ./nohup.out
-if [ -e ./pidfile.txt ]; then
-  kill -9 `cat pidfile.txt`
+runingPid=`cat pidfile.txt`
+if ps -p $runingPid > /dev/null
+then
+   echo "kill -9 $runingPid" >> ./nohup.out
+   kill -9 $runingPid
 fi
 
 echo "setp 3/5: kill nohup.out" >> ./nohup.out
