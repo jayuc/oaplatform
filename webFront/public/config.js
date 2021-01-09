@@ -1,5 +1,5 @@
 /**
- * Created by yujie on 2019/4/17 11:12
+ * Created by yujie on 2019/4/17
  */
 
 var $rootScope = {
