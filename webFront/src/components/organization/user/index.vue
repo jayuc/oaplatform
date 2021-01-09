@@ -49,50 +49,51 @@
                               prop="userCode"
                               label="编号"
                               align="center"
-                              width="160">
+                              minWidth="150">
                         </el-table-column>
                         <el-table-column
                               prop="userName"
                               label="姓名"
                               align="center"
-                              width="120">
+                              minWidth="70">
                         </el-table-column>
                         <el-table-column
                               prop="sex"
                               label="性别"
                               align="center"
                               :formatter="formatSex"
-                              width="60">
+                              minWidth="50">
                         </el-table-column>
                         <el-table-column
                               prop="orgId"
                               label="所属机构"
                               align="center"
                               :formatter="formatOrg"
-                              width="210">
+                              minWidth="180">
                         </el-table-column>
                         <el-table-column
                               prop="position"
                               label="岗位"
                               align="center"
-                              width="240">
+                              minWidth="180">
                         </el-table-column>
                         <el-table-column
                               prop="loginName"
                               label="登录名"
                               align="center"
-                              width="100">
+                              minWidth="100">
                         </el-table-column>
                         <el-table-column
                                 prop="yesChief"
                                 label="科级以上"
                                 align="center"
                                 :formatter="formatChief"
-                                width="100">
+                                minWidth="100">
                         </el-table-column>
                         <el-table-column
                               prop="operation"
                               align="center"
+                              minWidth="160"
                               label="操作">
                             <template slot-scope="scope">
                                 <el-button @click="details(scope.row)"

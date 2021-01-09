@@ -31,17 +31,18 @@
                             prop="roleName"
                             label="角色名称"
                             align="center"
-                            width="300">
+                            minWidth="200">
                     </el-table-column>
                     <el-table-column
                             prop="mark"
                             label="备注"
                             align="center"
-                            width="400">
+                            minWidth="200">
                     </el-table-column>
                     <el-table-column
                             prop="operation"
                             align="center"
+                            minWidth="160"
                             label="操作">
                         <template slot-scope="scope">
                             <el-button @click="update(scope.row)"

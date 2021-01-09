@@ -31,35 +31,36 @@
                               prop="orgCode"
                               label="机构编号"
                               align="center"
-                              width="140">
+                              minWidth="120">
                         </el-table-column>
                         <el-table-column
                               prop="orgName"
                               label="机构名称"
                               align="center"
-                              width="350">
+                              minWidth="180">
                         </el-table-column>
                         <el-table-column
                                 prop="shortOrgName"
                                 label="机构简称"
                                 align="center"
-                                width="210">
+                                minWidth="160">
                         </el-table-column>
                         <el-table-column
                                 prop="leaderName"
                                 label="负责人"
                                 align="center"
-                                width="100">
+                                minWidth="80">
                         </el-table-column>
                         <el-table-column
                                 prop="deputyName"
                                 label="分管领导"
                                 align="center"
-                                width="100">
+                                minWidth="80">
                         </el-table-column>
                         <el-table-column
                               prop="operation"
                               align="center"
+                              minWidth="160"
                               label="操作">
                             <template slot-scope="scope">
                                 <el-button v-if="ifShowLeader(scope.row)"
