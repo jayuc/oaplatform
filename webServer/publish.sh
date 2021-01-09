@@ -25,7 +25,8 @@ fi
 
 echo "setp 3/5: kill nohup.out" >> ./nohup.out
 if [ -e ./nohup.out ]; then
-  rm -rf ./nohup.out
+echo "rm -rf ./nohup.out" >> ./nohup.out
+#  rm -rf ./nohup.out
 fi
 
 # 编译项目
