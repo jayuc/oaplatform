@@ -7,7 +7,7 @@ use `oa`;
 
 SET NAMES utf8mb4;
 
-select * from t_oa_bill_opera where pass_flag = 1 and content is null;
+select * from t_oa_bill_opera where pass_flag = 1 and LENGTH(content) = 0;
 
-update  t_oa_bill_opera set content = '同意' where pass_flag = 1 and content is null
+update  t_oa_bill_opera set content = '同意' where pass_flag = 1 and LENGTH(content) = 0;
 
