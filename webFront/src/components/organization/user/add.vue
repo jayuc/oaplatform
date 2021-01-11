@@ -132,10 +132,10 @@
                     loginName: [
                         { required: true, message: '请输入登录名', trigger: 'blur' },
                         { validator: (rule, value, callback) => {
-                            let regular = /^[a-z]+$/;
+                            let regular = /^[a-z_]+$/;
                             if(value){
                                 if(!regular.test(value)){
-                                    callback(new Error('登录名需是小写字母组成'));
+                                    callback(new Error('登录名需是小写字母和下划线组成'));
                                 }
                                 callback();
                             }else {
@@ -243,6 +243,8 @@
                 // 当编辑时禁止修改用户名
                 if(this.titleType == 'edit'){
                     this.loginNameDisabled = true;
+                }else if(this.titleType == 'add'){
+                    this.loginNameDisabled = false;
                 }
             },
             close(){
