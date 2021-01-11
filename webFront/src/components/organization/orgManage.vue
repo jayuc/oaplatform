@@ -59,8 +59,9 @@
                         </el-table-column>
                         <el-table-column
                               prop="operation"
+                              fixed="right"
                               align="center"
-                              minWidth="160"
+                              minWidth="120"
                               label="操作">
                             <template slot-scope="scope">
                                 <el-button v-if="ifShowLeader(scope.row)"
