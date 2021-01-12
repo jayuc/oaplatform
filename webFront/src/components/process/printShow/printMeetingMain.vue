@@ -27,7 +27,7 @@
                 <tr height="65" v-if="l35">
                     <th colspan="1">办公室（马明敏、苗倩）意见</th>
                     <td colspan="23" style="position: relative;">
-                        <span style="color: red;font-weight: bold">{{handleContent(l35map)}}</span>
+                        <span style="font-weight: bold">{{handleContent(l35map)}}</span>
                         <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(l35map)}}</em>
                     </td>
                 </tr>
@@ -168,7 +168,7 @@
             },
             handleApproveTime(obj){
                 if(obj){
-                    return obj.createTime;
+                    return obj.operaName + '　' + obj.createTime;
                 }
                 return '';
             }

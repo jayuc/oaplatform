@@ -27,35 +27,35 @@
                 <tr height="65" v-if="l5">
                     <th colspan="1">部门负责人意见</th>
                     <td colspan="23" style="position: relative;">
-                        <span style="color: red;font-weight: bold">{{handleContent(l5map)}}</span>
+                        <span style="font-weight: bold">{{handleContent(l5map)}}</span>
                         <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(l5map)}}</em>
                     </td>
                 </tr>
                 <tr height="65" v-if="l4">
                     <th colspan="1">单位（部门）分管领导意见</th>
                     <td colspan="23" style="position: relative;">
-                        <span style="color: red;font-weight: bold">{{handleContent(l4map)}}</span>
+                        <span style="font-weight: bold">{{handleContent(l4map)}}</span>
                         <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(l4map)}}</em>
                     </td>
                 </tr>
                 <tr height="65" v-if="l3">
                     <th colspan="1">单位（部门）负责人意见</th>
                     <td colspan="23" style="position: relative;">
-                        <span style="color: red;font-weight: bold">{{handleContent(l3map)}}</span>
+                        <span style="font-weight: bold">{{handleContent(l3map)}}</span>
                         <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(l3map)}}</em>
                     </td>
                 </tr>
                 <tr height="65" v-if="l2">
                     <th colspan="1">市局（公司）分管领导意见</th>
                     <td colspan="23" style="position: relative;">
-                        <span style="color: red;font-weight: bold">{{handleContent(l2map)}}</span>
+                        <span style="font-weight: bold">{{handleContent(l2map)}}</span>
                         <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(l2map)}}</em>
                     </td>
                 </tr>
                 <tr height="65" v-if="l1">
                     <th colspan="1">市局（公司）主要领导意见</th>
                     <td colspan="23" style="position: relative;">
-                        <span style="color: red;font-weight: bold">{{handleContent(l1map)}}</span>
+                        <span style="font-weight: bold">{{handleContent(l1map)}}</span>
                         <em style="position: absolute;bottom: 5px;right: 20px;">{{handleApproveTime(l1map)}}</em>
                     </td>
                 </tr>
@@ -158,7 +158,7 @@
             },
             handleApproveTime(obj){
                 if(obj){
-                    return obj.createTime;
+                    return obj.operaName + '　' + obj.createTime;
                 }
                 return '';
             }

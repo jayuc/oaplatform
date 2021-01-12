@@ -157,7 +157,7 @@
                 formData: {
                     pageNumber: 1,
                     pageSize: 15,
-                    stopFlag: 2,
+                    stopFlag: 0,
                     billType: 5
                 },
                 searchBtnStatus: false,
