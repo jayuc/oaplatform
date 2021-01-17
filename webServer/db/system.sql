@@ -56,7 +56,7 @@ CREATE TABLE `t_sys_user` (
   `position` varchar(32) DEFAULT NULL COMMENT '岗位',
   `yes_chief` tinyint DEFAULT NULL COMMENT '是否是科级干部',
   `org_id` int(11) DEFAULT NULL COMMENT '机构id',
-  `org_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '机构编号',
+  `org_code` varchar(32) DEFAULT NULL COMMENT '机构编号',
   `role_id` int(11) DEFAULT NULL COMMENT '角色id',
   `tel` varchar(16) DEFAULT NULL COMMENT '联系方式',
   `mobile_tel` varchar(16) DEFAULT NULL COMMENT '手机号',
