@@ -191,7 +191,19 @@ public class OaBillService {
             OaProcess process = new OaProcess();
             process.setBillType(bill.getBillType());
             process.setOrgPrivLen((float) lc);
-            OaProcess process1 = oaProcessService.getProcessByOrgPrivLen(process);
+            OaProcess process1 = null;
+            List<OaProcess> processList = oaProcessService.getProcessByOrgPrivLen(process);
+            if(processList.size() == 1){
+                process1 = processList.get(0);
+            }else {
+                String pre = bill.getApplyOrgYesOffice() == 1 ? "0000" : "0001";
+                for (OaProcess ppp:processList){
+                    if(ppp.getCurrentStep().startsWith(pre)){
+                        process1 = ppp;
+                        break;
+                    }
+                }
+            }
             OaProcessFunctionResult approve = findApprove(process1.getNextApproveFunctionId(), bill);
             l.approveId = approve.getApproveList();
             l.approveName = approve.getApproveNameList();
@@ -250,7 +262,7 @@ public class OaBillService {
 
     private Float generateLevel(float candidateLevel, int applyId, Org org, OaBill bill){
         if(applyId == org.getLeaderId()){
-            float nextApproveIdStrLevel = getOriginNextApproveId(candidateLevel, bill.getBillType());
+            float nextApproveIdStrLevel = getOriginNextApproveId(candidateLevel, bill.getBillType(), bill.getApplyOrgYesOffice());
             if(candidateLevel - nextApproveIdStrLevel > 1){
                 return candidateLevel - 1;
             }else {
@@ -260,11 +272,23 @@ public class OaBillService {
         return candidateLevel;
     }
 
-    private float getOriginNextApproveId(float candidateLevel, Byte billType){
+    private float getOriginNextApproveId(float candidateLevel, Byte billType, Byte applyOrgYesOffice){
         OaProcess process = new OaProcess();
         process.setBillType(billType);
         process.setOrgPrivLen(candidateLevel);
-        OaProcess process1 = oaProcessService.getProcessByOrgPrivLen(process);
+        OaProcess process1 = null;
+        List<OaProcess> processList = oaProcessService.getProcessByOrgPrivLen(process);
+        if(processList.size() == 1){
+            process1 = processList.get(0);
+        }else {
+            String pre = applyOrgYesOffice == 1 ? "0000" : "0001";
+            for (OaProcess p:processList){
+                if(p.getCurrentStep().startsWith(pre)){
+                    process1 = p;
+                    break;
+                }
+            }
+        }
         String nextStep = process1.getCurrentStep() + process1.getNextStep();
         if("end".equals(nextStep)){
             return 0;

@@ -25,6 +25,6 @@ public interface OaProcessMapper {
     List<OaProcess> list(OaProcess process);
 
     @Select("select * from t_oa_process where bill_type = #{billType} and org_priv_len = #{orgPrivLen}")
-    OaProcess getProcessByOrgPrivLen(OaProcess process);
+    List<OaProcess> getProcessByOrgPrivLen(OaProcess process);
 
 }
