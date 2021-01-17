@@ -36,11 +36,11 @@
                     "2": {name: '出差申请', path: 'errand'},
                     "3": {name: '经济业务支出事前申请', path: 'cost'},
                     "4": {name: '培训申请', path: 'train'},
-                    "5": {name: '市局（公司）机关会议室申请', path: 'meeting'},
+                    "5": {name: '机关会议室申请', path: 'meeting'},
                     "6": {name: '出差交通工具调整申请', path: 'travelToolSet'},
                     "8": {name: '调阅会计档案申请', path: 'lookDoc'},
-                    "10": {name: '市局（公司）介绍信开具申请', path: 'introduce'},
-                    "11": {name: '市局（公司）证件（复印件）使用申请', path: 'certificate'}
+                    "10": {name: '介绍信开具申请', path: 'introduce'},
+                    "11": {name: '证件（复印件）使用申请', path: 'certificate'}
                 },
                 applyArr: []
             }
@@ -101,9 +101,9 @@
     }
 
     .container .panel_menu > div {
-        width: 280px;
-        height: 95px;
-        line-height: 95px;
+        width: 180px;
+        height: 55px;
+        line-height: 55px;
         font-size: 16px;
         font-weight: bold;
         margin: 5px 10px;

@@ -33,11 +33,11 @@
                 <el-menu-item index="/main/leave">年休假申请</el-menu-item>
                 <el-menu-item index="/main/cost">经济业务支出事前申请</el-menu-item>
                 <el-menu-item index="/main/train">培训申请</el-menu-item>
-                <el-menu-item style="padding-left: 10px;" v-if="userYesOffice == 1" index="/main/meeting">市局（公司）机关会议室申请</el-menu-item>
+                <el-menu-item v-if="userYesOffice == 1" index="/main/meeting">机关会议室申请</el-menu-item>
                 <el-menu-item index="/main/travelToolSet">出差交通工具调整申请</el-menu-item>
                 <el-menu-item v-if="false" index="/main/goAbroad">员工因私出国（境）申请</el-menu-item>
-                <el-menu-item style="padding-left: 10px;" index="/main/introduce">市局（公司）介绍信开具申请</el-menu-item>
-                <el-menu-item style="padding-left: 0px;" index="/main/certificate">市局（公司）证件（复印件）使用申请</el-menu-item>
+                <el-menu-item index="/main/introduce">介绍信开具申请</el-menu-item>
+                <el-menu-item index="/main/certificate">证件（复印件）使用申请</el-menu-item>
                 <el-menu-item index="/main/lookDoc">调阅会计档案申请</el-menu-item>
             </el-submenu>
               <el-submenu index="2" v-if="userName == '超级管理员'">
