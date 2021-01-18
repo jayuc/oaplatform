@@ -6,7 +6,13 @@
             <div class="form-search-container">
                 <span class="form-search-title">查询条件</span>
                 <el-form :inline="true" :model="formData" class="demo-form-inline">
-                    <el-form-item label="操作时间：">
+                    <el-form-item label="工单编号：">
+                        <el-input v-model="formData.billCode" placeholder="请输入工单编号"></el-input>
+                    </el-form-item>
+                    <el-form-item label="操作人：" style="margin-left: 10px;">
+                        <el-input v-model="formData.operaName" placeholder="请输入操作人"></el-input>
+                    </el-form-item>
+                    <el-form-item label="操作时间：" style="margin-left: 10px;">
                         <el-date-picker
                                 v-model="operaTime"
                                 type="datetimerange"

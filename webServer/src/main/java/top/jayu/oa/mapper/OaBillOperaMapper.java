@@ -26,6 +26,7 @@ public interface OaBillOperaMapper {
             "  <where>  ",
             "    <if test='beginTime != null and endTime != null'> and create_time between #{beginTime} and #{endTime} </if> ",
             "    <if test='billCode != null and billCode != \"\"'> and bill_code = #{billCode} </if> ",
+            "    <if test='operaName != null and operaName != \"\"'> and opera_name like concat('%', #{operaName}, '%') </if> ",
             "  </where > ",
             "  order by create_time desc ",
             "</script> "
