@@ -50,6 +50,7 @@ INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (5,9,'信息中心',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (5,10,'纪检监察',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (5,11,'法规',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (5,12,'党建群团',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (5,13,'物流',1);
 
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,1,'2302会议室',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,2,'2208会议室',1);

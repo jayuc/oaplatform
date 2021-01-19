@@ -79,7 +79,7 @@ public interface OrgMapper {
     List<Org> list4();
 
     @Select("select o.*,u.user_name deputy_name from t_sys_org o left join t_sys_user u on o.deputy_id = u.user_id " +
-            " where length(o.org_code_priv) = 6 and o.yes_office = 1 and o.org_name like concat(#{firmTypeName},'%')")
+            " where length(o.org_code_priv) = 6 and o.org_name like concat(#{firmTypeName},'%')")
     Org getOrgByFirmTypeName(String firmTypeName);
 
 }
