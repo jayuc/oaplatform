@@ -78,12 +78,6 @@
                               minWidth="120"
                               label="操作">
                             <template slot-scope="scope">
-                                <yu-auth name="rowButton" code="020104">
-                                    <el-button @click="details(scope.row)"
-                                               icon="el-icon-document"
-                                               title="查看详情"
-                                               type="success" size="small"></el-button>
-                                </yu-auth>
                                 <yu-auth name="rowButton" code="020102">
                                     <el-button @click="update(scope.row)"
                                                icon="el-icon-edit"

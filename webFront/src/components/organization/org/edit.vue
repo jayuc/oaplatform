@@ -5,23 +5,26 @@
     >
         <el-form :model="formData" ref="formData" :rules="rules">
             <el-row>
-                <el-col :span="12">
+                <el-col :span="24">
                     <el-form-item label="机构名称：" prop="orgName" :label-width="formLabelWidth">
                         <el-input v-model="formData.orgName" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="机构简称：" prop="shortOrgName" :label-width="formLabelWidth">
-                        <el-input v-model="formData.shortOrgName" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
+                    <el-form-item label="机构简称：" prop="shortOrgName" :label-width="formLabelWidth">
+                        <el-input v-model="formData.shortOrgName" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
                     <el-form-item label="父级机构：" :label-width="formLabelWidth">
                         <yu-org-radio @change="changeOrg" :initValue="formData.parentId" ref="orgSelect"></yu-org-radio>
                     </el-form-item>
                 </el-col>
+
+            </el-row>
+            <el-row>
                 <el-col :span="12">
                     <el-form-item label="负责人：" :label-width="formLabelWidth">
                         <el-cascader
@@ -32,8 +35,6 @@
                                 :show-all-levels="false"></el-cascader>
                     </el-form-item>
                 </el-col>
-            </el-row>
-            <el-row>
                 <el-col :span="12">
                     <el-form-item label="分管领导：" :label-width="formLabelWidth">
                         <el-cascader
@@ -44,6 +45,9 @@
                                 :show-all-levels="false"></el-cascader>
                     </el-form-item>
                 </el-col>
+
+            </el-row>
+            <el-row>
                 <el-col :span="12">
                     <el-form-item label="联系方式：" prop="tel" :label-width="formLabelWidth">
                         <el-input v-model="formData.tel" autocomplete="off"></el-input>
