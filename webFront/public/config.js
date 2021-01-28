@@ -20,6 +20,8 @@ var $rootScope = {
     userInfo: {},
 
     // 下载地址
-    uploadUrl: '/'
+    uploadUrl: '/',
+
+    waterUrl: 'http://jayu.top/abc.png'
 
 };
