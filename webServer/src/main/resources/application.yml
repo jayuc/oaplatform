@@ -54,6 +54,11 @@ logging:
 upload:
   location: D:/oa/
 
+# 系统根机构编码
+systemOrgCode: 3400
+# 机构编码最大长度
+systemOrgCodeMaxLen: 12
+
 
 
 

@@ -9,6 +9,8 @@ public class Org extends BaseParam {
 
     private Integer parentId;
 
+    private String parentCode;
+
     private String orgName;
 
     private String shortOrgName;

@@ -44,9 +44,19 @@ public class OrgController {
         return result.getResult();
     }
 
+    @PostMapping("/add")
+    public Integer add(Org dto){
+        return orgService.add(dto);
+    }
+
     @PostMapping("/update")
     public Integer update(Org dto){
         return orgMapper.update(dto);
+    }
+
+    @PostMapping("/delete")
+    public Integer delete(Integer orgId){
+        return orgMapper.delete(orgId);
     }
 
 }

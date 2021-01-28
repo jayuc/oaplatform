@@ -17,6 +17,20 @@
 
         <el-container>
 
+            <el-header height="104px">
+                <div class="form-search-top-div"></div>
+                <div class="form-search-container">
+                    <span class="form-search-title">查询条件</span>
+                    <el-form :inline="true" :model="formData" class="demo-form-inline">
+                        <yu-auth code="020101" style="margin-left: 10px;">
+                            <el-form-item>
+                                <el-button type="success" @click="add" >新 增</el-button>
+                            </el-form-item>
+                        </yu-auth>
+                    </el-form>
+                </div>
+            </el-header>
+
             <el-main>
                 <div class="form-table-container" :style="tableContainerStyle">
                     <el-table
@@ -64,14 +78,24 @@
                               minWidth="120"
                               label="操作">
                             <template slot-scope="scope">
-                                <el-button v-if="ifShowLeader(scope.row)"
-                                           plain
-                                           @click="doSetLeader(scope.row)"
-                                           type="primary" size="small">设置负责人</el-button>
-                                <el-button v-if="ifShowDeputy(scope.row)"
-                                           plain
-                                           @click="doSetDeputy(scope.row)"
-                                           type="primary" size="small">设置分管领导</el-button>
+                                <yu-auth name="rowButton" code="020104">
+                                    <el-button @click="details(scope.row)"
+                                               icon="el-icon-document"
+                                               title="查看详情"
+                                               type="success" size="small"></el-button>
+                                </yu-auth>
+                                <yu-auth name="rowButton" code="020102">
+                                    <el-button @click="update(scope.row)"
+                                               icon="el-icon-edit"
+                                               title="编辑"
+                                               type="warning" size="small"></el-button>
+                                </yu-auth>
+                                <yu-auth name="rowButton" code="020103">
+                                    <el-button @click="deleteOne(scope.row)"
+                                               icon="el-icon-delete"
+                                               title="删除"
+                                               type="danger" size="small"></el-button>
+                                </yu-auth>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -94,6 +118,12 @@
 
         <org-set-deputy ref="orgSetDeputy" @complete="submit" />
 
+        <detail-dialog ref="detailDialog" />
+
+        <add-dialog ref="addDialog" @complete="submit" />
+
+        <edit-dialog ref="editDialog" @complete="submit" />
+
     </el-container>
 
 </template>
@@ -102,14 +132,20 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
-    import OrgSetLeader from './orgSetLeader.vue';
-    import OrgSetDeputy from './orgSetDeputy.vue';
+    import OrgSetLeader from '../orgSetLeader.vue';
+    import OrgSetDeputy from '../orgSetDeputy.vue';
+    import DetailDialog from './details.vue';
+    import EditDialog from './edit.vue';
+    import AddDialog from './add.vue';
 
     export default {
         name: 'org-manage',
         components: {
             OrgSetLeader,
-            OrgSetDeputy
+            OrgSetDeputy,
+            DetailDialog,
+            AddDialog,
+            EditDialog
         },
         data(){
             return {
@@ -167,6 +203,39 @@
 
                 });
             },
+            // 查看详情
+            details(row){
+                this.$refs.detailDialog.open(row);
+            },
+            // 新增
+            add(){
+                this.$refs.addDialog.open(null, 'org/add', 'add');
+            },
+            // 编辑
+            update(row){
+                this.$refs.editDialog.open(row, 'org/update', 'edit');
+            },
+            // 删除一条记录
+            deleteOne(row){
+                this.$confirm('确定删除 ' + row.orgName + ' ?', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    RestUtil.post('org/delete', {orgId: row.orgId}, {enableLoading: true}).then((result) => {
+                        if(result == 1){
+                            TipUtil.success('删除成功!');
+                            this.submit();
+                        }else {
+                            TipUtil.error('删除失败!');
+                        }
+                    }, () => {
+                        TipUtil.error('删除失败!');
+                    });
+                }).catch(() => {
+                    TipUtil.info('已取消删除');
+                });
+            },
             ifShowLeader(){
                 return true;
             },
@@ -199,7 +268,7 @@
             },
             afterCreated(){
                 let pageHeight = Config.get('mainBodyHeight');
-                let tableContainerHeight = pageHeight - 42;
+                let tableContainerHeight = pageHeight - 146;
                 // 表格容器高度
                 this.tableContainerStyle = 'height:' + tableContainerHeight + 'px';
                 // 表格高度

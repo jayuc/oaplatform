@@ -4,7 +4,7 @@ import Main from '@/components/main';
 import Login from '@/components/login';
 import LeaveBill from '@/components/process/leave';
 import UserManage from '@/components/organization/user';
-import OrgManage from '@/components/organization/orgManage';
+import OrgManage from '@/components/organization/org/orgManage';
 import BusinessTrip from '@/components/process/businessTripMain';
 import PasswordSetting from '@/components/setting/passwordSetting';
 import EconomicCost from '@/components/process/economicCostMain';

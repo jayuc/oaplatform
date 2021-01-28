@@ -2,6 +2,7 @@ package top.jayu.oa.service;
 
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import top.jayu.oa.entity.*;
 import top.jayu.oa.mapper.CodeMapper;
@@ -23,6 +24,68 @@ public class OrgService {
     OrgMapper orgMapper;
     @Autowired
     CodeMapper codeMapper;
+
+    @Value("${systemOrgCode}")
+    String systemOrgCode;
+    @Value("${systemOrgCodeMaxLen}")
+    Integer systemOrgCodeMaxLen;
+
+    public Integer add(Org dto){
+        Integer parentId = dto.getParentId();
+        String parentCode = dto.getParentCode();
+        Byte nextSort = generateSort(dto);
+        String orgCodePriv = null;
+        String sortStr = nextSort + "";
+        int sortStrLen = sortStr.length();
+        if(parentId == -1){
+            if(sortStrLen == 1){
+                orgCodePriv = systemOrgCode + "0" + sortStr;
+            }else if(sortStrLen == 2){
+                orgCodePriv = systemOrgCode + sortStr;
+            }else if(sortStrLen == 3){
+                orgCodePriv = systemOrgCode.substring(0, 1) + sortStr;
+            }
+        }else {
+            if(sortStrLen == 1){
+                orgCodePriv = parentCode + "0" + sortStr;
+            }else {
+                orgCodePriv = parentCode + sortStr;
+            }
+        }
+        dto.setOrgCode(generateOrgCode(orgCodePriv));
+        dto.setOrgCodePriv(orgCodePriv);
+        dto.setSort(nextSort);
+        return orgMapper.add(dto);
+    }
+
+    // 自动补全机构
+    private String generateOrgCode(String orgPri){
+        int len = orgPri.length();
+        int remainLen = systemOrgCodeMaxLen - len;
+        if(remainLen > 0){
+            StringBuilder sb = new StringBuilder(orgPri);
+            for(int i=0; i<remainLen; i++){
+                sb.append("0");
+            }
+            return sb.toString();
+        }
+        return orgPri;
+    }
+
+    private Byte generateSort(Org dto){
+        Org org = new Org();
+        org.setParentId(dto.getParentId());
+        List<Org> list = orgMapper.list(org);
+        byte sort = 0;
+        for (Org o:list){
+            if(o.getSort() > sort){
+                sort = o.getSort();
+            }
+        }
+        sort++;
+        return sort;
+    }
+
 
     /**
      * 是否是机关
