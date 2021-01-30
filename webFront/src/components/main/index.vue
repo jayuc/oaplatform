@@ -44,7 +44,7 @@
                   <template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>
                       <el-menu-item index="/main/orgManage">机构管理</el-menu-item>
                       <el-menu-item index="/main/userManage">用户管理</el-menu-item>
-                      <el-menu-item v-if="false" index="/main/roleManage">角色管理</el-menu-item>
+                      <el-menu-item index="/main/roleManage">角色管理</el-menu-item>
               </el-submenu>
             <el-submenu index="3">
                 <template slot="title"><i class="el-icon-setting"></i>系统管理</template>

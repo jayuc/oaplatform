@@ -84,6 +84,7 @@ CREATE TABLE `t_sys_menu` (
 CREATE TABLE `t_sys_function` (
   `function_id` int(11) NOT NULL AUTO_INCREMENT,
   `function_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '系统功能编码',
+  `menu_code` varchar(32) DEFAULT NULL COMMENT '菜单编码',
   `function_name` varchar(32) NOT NULL COMMENT '系统功能名称',
   `enable_flag` tinyint DEFAULT NULL COMMENT '是否启用',
   `mark` varchar(256) DEFAULT NULL COMMENT '备注',
@@ -95,7 +96,7 @@ CREATE TABLE `t_sys_role_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL COMMENT '角色id',
   `function_id` int(11) NOT NULL COMMENT '系统功能id',
-  `type` tinyint NOT NULL COMMENT '菜单还是系统功能编码，1表示菜单，2表示系统功能',
+  `type` tinyint DEFAULT NULL COMMENT '菜单还是系统功能编码，1表示菜单，2表示系统功能',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '角色用户表';
 

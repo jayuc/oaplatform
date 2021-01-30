@@ -9,6 +9,9 @@
                     <el-form-item>
                         <el-button type="primary" @click="submit()" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
+                    <el-form-item>
+                        <el-button type="success" @click="add" >新 增</el-button>
+                    </el-form-item>
                 </el-form>
             </div>
         </el-header>
@@ -23,10 +26,11 @@
                         header-row-class-name="form-table-header"
                         header-cell-class-name="form-table-header-cell"
                         style="width: 100%">
-                    <el-table-column
-                            type="selection"
-                            width="36">
-                    </el-table-column>
+                    <!--<el-table-column-->
+                            <!--type="selection"-->
+                            <!--align="center"-->
+                            <!--width="36">-->
+                    <!--</el-table-column>-->
                     <el-table-column
                             prop="roleName"
                             label="角色名称"
@@ -43,11 +47,17 @@
                             prop="operation"
                             align="center"
                             minWidth="160"
+                            fixed="right"
                             label="操作">
                         <template slot-scope="scope">
                             <el-button @click="update(scope.row)"
-                                       plain
-                                       type="primary" size="small">编辑</el-button>
+                                       icon="el-icon-edit"
+                                       title="编辑"
+                                       type="warning" size="small"></el-button>
+                            <el-button @click="deleteOne(scope.row)"
+                                       icon="el-icon-delete"
+                                       title="删除"
+                                       type="danger" size="small"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -64,6 +74,8 @@
             </div>
         </el-main>
 
+        <add-dialog ref="addDialog" @complete="submit" />
+
     </el-container>
 </template>
 
@@ -72,9 +84,13 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from '@/utils/TipUtil';
     import Config from '@/config';
+    import AddDialog from './add.vue';
 
     export default {
         name: 'role-manage',
+        components: {
+            AddDialog
+        },
         data(){
             return {
                 tableContainerStyle: '',
@@ -114,8 +130,32 @@
 
                 });
             },
+            // 新增
+            add(){
+                this.$refs.addDialog.open(null, 'role/add', 'add');
+            },
             update(row){
-                console.log(row);
+                this.$refs.addDialog.open(row, 'role/update', 'edit');
+            },
+            deleteOne(row){
+                this.$confirm('确定删除 ' + row.roleName + ' ?', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    RestUtil.post('role/delete', {roleId: row.roleId}, {enableLoading: true}).then((result) => {
+                        if(result == 1){
+                            TipUtil.success('删除成功!');
+                            this.submit();
+                        }else {
+                            TipUtil.error('删除失败!');
+                        }
+                    }, () => {
+                        TipUtil.error('删除失败!');
+                    });
+                }).catch(() => {
+                    TipUtil.info('已取消删除');
+                });
             },
             handleSizeChange(currentPageSize) {
                 this.formData.pageSize = currentPageSize;

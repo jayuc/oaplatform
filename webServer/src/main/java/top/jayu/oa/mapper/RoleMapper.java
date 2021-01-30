@@ -17,9 +17,10 @@ public interface RoleMapper {
 
     @Insert("insert into t_sys_role (role_name, enable_flag, \n" +
             "      mark)\n" +
-            "    values (#{roleName,jdbcType=VARCHAR}, #{enableFlag,jdbcType=TINYINT}, \n" +
-            "      #{mark,jdbcType=VARCHAR})")
-    int add(Role role);
+            "    values (#{role.roleName}, #{role.enableFlag}, \n" +
+            "      #{role.mark})")
+    @Options(useGeneratedKeys = true, keyProperty = "role.roleId")
+    int add(@Param("role") Role role);
 
     @Delete("delete from t_sys_role where role_id = #{roleId}")
     int delete(Role role);
@@ -39,6 +40,6 @@ public interface RoleMapper {
                     "        </foreach>",
             "</script> "
     })
-    int[] batchDelete(List<Integer> ids);
+    int batchDelete(List<Integer> ids);
 
 }

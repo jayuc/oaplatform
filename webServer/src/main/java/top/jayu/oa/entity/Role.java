@@ -5,6 +5,7 @@ import top.jayu.oa.param.BaseParam;
 
 @Data
 public class Role extends BaseParam {
+
     private Integer roleId;
 
     private String roleName;
@@ -12,4 +13,7 @@ public class Role extends BaseParam {
     private Byte enableFlag;
 
     private String mark;
+
+    private String functionListJson;
+
 }

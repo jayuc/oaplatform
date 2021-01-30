@@ -16,7 +16,7 @@ import Introduce from '@/components/process/introduceMain';
 import Certificate from '@/components/process/certificateMain';
 import Meeting from '@/components/process/meetingMain';
 import MainMain from '@/components/main/main';
-import RoleManage from '@/components/organization/role-manage';
+import RoleManage from '@/components/organization/role';
 import BillOperaLog from '@/components/setting/bill-opera-log';
 import Doing from '@/components/process/doing';
 
