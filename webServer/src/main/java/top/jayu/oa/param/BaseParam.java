@@ -13,4 +13,5 @@ public class BaseParam {
     private String currentOrgCode;
     private String currentOrgCodePriv;
     private String currentUserName;
+    private String currentLoginName;
 }

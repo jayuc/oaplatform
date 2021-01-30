@@ -36,6 +36,7 @@
   import Config from '@/config';
   import handler from './handler';
   import logoUrl from '../../assets/logo.png';
+  import MenuUtil from '@/utils/MenuUtil';
 
   export default {
       components: {
@@ -70,18 +71,19 @@
                   loadingStartFun: () => {   // 请求开始前执行
                       this.loading = true;
                   },
-                  loadingEndFun: () => {     // 请求开始后执行
-                      this.loading = false;
-                  }
               }).then((result) => {
 //                  console.log(result);
                   if(!StringUtil.isBlank(result.error)){
                       TipUtil.error(result.error);
                       return;
                   }
-                  this.$router.push("/main");
                   // 登录成功后处理
                   handler.afterLoginSuccess(result.properties.user);
+                  // 处理权限
+                  MenuUtil.loadMenu(result.properties.user, () => {
+                      this.loading = false;
+                      this.$router.push("/main");
+                  });
               }, (error) => {
                   console.error(error);
                   if(error.responseJSON && error.responseJSON.errors instanceof Array){

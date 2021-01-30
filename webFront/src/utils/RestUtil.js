@@ -134,6 +134,7 @@ function handleOptions(options, _options){
     options.data.currentRoleId = User.get("roleId");
     options.data.currentEmployId = User.get("employId");
     options.data.currentOrgCodePriv = User.get("orgCodePriv");
+    options.data.currentLoginName = User.get("loginName");
     options.data.token = "";
 }
 

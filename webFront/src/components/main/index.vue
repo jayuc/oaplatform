@@ -68,10 +68,12 @@
 <script>
     import Config from '@/config';
     import User from '@/user';
-    import ElSubmenu from "../../../node_modules/element-ui/packages/menu/src/submenu.vue";
+    import MenuUtil from '@/utils/MenuUtil';
 
     export default {
-        components: {ElSubmenu},
+        components: {
+
+        },
         name: 'the-main',
         data() {
             return {
@@ -79,7 +81,8 @@
                 activeNode: null,
                 mainTitle: Config.get('mainTitle'),
                 userName: User.get('userName'),
-                userYesOffice: User.get('yesOffice')
+                userYesOffice: User.get('yesOffice'),
+                menuData: []
             };
         },
         methods: {
@@ -98,8 +101,9 @@
             }
         },
         mounted(){
+            this.menuData = MenuUtil.getTree();
+            console.log(this.menuData);
             this.$router.push("/main/main");
-            Config.set('global_menu', this.$refs.global_menu);
         }
     }
 </script>
