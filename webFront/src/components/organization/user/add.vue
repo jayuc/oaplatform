@@ -24,7 +24,10 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="性别：" :label-width="formLabelWidth">
-                        <yu-code-radio @change="changeSex" :initValue="formData.sex" :code="4" ref="sexSelect"></yu-code-radio>
+                        <yu-code-radio @change="changeSex"
+                                       :initValue="formData.sex"
+                                       :code="4"
+                                       ref="sexSelect"></yu-code-radio>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -68,7 +71,21 @@
             <el-row>
                 <el-col :span="24">
                     <el-form-item label="角色：" :label-width="formLabelWidth">
-
+                        <el-button type="primary"
+                                   title="添加角色"
+                                   size="mini"
+                                   icon="el-icon-plus"
+                                   @click="addRole"
+                                   circle></el-button>
+                        <el-tag
+                            v-for="tag in tags"
+                            :key="tag.roleId"
+                            style="margin-left: 10px;"
+                            closable
+                            @close="removeRole(tag.roleId)"
+                            type="success">
+                            {{tag.roleName}}
+                        </el-tag>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -77,6 +94,9 @@
             <el-button @click="close">取 消</el-button>
             <el-button :disabled="submitBtnDisabled" type="primary" @click="submit()">提 交</el-button>
         </div>
+
+        <add-role ref="addRole" @select-row="selectRole" />
+
     </el-dialog>
 </template>
 
@@ -85,13 +105,12 @@
     import RestUtil from '@/utils/RestUtil';
     import TipUtil from "@/utils/TipUtil";
     import Md5Util from '@/utils/Md5Util';
-    import YuCodeRadio from "../../public/yu-code-radio.vue";
-    import YuOrgRadio from "../../public/yu-org-radio.vue";
+    import innerConfig from '@/config/innerConfig';
+    import AddRole from './addRole.vue';
 
     export default {
         components: {
-            YuCodeRadio,
-            YuOrgRadio
+            AddRole
         },
         name: 'user-add',
         data(){
@@ -108,6 +127,7 @@
                 dialogTile: '',
                 url: '',
                 titleType: '',
+                tags: [],
                 rules: {
                     userName: [
                         { required: true, message: '请输入姓名', trigger: 'blur' }
@@ -176,8 +196,9 @@
                 this.$refs['formData'].validate((valid) => {
                     if (valid) {
                         if(this.titleType == 'add'){
-                            this.formData.password = Md5Util.encode('hfyc@1234')
+                            this.formData.password = Md5Util.encode(innerConfig.defaultPassword)
                         }
+                        this.formData.roleJson = JSON.stringify(this.tags);
                         RestUtil.post(this.url, this.formData, {
                             enableLoading: true,       // 启动请求期间的正在加载
                             loadingStartFun: () => {   // 请求开始前执行
@@ -236,6 +257,9 @@
                 if(this.$refs['sexSelect']){
                     this.$refs['sexSelect'].setInitValue(this.formData.sex);
                 }
+                if(this.$refs['positionIdSelect']){
+                    this.$refs['positionIdSelect'].setInitValue(this.formData.positionId);
+                }
                 // 机构赋值
                 if(this.$refs['orgSelect']){
                     this.$refs['orgSelect'].setInitValue(this.formData.orgId);
@@ -243,8 +267,12 @@
                 // 当编辑时禁止修改用户名
                 if(this.titleType == 'edit'){
                     this.loginNameDisabled = true;
+                    RestUtil.get('user/getRoleById', {userId: data.userId}).then((list) => {
+                        this.tags = list;
+                    });
                 }else if(this.titleType == 'add'){
                     this.loginNameDisabled = false;
+                    this.tags = [];
                 }
             },
             close(){
@@ -253,9 +281,29 @@
             changeSex(cellValue){
                 this.formData.sex = cellValue;
             },
+            changePositionId(cellValue){
+                this.formData.positionId = cellValue;
+            },
             changeOrg(orgId, orgCode){
                 this.formData.orgId = orgId;
                 this.formData.orgCode = orgCode;
+            },
+            addRole(){
+                this.$refs['addRole'].open(this.tags);
+            },
+            selectRole(roles){
+                this.$refs['addRole'].close();
+                this.tags = roles;
+            },
+            removeRole(roleId){
+                let candidateTags = [];
+                for(let i=0; i<this.tags.length; i++){
+                    let tag = this.tags[i];
+                    if(tag.roleId != roleId){
+                        candidateTags.push(tag);
+                    }
+                }
+                this.tags = candidateTags;
             }
         }
     }

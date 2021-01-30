@@ -40,15 +40,16 @@ public interface UserMapper {
 
     @Insert("insert into t_sys_user (login_name, password, \n" +
             "      user_name, user_code, employ_id, \n" +
-            "      position, yes_chief, org_id, \n" +
+            "      yes_chief, org_id, \n" +
             "      org_code, role_id, tel, mobile_tel, \n" +
-            "      age, sex) \n" +
-            "    values (#{loginName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, \n" +
-            "      #{userName,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, #{employId,jdbcType=INTEGER}, \n" +
-            "      #{position,jdbcType=VARCHAR}, #{yesChief,jdbcType=TINYINT}, #{orgId,jdbcType=INTEGER}, \n" +
-            "      #{orgCode,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER}, #{tel,jdbcType=VARCHAR}, #{mobileTel,jdbcType=VARCHAR}, \n" +
-            "      #{age,jdbcType=INTEGER}, #{sex,jdbcType=TINYINT})")
-    Integer add(User record);
+            "      position, age, sex) \n" +
+            "    values (#{record.loginName,jdbcType=VARCHAR}, #{record.password,jdbcType=VARCHAR}, \n" +
+            "      #{record.userName,jdbcType=VARCHAR}, #{record.userCode,jdbcType=VARCHAR}, #{record.employId,jdbcType=INTEGER}, \n" +
+            "      #{record.yesChief,jdbcType=TINYINT}, #{record.orgId,jdbcType=INTEGER}, \n" +
+            "      #{record.orgCode,jdbcType=VARCHAR}, #{record.roleId,jdbcType=INTEGER}, #{record.tel,jdbcType=VARCHAR}, #{record.mobileTel,jdbcType=VARCHAR}, \n" +
+            "       #{record.position,jdbcType=VARCHAR}, #{record.age,jdbcType=INTEGER}, #{record.sex,jdbcType=TINYINT})")
+    @Options(useGeneratedKeys = true, keyProperty = "record.userId")
+    Integer add(@Param("record") User record);
 
     @Update({
             "<script> ",

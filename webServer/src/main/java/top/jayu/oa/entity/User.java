@@ -5,6 +5,7 @@ import top.jayu.oa.param.BaseParam;
 
 @Data
 public class User extends BaseParam {
+
     private Integer userId;
 
     private String loginName;
@@ -29,6 +30,8 @@ public class User extends BaseParam {
 
     private String orgName;
 
+    private String positionId;
+
     private String position;
 
     private Integer roleId;
@@ -40,4 +43,7 @@ public class User extends BaseParam {
     private Integer age;
 
     private Byte sex;
+
+    private String roleJson;
+
 }

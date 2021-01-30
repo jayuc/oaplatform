@@ -1,19 +1,26 @@
 package top.jayu.oa.controller;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.jayu.oa.entity.Org;
 import top.jayu.oa.entity.User;
+import top.jayu.oa.entity.UserRole;
+import top.jayu.oa.iter.SaveLog;
 import top.jayu.oa.mapper.EmployMapper;
 import top.jayu.oa.mapper.OrgMapper;
 import top.jayu.oa.mapper.UserMapper;
+import top.jayu.oa.mapper.UserRoleMapper;
 import top.jayu.oa.param.LoginUser;
 import top.jayu.oa.util.ResultUtil;
 
@@ -34,12 +41,15 @@ public class UserController {
     EmployMapper employMapper;
     @Autowired
     OrgMapper orgMapper;
+    @Autowired
+    UserRoleMapper userRoleMapper;
 
     @GetMapping("/getUserById")
     public User getUserById(Integer id){
         return userMapper.getUserById(id);
     }
 
+    @SaveLog(content = "用户查询")
     @GetMapping("/list")
     public Map<String, Object> list(User dto){
         ResultUtil.Result result = ResultUtil.build();
@@ -50,16 +60,57 @@ public class UserController {
         return result.getResult();
     }
 
+    @GetMapping("/listAll")
+    public List<User> listAll(){
+        User dto = new User();
+        return userMapper.list(dto);
+    }
+
+    @SaveLog(content = "用户新增")
     @PostMapping("/add")
+    @Transactional
     public Integer add(User dto){
-        return userMapper.add(dto);
+        int addResult = userMapper.add(dto);
+        if(addResult == 1){
+            List<UserRole> roleList = convert(dto.getRoleJson(), dto.getUserId());
+            if(roleList.size() > 0){
+                userRoleMapper.batchAdd(roleList);
+            }
+        }
+        return addResult;
     }
 
+    @SaveLog(content = "用户编辑")
     @PostMapping("/update")
+    @Transactional
     public Integer update(User dto){
-        return userMapper.update(dto);
+        int updateResult = userMapper.update(dto);
+        if(updateResult == 1){
+            userRoleMapper.deleteByUserId(dto.getUserId());
+            List<UserRole> roleList = convert(dto.getRoleJson(), dto.getUserId());
+            if(roleList.size() > 0){
+                userRoleMapper.batchAdd(roleList);
+            }
+        }
+        return updateResult;
     }
 
+    private List<UserRole> convert(String roleJson, int userId){
+        List<UserRole> list = new ArrayList<>();
+        if(!StrUtil.isBlank(roleJson)){
+            JSONArray jsonArray = JSONUtil.parseArray(roleJson);
+            jsonArray.forEach((json) -> {
+                JSONObject jsonObject = (JSONObject) json;
+                UserRole userRole = new UserRole();
+                userRole.setRoleId(jsonObject.getInt("roleId"));
+                userRole.setUserId(userId);
+                list.add(userRole);
+            });
+        }
+        return list;
+    }
+
+    @SaveLog(content = "用户登录")
     @PostMapping("/login")
     public Map<String, Object> login(@Valid LoginUser user){
         log.info(user.toString());
@@ -77,6 +128,14 @@ public class UserController {
         return result.getResult();
     }
 
+    @SaveLog(content = "用户登出")
+    @PostMapping("/loginOut")
+    public Map<String, Object> loginOut(LoginUser user){
+        ResultUtil.Result result = ResultUtil.build();
+        return result.getResult();
+    }
+
+    @SaveLog(content = "用户密码修改")
     @PostMapping("/updatePassword")
     public Map<String, Object> updatePassword(LoginUser dto){
         ResultUtil.Result result = ResultUtil.build();
@@ -126,11 +185,22 @@ public class UserController {
         }
     }
 
-    @PostMapping("/deleteOne")
-    public int deleteOne(Integer id){
-        return userMapper.deleteOne(id);
+    @GetMapping("/getRoleById")
+    public List<UserRole> getRoleById(Integer userId){
+        return userRoleMapper.getRoleByUserId(userId);
     }
 
+    @PostMapping("/deleteOne")
+    @Transactional
+    public int deleteOne(Integer id){
+        int deleteResult = userMapper.deleteOne(id);
+        if(deleteResult == 1){
+            userRoleMapper.deleteByUserId(id);
+        }
+        return deleteResult;
+    }
+
+    @SaveLog(content = "用户密码重置")
     @PostMapping("/resetPassword")
     public int resetPassword(LoginUser dto){
         return userMapper.resetPassword(dto);
