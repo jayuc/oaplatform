@@ -132,6 +132,7 @@
     import RejectDialog from './handleRejectIntroduce.vue';
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
+    import PermissionUtil from '@/utils/PermissionUtil';
 
     export default {
         name: 'process-introduce',
@@ -229,6 +230,9 @@
             },
             // 是否显示查看
             ifShowDetailButton(row){
+                if(PermissionUtil.hasAuth('010801')){
+                    return true;
+                }
                 return row.applyId == user.get('userId');
             },
             // 是否显示驳回处置按钮

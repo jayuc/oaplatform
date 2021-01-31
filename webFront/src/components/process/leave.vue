@@ -153,6 +153,7 @@
     import OrgUtil from '@/utils/OrgUtil';
     import user from '@/user';
     import RejectDialog from './handleRejectLeave.vue';
+    import PermissionUtil from '@/utils/PermissionUtil';
 
     export default {
         name: 'process-leave',
@@ -250,6 +251,9 @@
             },
             // 是否显示查看
             ifShowDetailButton(row){
+                if(PermissionUtil.hasAuth('010201')){
+                    return true;
+                }
                 return row.applyId == user.get('userId');
             },
             // 是否显示驳回处置按钮
