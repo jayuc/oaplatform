@@ -15,6 +15,7 @@ public interface MenuMapper {
             " where enable_flag = 1 ",
             "    <if test='level != null and level != 0'> and level = #{level} </if> ",
             "    <if test='parentCode != null and parentCode != \"\"'> and parent_code = #{parentCode} </if> ",
+            "    <if test='permissionFlag != null and permissionFlag != 0'> and permission_flag = #{permissionFlag} </if> ",
             " order by sort ",
             "</script> "
     })

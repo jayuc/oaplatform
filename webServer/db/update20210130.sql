@@ -11,3 +11,5 @@ ALTER TABLE t_sys_function ADD COLUMN `menu_code` varchar(32) DEFAULT NULL COMME
 
 ALTER TABLE t_sys_role_permission ALTER COLUMN `type` set default 1;
 
+ALTER TABLE t_sys_menu ADD COLUMN `permission_flag` tinyint DEFAULT NULL;
+

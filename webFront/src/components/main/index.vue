@@ -27,30 +27,38 @@
                   <i class="el-icon-house"></i>
                   <span slot="title">首页</span>
               </el-menu-item>
-            <el-submenu index="1">
-              <template slot="title" style="font-weight: bold;"><i class="el-icon-edit"></i>流程</template>
-                <el-menu-item index="/main/errand">出差申请</el-menu-item>
-                <el-menu-item index="/main/leave">年休假申请</el-menu-item>
-                <el-menu-item index="/main/cost">经济业务支出事前申请</el-menu-item>
-                <el-menu-item index="/main/train">培训申请</el-menu-item>
-                <el-menu-item v-if="userYesOffice == 1" index="/main/meeting">机关会议室申请</el-menu-item>
-                <el-menu-item index="/main/travelToolSet">出差交通工具调整申请</el-menu-item>
-                <el-menu-item v-if="false" index="/main/goAbroad">员工因私出国（境）申请</el-menu-item>
-                <el-menu-item index="/main/introduce">介绍信开具申请</el-menu-item>
-                <el-menu-item index="/main/certificate">证件（复印件）使用申请</el-menu-item>
-                <el-menu-item index="/main/lookDoc">调阅会计档案申请</el-menu-item>
-            </el-submenu>
-              <el-submenu index="2" v-if="userName == '超级管理员'">
-                  <template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>
-                      <el-menu-item index="/main/orgManage">机构管理</el-menu-item>
-                      <el-menu-item index="/main/userManage">用户管理</el-menu-item>
-                      <el-menu-item index="/main/roleManage">角色管理</el-menu-item>
+              <el-submenu v-for="item in menuData" v-bind:key="item.functionId" :index="item.attribute.menuPath">
+                  <template slot="title"><i :class="item.attribute.menuImage"></i>{{item.functionName}}</template>
+                  <el-menu-item v-for="it in item.children"
+                                v-bind:key="it.functionId"
+                                :index="it.attribute.menuPath">
+                      {{it.functionName}}
+                  </el-menu-item>
               </el-submenu>
-            <el-submenu index="3">
-                <template slot="title"><i class="el-icon-setting"></i>系统管理</template>
-                    <el-menu-item index="/main/setPassword">修改密码</el-menu-item>
-                    <el-menu-item v-if="userName == '超级管理员'" index="/main/billOperaLog">工单操作日志</el-menu-item>
-            </el-submenu>
+            <!--<el-submenu index="1">-->
+              <!--<template slot="title" style="font-weight: bold;"><i class="el-icon-edit"></i>流程</template>-->
+                <!--<el-menu-item index="/main/errand">出差申请</el-menu-item>-->
+                <!--<el-menu-item index="/main/leave">年休假申请</el-menu-item>-->
+                <!--<el-menu-item index="/main/cost">经济业务支出事前申请</el-menu-item>-->
+                <!--<el-menu-item index="/main/train">培训申请</el-menu-item>-->
+                <!--<el-menu-item v-if="userYesOffice == 1" index="/main/meeting">机关会议室申请</el-menu-item>-->
+                <!--<el-menu-item index="/main/travelToolSet">出差交通工具调整申请</el-menu-item>-->
+                <!--<el-menu-item v-if="false" index="/main/goAbroad">员工因私出国（境）申请</el-menu-item>-->
+                <!--<el-menu-item index="/main/introduce">介绍信开具申请</el-menu-item>-->
+                <!--<el-menu-item index="/main/certificate">证件（复印件）使用申请</el-menu-item>-->
+                <!--<el-menu-item index="/main/lookDoc">调阅会计档案申请</el-menu-item>-->
+            <!--</el-submenu>-->
+              <!--<el-submenu index="2" v-if="userName == '超级管理员'">-->
+                  <!--<template slot="title"><i class="el-icon-notebook-2"></i>组织机构</template>-->
+                      <!--<el-menu-item index="/main/orgManage">机构管理</el-menu-item>-->
+                      <!--<el-menu-item index="/main/userManage">用户管理</el-menu-item>-->
+                      <!--<el-menu-item index="/main/roleManage">角色管理</el-menu-item>-->
+              <!--</el-submenu>-->
+            <!--<el-submenu index="3">-->
+                <!--<template slot="title"><i class="el-icon-setting"></i>系统管理</template>-->
+                    <!--<el-menu-item index="/main/setPassword">修改密码</el-menu-item>-->
+                    <!--<el-menu-item v-if="userName == '超级管理员'" index="/main/billOperaLog">工单操作日志</el-menu-item>-->
+            <!--</el-submenu>-->
           </el-menu>
         </el-aside>
 
@@ -102,7 +110,6 @@
         },
         mounted(){
             this.menuData = MenuUtil.getTree();
-            console.log(this.menuData);
             this.$router.push("/main/main");
         }
     }

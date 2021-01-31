@@ -76,6 +76,7 @@ CREATE TABLE `t_sys_menu` (
   `level` tinyint NOT NULL COMMENT '菜单层级，一级菜单，二级菜单，三级菜单',
   `sort` tinyint DEFAULT NULL COMMENT '排序',
   `enable_flag` tinyint DEFAULT NULL COMMENT '是否启用',
+  `permission_flag` tinyint DEFAULT NULL COMMENT '权限标记，1：所用用户都有此菜单',
   `mark` varchar(256) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`menu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '菜单表';

@@ -24,6 +24,8 @@ public class Menu extends BaseParam {
 
     private Byte enableFlag;
 
+    private Byte permissionFlag;
+
     private String mark;
 
 }

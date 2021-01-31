@@ -51,6 +51,7 @@ public class MenuService {
         });
         if(userId != null){
             List<RolePermission> permissions = rolePermissionMapper.getPermissionByUserId(userId);
+            handlePermissionMenu(permissions);
             List<MenuFunctionTree> uplist = new ArrayList<>();
             Map<String, MenuFunctionTree> upmenuMap = new HashMap<>();
             Map<String, RolePermission> permissionMap = new HashMap<>();
@@ -88,6 +89,23 @@ public class MenuService {
         Menu menu = new Menu();
         menu.setLevel((byte) level);
         return menuMapper.list(menu);
+    }
+
+    // 获取所有不受权限控制的菜单
+    private List<RolePermission> handlePermissionMenu(List<RolePermission> permissions){
+        Menu menu = new Menu();
+        menu.setPermissionFlag((byte) 1);
+        List<Menu> list = menuMapper.list(menu);
+        List<RolePermission> result = new ArrayList<>();
+        for (Menu m:list){
+            if(menu.getLevel() == 2){
+                RolePermission permission = new RolePermission();
+                permission.setFunctionCode(menu.getMenuCode() + "00");
+                result.add(permission);
+                permissions.add(permission);
+            }
+        }
+        return result;
     }
 
 }
