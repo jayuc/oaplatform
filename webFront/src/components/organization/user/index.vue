@@ -28,9 +28,11 @@
                         <el-form-item>
                             <el-button type="primary" @click="submit('')" :disabled="searchBtnStatus">查 询</el-button>
                         </el-form-item>
-                        <el-form-item>
-                            <el-button type="success" @click="add" >新 增</el-button>
-                        </el-form-item>
+                        <yu-auth code="020201" style="margin-left: 10px;">
+                            <el-form-item>
+                                <el-button type="success" @click="add" >新 增</el-button>
+                            </el-form-item>
+                        </yu-auth>
                     </el-form>
                 </div>
             </el-header>
@@ -97,22 +99,30 @@
                               minWidth="230"
                               label="操作">
                             <template slot-scope="scope">
-                                <el-button @click="details(scope.row)"
-                                           icon="el-icon-document"
-                                           title="查看详情"
-                                           type="success" size="small"></el-button>
-                                <el-button @click="update(scope.row)"
-                                           icon="el-icon-edit"
-                                           title="编辑"
-                                           type="warning" size="small"></el-button>
-                                <el-button @click="resetPassword(scope.row)"
-                                           icon="el-icon-refresh-right"
-                                           title="重置密码"
-                                           type="warning" size="small"></el-button>
-                                <el-button @click="deleteOne(scope.row)"
-                                           icon="el-icon-delete"
-                                           title="删除"
-                                           type="danger" size="small"></el-button>
+                                <yu-auth name="rowButton" code="020204">
+                                    <el-button @click="details(scope.row)"
+                                               icon="el-icon-document"
+                                               title="查看详情"
+                                               type="success" size="small"></el-button>
+                                </yu-auth>
+                                <yu-auth name="rowButton" code="020202">
+                                    <el-button @click="update(scope.row)"
+                                               icon="el-icon-edit"
+                                               title="编辑"
+                                               type="warning" size="small"></el-button>
+                                </yu-auth>
+                                <yu-auth name="rowButton" code="020205">
+                                    <el-button @click="resetPassword(scope.row)"
+                                               icon="el-icon-refresh-right"
+                                               title="重置密码"
+                                               type="warning" size="small"></el-button>
+                                </yu-auth>
+                                <yu-auth name="rowButton" code="020203">
+                                    <el-button @click="deleteOne(scope.row)"
+                                               icon="el-icon-delete"
+                                               title="删除"
+                                               type="danger" size="small"></el-button>
+                                </yu-auth>
                             </template>
                         </el-table-column>
                     </el-table>

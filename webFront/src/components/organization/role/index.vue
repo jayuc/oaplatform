@@ -9,9 +9,11 @@
                     <el-form-item>
                         <el-button type="primary" @click="submit()" :disabled="searchBtnStatus">查 询</el-button>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button type="success" @click="add" >新 增</el-button>
-                    </el-form-item>
+                    <yu-auth code="020301" style="margin-left: 10px;">
+                        <el-form-item>
+                            <el-button type="success" @click="add" >新 增</el-button>
+                        </el-form-item>
+                    </yu-auth>
                 </el-form>
             </div>
         </el-header>
@@ -50,14 +52,18 @@
                             fixed="right"
                             label="操作">
                         <template slot-scope="scope">
-                            <el-button @click="update(scope.row)"
-                                       icon="el-icon-edit"
-                                       title="编辑"
-                                       type="warning" size="small"></el-button>
-                            <el-button @click="deleteOne(scope.row)"
-                                       icon="el-icon-delete"
-                                       title="删除"
-                                       type="danger" size="small"></el-button>
+                            <yu-auth name="rowButton" code="020302">
+                                <el-button @click="update(scope.row)"
+                                           icon="el-icon-edit"
+                                           title="编辑"
+                                           type="warning" size="small"></el-button>
+                            </yu-auth>
+                            <yu-auth name="rowButton" code="020303">
+                                <el-button @click="deleteOne(scope.row)"
+                                           icon="el-icon-delete"
+                                           title="删除"
+                                           type="danger" size="small"></el-button>
+                            </yu-auth>
                         </template>
                     </el-table-column>
                 </el-table>
