@@ -22,6 +22,9 @@
                 <div class="form-search-container">
                     <span class="form-search-title">查询条件</span>
                     <el-form :inline="true" :model="formData" class="demo-form-inline">
+                        <el-form-item>
+                            <el-button type="primary" @click="submit('')" :disabled="searchBtnStatus">查 询</el-button>
+                        </el-form-item>
                         <yu-auth code="020101" style="margin-left: 10px;">
                             <el-form-item>
                                 <el-button type="success" @click="add" >新 增</el-button>

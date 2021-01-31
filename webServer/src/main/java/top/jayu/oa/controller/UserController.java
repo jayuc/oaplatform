@@ -54,6 +54,10 @@ public class UserController {
     public Map<String, Object> list(User dto){
         ResultUtil.Result result = ResultUtil.build();
         PageHelper.startPage(dto.getPageNumber(), dto.getPageSize());
+        // 默认查询所属机构下属机构
+        if(StrUtil.isBlank(dto.getOrgCodePriv())){
+            dto.setOrgCodePriv(dto.getCurrentOrgCodePriv());
+        }
         Page<User> page = (Page<User>) userMapper.list(dto);
         result.total(page.getTotal());
         result.rows(page.getResult());
