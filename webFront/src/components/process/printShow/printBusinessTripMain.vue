@@ -5,7 +5,7 @@
                width="90%"
     >
         <div ref="tableContainer">
-            <div id="tableContainer" style="position: relative;height: 600px;">
+            <div id="tableContainer" style="position: relative;height: 650px;">
                 <img id="image" style="display: none"
                      :src="waterUrl"/>
                 <table border="1" cellspacing="0" align="center"

@@ -26,9 +26,9 @@ VALUE ('010202','0102','年休假申请删除',1);
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag,permission_flag)
 VALUE ('0103','01','经济业务支出事前申请','/main/cost','',2,3,1,1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010301','0103','经济业务支出事前申请查看',1);
+VALUE ('010301','0103','经济业务支出查看',1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010302','0103','经济业务支出事前申请删除',1);
+VALUE ('010302','0103','经济业务支出删除',1);
 
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag,permission_flag)
 VALUE ('0104','01','培训申请','/main/train','',2,4,1,1);
@@ -47,37 +47,37 @@ VALUE ('010502','0105','机关会议室申请删除',1);
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag,permission_flag)
 VALUE ('0106','01','出差交通工具调整申请','/main/travelToolSet','',2,6,1,1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010601','0106','出差交通工具调整申请查看',1);
+VALUE ('010601','0106','交通工具调整查看',1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010602','0106','出差交通工具调整申请删除',1);
+VALUE ('010602','0106','交通工具调整删除',1);
 
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag,permission_flag)
 VALUE ('0107','01','员工因私出国申请','/main/goAbroad','',2,7,2,1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010701','0107','员工因私出国申请查看',1);
+VALUE ('010701','0107','员工因私出国查看',1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010702','0107','员工因私出国申请删除',1);
+VALUE ('010702','0107','员工因私出国删除',1);
 
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag,permission_flag)
 VALUE ('0108','01','介绍信开具申请','/main/introduce','',2,8,1,1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010801','0108','介绍信开具申请查看',1);
+VALUE ('010801','0108','介绍信开具查看',1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010802','0108','介绍信开具申请删除',1);
+VALUE ('010802','0108','介绍信开具删除',1);
 
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag,permission_flag)
 VALUE ('0109','01','证件（复印件）使用申请','/main/certificate','',2,9,1,1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010901','0109','证件（复印件）使用申请查看',1);
+VALUE ('010901','0109','证件复印件使用查看',1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('010902','0109','证件（复印件）使用申请删除',1);
+VALUE ('010902','0109','证件复印件使用删除',1);
 
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag,permission_flag)
 VALUE ('0110','01','调阅会计档案申请','/main/lookDoc','',2,10,1,1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('011001','0110','调阅会计档案申请查看',1);
+VALUE ('011001','0110','调阅会计档案查看',1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('011002','0110','调阅会计档案申请删除',1);
+VALUE ('011002','0110','调阅会计档案删除',1);
 
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag)
 VALUE ('02','root','组织管理','organization','el-icon-notebook-2',1,19,1);
