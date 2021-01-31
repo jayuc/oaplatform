@@ -8,10 +8,7 @@ import top.jayu.oa.entity.RolePermission;
 import top.jayu.oa.mapper.MenuMapper;
 import top.jayu.oa.mapper.RolePermissionMapper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MenuService {
@@ -75,6 +72,14 @@ public class MenuService {
                     }
                 }
                 permissionMap.put(functionCode, permission);
+            });
+            Collections.sort(uplist, new Comparator<MenuFunctionTree>(){
+                @Override
+                public int compare(MenuFunctionTree o1, MenuFunctionTree o2) {
+                    Menu attribute2 = (Menu) o2.getAttribute();
+                    Menu attribute1 = (Menu) o1.getAttribute();
+                    return attribute1.getSort().compareTo(attribute2.getSort());
+                }
             });
             map.put("menu", uplist);
             map.put("permission", permissionMap);
