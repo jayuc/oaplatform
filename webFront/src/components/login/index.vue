@@ -86,6 +86,7 @@
                   });
               }, (error) => {
                   console.error(error);
+                  this.loading = false;
                   if(error.responseJSON && error.responseJSON.errors instanceof Array){
                       let errorArr = error.responseJSON.errors;
                       let errorStr = '';

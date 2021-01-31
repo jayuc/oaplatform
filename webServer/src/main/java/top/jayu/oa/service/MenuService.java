@@ -98,9 +98,9 @@ public class MenuService {
         List<Menu> list = menuMapper.list(menu);
         List<RolePermission> result = new ArrayList<>();
         for (Menu m:list){
-            if(menu.getLevel() == 2){
+            if(m.getLevel() == 2){
                 RolePermission permission = new RolePermission();
-                permission.setFunctionCode(menu.getMenuCode() + "00");
+                permission.setFunctionCode(m.getMenuCode() + "00");
                 result.add(permission);
                 permissions.add(permission);
             }
