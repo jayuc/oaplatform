@@ -5,7 +5,7 @@
                width="90%"
     >
         <div ref="tableContainer">
-            <div id="tableContainer" style="position: relative;height: 650px;">
+            <div id="tableContainer" style="position: relative;height: 600px;">
                 <img id="image" style="display: none"
                      :src="waterUrl"/>
                 <table border="1" cellspacing="0" align="center"
@@ -113,6 +113,18 @@
             open(row) {
                 this.item = row;
                 this.visible = true;
+                this.l5 = false;
+                this.l4 = false;
+                this.l3 = false;
+                this.l35 =  false;
+                this.l2 = false;
+                this.l1 = false;
+                this.l5map = {};
+                this.l4map = {};
+                this.l3map = {};
+                this.l35map = {};
+                this.l2map = {};
+                this.l1map = {};
                 RestUtil.get('oa/bill/opera/listAll',
                     {billCode: row.billCode}).then((list) => {
                     if(list instanceof Array){
