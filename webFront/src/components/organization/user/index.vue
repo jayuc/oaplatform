@@ -9,7 +9,7 @@
                 <el-tree :data="orgTreeData"
                          :props="defaultProps"
                          node-key="orgId"
-                         :default-expanded-keys="[-1]"
+                         :default-expanded-keys="defaultExpendTreeNodeKey"
                          @node-click="handleNodeClick"
                 ></el-tree>
             </div>
@@ -166,6 +166,11 @@
             AddDialog
         },
         data(){
+            let _expendTreeKey = [];
+            let orgs = Config.get('$org');
+            if(orgs instanceof Array && orgs.length > 0){
+                _expendTreeKey.push(orgs[0].orgId);
+            }
             return {
                 tableContainerStyle: '',
                 orgTreeContainerStyle: '',
@@ -177,6 +182,8 @@
                     orgId: 0,
                     orgCodePriv: ''
                 },
+                // 当前展开的机构树node key
+                defaultExpendTreeNodeKey: _expendTreeKey,
                 searchBtnStatus: false,
                 total: 0,
                 tableData: [],
