@@ -42,6 +42,8 @@ public class OrgController {
         if(StrUtil.isBlank(orgCodePriv)){
             orgCodePriv = dto.getCurrentOrgCodePriv();
         }
+        // 查询机构树的时候，查询本单位（部门）下面的机构树
+        orgCodePriv = orgCodePriv.substring(0, 6);
         Map<String, OrgTree> stringOrgTreeMap = new HashMap<>();
         loopOrg(orgTrees, stringOrgTreeMap);
         OrgTree tree = stringOrgTreeMap.get(orgCodePriv);

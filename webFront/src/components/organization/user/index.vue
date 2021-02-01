@@ -26,7 +26,7 @@
                             <el-input v-model="formData.userName" placeholder="请输入用户名"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="submit('')" :disabled="searchBtnStatus">查 询</el-button>
+                            <el-button type="primary" @click="submit()" :disabled="searchBtnStatus">查 询</el-button>
                         </el-form-item>
                         <yu-auth code="020201" style="margin-left: 10px;">
                             <el-form-item>
@@ -199,6 +199,14 @@
             submit(orgCodePriv){
                 if(typeof orgCodePriv != 'undefined'){
                     this.formData.orgCodePriv = orgCodePriv;
+                }else {
+                    let orgs = Config.get('$org');
+                    if(orgs instanceof Array && orgs.length > 0){
+                        let attr = orgs[0].attribute;
+                        if(attr){
+                            this.formData.orgCodePriv = attr.orgCodePriv;
+                        }
+                    }
                 }
                 RestUtil.get('user/list', this.formData, {
                     enableLoading: true,       // 启动请求期间的正在加载
