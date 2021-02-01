@@ -103,8 +103,7 @@
             selectItem(index, path){
                 console.log(index, path);
             },
-            selectMenu(path, index){
-                this.$refs.global_menu.open(path);
+            selectMenu(index){
                 this.activeNode = index;
             }
         },

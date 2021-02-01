@@ -60,7 +60,7 @@
             selectRow(path) {
                 if (path) {
                     this.$router.push('/main/' + path);
-                    this.$emit("openMenu", ['1'], '/main/' + path );
+                    this.$emit("openMenu", '/main/' + path );
                 }
             }
         }

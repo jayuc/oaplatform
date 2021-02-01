@@ -105,6 +105,11 @@
                                        plain
                                        type="primary"
                                        size="small">驳回处置</el-button>
+                            <el-button @click="deleteOne(scope.row)"
+                                       v-if="ifShowDeleteButton(scope.row)"
+                                       icon="el-icon-delete"
+                                       title="删除"
+                                       type="danger" size="small"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -203,6 +208,27 @@
                     TipUtil.error('请求出错，请检查您的网络是否正常');
                 });
             },
+            // 删除一条记录
+            deleteOne(row){
+                this.$confirm('确定删除?', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    RestUtil.post('oa/bill/deleteById', {id: row.billId}, {enableLoading: true}).then((result) => {
+                        if(result == 1){
+                            TipUtil.success('删除成功!');
+                            this.submit();
+                        }else {
+                            TipUtil.error('删除失败!');
+                        }
+                    }, () => {
+                        TipUtil.error('删除失败!');
+                    });
+                }).catch(() => {
+                    TipUtil.info('已取消删除');
+                });
+            },
             formatOrg(row, column, cellValue){
                 if(cellValue){
                     let org = OrgUtil.getOrgById(cellValue);
@@ -252,6 +278,12 @@
             // 是否显示查看
             ifShowDetailButton(row){
                 if(PermissionUtil.hasAuth('010301')){
+                    return true;
+                }
+                return row.applyId == user.get('userId');
+            },
+            ifShowDeleteButton(row){
+                if(PermissionUtil.hasAuth('010302')){
                     return true;
                 }
                 return row.applyId == user.get('userId');
