@@ -218,6 +218,10 @@
                 if(this.$refs['formData']){
                     this.$refs['formData'].resetFields();
                 }
+                // 业务域
+                if(this.$refs.firmTypeSelect){
+                    this.$refs.firmTypeSelect.setInitValue(this.formData.firmType);
+                }
             },
             close(){
                 this.visible = false;

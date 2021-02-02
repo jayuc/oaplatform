@@ -262,11 +262,15 @@ public class OaBillService {
 
     private Float generateLevel(float candidateLevel, int applyId, Org org, OaBill bill){
         if(applyId == org.getLeaderId()){
-            float nextApproveIdStrLevel = getOriginNextApproveId(candidateLevel, bill.getBillType(), bill.getApplyOrgYesOffice());
-            if(candidateLevel - nextApproveIdStrLevel > 1){
-                return candidateLevel - 1;
+            if(candidateLevel == 3 && bill.getApplyOrgYesOffice() != 1){ // 2021-02-03 客户提出：直属单位 局长（负责人）申请，直接跳到 公司负责人（梁跃华）
+                return candidateLevel - 2;
             }else {
-                return nextApproveIdStrLevel;
+                float nextApproveIdStrLevel = getOriginNextApproveId(candidateLevel, bill.getBillType(), bill.getApplyOrgYesOffice());
+                if(candidateLevel - nextApproveIdStrLevel > 1){
+                    return candidateLevel - 1;
+                }else {
+                    return nextApproveIdStrLevel;
+                }
             }
         }
         return candidateLevel;
