@@ -124,13 +124,8 @@ VALUE ('020304','0203','角色查询',1);
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag)
 VALUE ('03','root','系统管理','system','el-icon-setting',1,20,1);
 
-INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag,permission_flag)
-VALUE ('0301','03','修改密码','/main/setPassword','',2,1,1,1);
-INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
-VALUE ('030101','0301','修改密码',1);
-
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag)
-VALUE ('0302','03','工单操作日志','/main/billOperaLog','',2,2,1);
+VALUE ('0302','03','工单操作日志','/main/billOperaLog','',2,1,1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
 VALUE ('030201','0302','工单操作日志查看',1);
 

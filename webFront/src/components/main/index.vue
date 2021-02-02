@@ -4,10 +4,23 @@
 
       <el-header style="text-align: right; font-size: 12px">
         <div style="font-size: 24px;margin-left: 10px;float: left;">{{mainTitle}}</div>
-          <router-link to="/">
-              <a style="color: #ffffff;margin-right: 20px;">退出</a>
-          </router-link>
-          <span>{{userName}}</span>
+          <span style="cursor: pointer;position: relative;"
+                @mouseleave="showOut = false"
+                @mouseenter="showOut = true">
+              <span style="font-size: 15px;margin-right: 4px;">{{userName}}</span>
+              <span>
+                  <i class="el-icon-arrow-down" style="font-size: 14px;"></i>
+              </span>
+              <div v-if="showOut" style="position: absolute;top: 0px;right: 0px;width: 100px;z-index: 100;">
+                  <div style="height: 20px;"></div>
+                  <el-card class="box-card"
+                           body-style="padding: 10px 0px;line-height: 32px;font-size: 14px;text-align: left;">
+                      <div class="card-item" @click="openDialog('userInfo')">个人资料</div>
+                      <div class="card-item" @click="openDialog('passwordSetting')">修改密码</div>
+                      <div class="card-item" @click="loginOut">退出</div>
+                  </el-card>
+              </div>
+          </span>
       </el-header>
 
       <el-container>
@@ -70,6 +83,9 @@
 
       </el-container>
     </el-container>
+
+      <password-setting ref="passwordSetting" />
+      <user-info ref="userInfo" />
   </div>
 </template>
 
@@ -77,16 +93,20 @@
     import Config from '@/config';
     import User from '@/user';
     import MenuUtil from '@/utils/MenuUtil';
+    import PasswordSetting from './passwordSetting.vue';
+    import UserInfo from './user-details.vue';
 
     export default {
         components: {
-
+            PasswordSetting,
+            UserInfo
         },
         name: 'the-main',
         data() {
             return {
                 activeOpeneds: [],
                 activeNode: null,
+                showOut: false,
                 mainTitle: Config.get('mainTitle'),
                 userName: User.get('userName'),
                 userYesOffice: User.get('yesOffice'),
@@ -94,6 +114,9 @@
             };
         },
         methods: {
+            loginOut(){
+                this.$router.push("/");
+            },
             handleOpen(index, path) {
                 console.log(index, path);
             },
@@ -105,6 +128,9 @@
             },
             selectMenu(index){
                 this.activeNode = index;
+            },
+            openDialog(name){
+                this.$refs[name].open();
             }
         },
         mounted(){
@@ -124,5 +150,11 @@
 
   .el-aside {
     color: #333;
+  }
+  .card-item{
+      padding-left: 12px;
+  }
+  .card-item:hover{
+      background: rgb(217, 236, 255);
   }
 </style>
