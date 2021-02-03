@@ -12,7 +12,7 @@ public class OaBill extends BaseParam {
 
     private String billCode;
 
-    private Byte billType;
+    private Integer billType;
 
     private Byte firmType;
 

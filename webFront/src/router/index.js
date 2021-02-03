@@ -20,6 +20,8 @@ import RoleManage from '@/components/organization/role';
 import BillOperaLog from '@/components/setting/bill-opera-log';
 import Doing from '@/components/process/doing';
 
+import CreateProcess from '@/components/custom-process/create-process';
+
 Vue.use(Router);
 
 export default new Router({
@@ -51,6 +53,8 @@ export default new Router({
             {path: 'doing', component: Doing},  // 正在开发
             {path: 'setPassword', component: PasswordSetting},  // 修改密码
             {path: 'billOperaLog', component: BillOperaLog},  // 工单操作日志
+
+            {path: 'createProcess', component: CreateProcess},  // 自定义流程创建
         ]
     }
   ]

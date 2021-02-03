@@ -13,7 +13,7 @@ public class OaBillOpera extends BaseParam {
 
     private String billCode;
 
-    private Byte billType;
+    private Integer billType;
 
     private String billTypeName;
 

@@ -13,7 +13,7 @@ public class OaProcessService {
     @Autowired
     OaProcessMapper oaProcessMapper;
 
-    public OaProcess getProcess(Byte billType, String stepName){
+    public OaProcess getProcess(Integer billType, String stepName){
         return oaProcessMapper.getProcess(billType, stepName);
     }
 
