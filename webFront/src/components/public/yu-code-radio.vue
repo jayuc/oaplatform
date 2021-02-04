@@ -23,7 +23,7 @@
         },
         props: {
             code: Number,
-            initValue: Number
+            initValue: String
         },
         created(){
             let code = this.$props.code;
