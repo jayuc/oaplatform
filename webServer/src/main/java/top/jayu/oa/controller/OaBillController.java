@@ -58,9 +58,9 @@ public class OaBillController {
         Code code = new Code();
         code.setCode((short) 1);
         List<Code> codeList = codeMapper.list(code);
-        Map<Byte, String> codeMap = codeList.stream().collect(Collectors.toMap(Code::getCodeNo, Code::getName));
+        Map<String, String> codeMap = codeList.stream().collect(Collectors.toMap(Code::getCodeNo, Code::getName));
         list.forEach((item) -> {
-            Integer billType = item.getBillType();
+            String billType = item.getBillType();
             if(codeMap.containsKey(billType)){
                 String billTypeName = codeMap.get(billType);
                 OaBillPending pending = new OaBillPending();

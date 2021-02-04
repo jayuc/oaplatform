@@ -10,11 +10,13 @@ SET NAMES utf8mb4;
 DELETE FROM t_sys_menu WHERE menu_name = '修改密码';
 DELETE FROM t_sys_function WHERE function_name = '修改密码';
 
-ALTER TABLE t_oa_bill modify COLUMN `bill_type` int NOT NULL;
+ALTER TABLE t_oa_bill modify COLUMN `bill_type` varchar(32) NOT NULL;
 
-ALTER TABLE t_oa_process modify COLUMN `bill_type` int NOT NULL;
+ALTER TABLE t_oa_process modify COLUMN `bill_type` varchar(32) NOT NULL;
 
-ALTER TABLE t_oa_bill_opera modify COLUMN `bill_type` int NOT NULL;
+ALTER TABLE t_oa_bill_opera modify COLUMN `bill_type` varchar(32) NOT NULL;
+
+ALTER TABLE t_sys_code modify COLUMN `code_no` varchar(32) NOT NULL;
 
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag)
 VALUE ('04','root','自定义流程','customeprocess','el-icon-copy-document',1,3,1);

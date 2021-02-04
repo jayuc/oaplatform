@@ -46,7 +46,7 @@ public class WorkFlowEngineImpl implements WorkFlowEngine {
     @Autowired
     CodeMapper codeMapper;
 
-    static Map<Byte, Code> BILL_TYPE_MAP = null;
+    static Map<String, Code> BILL_TYPE_MAP = null;
 
     private void initBillTypeMap(){
         if(BILL_TYPE_MAP == null){

@@ -11,7 +11,7 @@ import java.util.List;
 public interface OaProcessMapper {
 
     @Select("select * from t_oa_process where bill_type = #{billType} and current_step = #{stepName}")
-    OaProcess getProcess(@Param("billType") Integer billType, @Param("stepName") String stepName);
+    OaProcess getProcess(@Param("billType") String billType, @Param("stepName") String stepName);
 
     @Select({
             "<script> ",

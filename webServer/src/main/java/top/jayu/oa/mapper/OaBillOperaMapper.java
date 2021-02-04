@@ -14,7 +14,7 @@ public interface OaBillOperaMapper {
             "      bill_type_name, bill_step, bill_step_name, opera_id, opera_name, \n" +
             "      opera_org_id, opera_org_name, pass_flag, content, create_time, \n" +
             "      step_org_level)\n" +
-            "    values (#{billOperaId,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{billCode,jdbcType=VARCHAR}, #{billType,jdbcType=TINYINT}, \n" +
+            "    values (#{billOperaId,jdbcType=INTEGER}, #{billId,jdbcType=INTEGER}, #{billCode,jdbcType=VARCHAR}, #{billType,jdbcType=VARCHAR}, \n" +
             "      #{billTypeName,jdbcType=VARCHAR}, #{billStep,jdbcType=VARCHAR}, #{billStepName,jdbcType=VARCHAR}, #{operaId,jdbcType=INTEGER}, #{operaName,jdbcType=VARCHAR}, \n" +
             "      #{operaOrgId,jdbcType=INTEGER}, #{operaOrgName,jdbcType=VARCHAR}, #{passFlag,jdbcType=TINYINT}, #{content,jdbcType=VARCHAR}, now(), \n" +
             "      #{stepOrgLevel,jdbcType=FLOAT})")

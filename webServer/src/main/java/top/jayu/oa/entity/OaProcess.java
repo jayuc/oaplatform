@@ -10,7 +10,7 @@ import java.util.Date;
 public class OaProcess {
     private Integer processId;
 
-    private Integer billType;
+    private String billType;
 
     private Float orgPrivLen;
 

@@ -9,7 +9,7 @@ public class Code extends BaseParam {
 
     private Short code;
 
-    private Byte codeNo;
+    private String codeNo;
 
     private String name;
 

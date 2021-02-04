@@ -22,14 +22,14 @@ public interface CodeMapper {
 
     @Insert("insert into t_sys_code (code, code_no, name, enable_flag, " +
             "      mark)" +
-            "    values (#{code,jdbcType=SMALLINT}, #{codeNo,jdbcType=TINYINT}, #{name,jdbcType=VARCHAR}, " +
+            "    values (#{code,jdbcType=SMALLINT}, #{codeNo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, " +
             "       #{enableFlag,jdbcType=TINYINT}," +
             "      #{mark,jdbcType=VARCHAR})")
     int add(Code code);
 
     @Update("update t_sys_code set " +
             "code = #{code,jdbcType=SMALLINT}, " +
-            "code_no = #{codeNo,jdbcType=TINYINT}, " +
+            "code_no = #{codeNo,jdbcType=VARCHAR}, " +
             "enable_flag = #{enableFlag,jdbcType=TINYINT}, " +
             "name = #{name,jdbcType=VARCHAR}, " +
             "mark = #{mark,jdbcType=VARCHAR} " +

@@ -276,7 +276,7 @@ public class OaBillService {
         return candidateLevel;
     }
 
-    private float getOriginNextApproveId(float candidateLevel, Integer billType, Byte applyOrgYesOffice){
+    private float getOriginNextApproveId(float candidateLevel, String billType, Byte applyOrgYesOffice){
         OaProcess process = new OaProcess();
         process.setBillType(billType);
         process.setOrgPrivLen(candidateLevel);
@@ -302,7 +302,7 @@ public class OaBillService {
     }
 
     // 获取流程步骤
-    private OaProcess getProcess(Integer billType, String stepName){
+    private OaProcess getProcess(String billType, String stepName){
         return oaProcessService.getProcess(billType, stepName);
     }
 

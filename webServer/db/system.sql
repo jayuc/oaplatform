@@ -38,7 +38,7 @@ CREATE TABLE `t_sys_code_type` (
 CREATE TABLE `t_sys_code` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` smallint NOT NULL COMMENT '字段编号',
-  `code_no` tinyint NOT NULL COMMENT '值',
+  `code_no` varchar(32) NOT NULL COMMENT '值',
   `name` varchar(16) DEFAULT NULL COMMENT '字段名称',
   `enable_flag` tinyint DEFAULT NULL COMMENT '是否启用,1表示启用',
   `mark` varchar(128) DEFAULT NULL COMMENT '备注',

@@ -173,7 +173,7 @@ public class OrgService {
             result.setApproveList("," + org.getDeputyId() + ",");
             return result;
         }
-        Byte firmType = oaBill.getFirmType();
+        String firmType = oaBill.getFirmType();
         Code code = new Code();
         code.setCode((short) 5);
         code.setCodeNo(firmType);

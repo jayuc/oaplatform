@@ -40,7 +40,7 @@ public interface OaBillMapper {
             "      apply_org_yes_office, amount, file_url1, file_url2, \n" +
             "      firm_type, file_url3, extend_content, create_time, \n" +
             "      people_list, update_time, mark)\n" +
-            "    values (#{billCode,jdbcType=VARCHAR}, #{billType,jdbcType=TINYINT}, \n" +
+            "    values (#{billCode,jdbcType=VARCHAR}, #{billType,jdbcType=VARCHAR}, \n" +
             "      #{currentStep,jdbcType=VARCHAR}, #{stopFlag,jdbcType=TINYINT}, #{applyId,jdbcType=INTEGER}, \n" +
             "      #{nextApproveList,jdbcType=VARCHAR}, #{historyApproveList,jdbcType=VARCHAR}, #{applyOrgId,jdbcType=INTEGER}, \n" +
             "      #{historyProcessList,jdbcType=VARCHAR}, #{applyOrgCodePriv,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, \n" +
@@ -56,7 +56,7 @@ public interface OaBillMapper {
 
     @Update("update t_oa_bill\n" +
             "    set bill_code = #{billCode,jdbcType=VARCHAR},\n" +
-            "      bill_type = #{billType,jdbcType=TINYINT},\n" +
+            "      bill_type = #{billType,jdbcType=VARCHAR},\n" +
             "      current_step = #{currentStep,jdbcType=VARCHAR},\n" +
             "      stop_flag = #{stopFlag,jdbcType=TINYINT},\n" +
             "      pass_flag = #{passFlag,jdbcType=TINYINT},\n" +

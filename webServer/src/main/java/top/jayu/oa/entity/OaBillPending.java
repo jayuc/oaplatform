@@ -10,7 +10,7 @@ public class OaBillPending {
     private int type;
     private String typeName;
     private int billId;
-    private int billType;
+    private String billType;
     private Date applyTime;
     private String applyName;
     private String billTypeName;
