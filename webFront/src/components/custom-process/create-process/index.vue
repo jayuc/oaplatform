@@ -29,13 +29,13 @@
                         header-cell-class-name="form-table-header-cell"
                         style="width: 100%">
                     <el-table-column
-                            prop="roleName"
+                            prop="processName"
                             label="流程名称"
                             align="center"
                             minWidth="200">
                     </el-table-column>
                     <el-table-column
-                            prop="mark"
+                            prop="processDesc"
                             label="流程内容"
                             align="center"
                             minWidth="200">
@@ -108,7 +108,7 @@
         },
         methods: {
             submit(){
-                RestUtil.get('role/list', this.formData, {
+                RestUtil.get('oa/all/process/select', this.formData, {
                     enableLoading: true,       // 启动请求期间的正在加载
                     loadingStartFun: () => {   // 请求开始前执行
                         this.searchBtnStatus = true;
@@ -133,18 +133,18 @@
             },
             // 新增
             add(){
-                this.$refs.addDialog.open(null, 'role/add', 'add');
+                this.$refs.addDialog.open(null, 'oa/all/process/add', 'add');
             },
             update(row){
-                this.$refs.addDialog.open(row, 'role/update', 'edit');
+                this.$refs.addDialog.open(row, 'oa/all/process/update', 'edit');
             },
             deleteOne(row){
-                this.$confirm('确定删除 ' + row.roleName + ' ?', '警告', {
+                this.$confirm('确定删除 ' + row.processName + ' ?', '警告', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    RestUtil.post('role/delete', {roleId: row.roleId}, {enableLoading: true}).then((result) => {
+                    RestUtil.post('oa/all/process/delete', {oneProcessId: row.oneProcessId}, {enableLoading: true}).then((result) => {
                         if(result == 1){
                             TipUtil.success('删除成功!');
                             this.submit();

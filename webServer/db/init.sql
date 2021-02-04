@@ -65,6 +65,22 @@ CREATE TABLE `t_oa_bill` (
   PRIMARY KEY (`bill_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程单表';
 
+# 流程表
+CREATE TABLE `t_oa_all_process` (
+  `one_process_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_type` int NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
+  `process_name` varchar(32) DEFAULT NULL COMMENT '流程名称',
+  `process_desc` varchar(256) DEFAULT NULL COMMENT '流程描述',
+  `create_person_id` int(11) DEFAULT NULL COMMENT '创建人id，对应的用户id',
+  `create_person` varchar(16) DEFAULT NULL COMMENT '创建人',
+  `update_person_id` int(11) DEFAULT NULL COMMENT '更新人id，对应的用户id',
+  `update_person` varchar(16) DEFAULT NULL COMMENT '更新人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `mark` varchar(128) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`one_process_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程表';
+
 # 流程步骤表
 CREATE TABLE `t_oa_process` (
   `process_id` int(11) NOT NULL AUTO_INCREMENT,
