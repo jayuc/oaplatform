@@ -127,6 +127,17 @@ CREATE TABLE `t_oa_process_function` (
   PRIMARY KEY (`process_function_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程方法表';
 
+# 流程步骤
+CREATE TABLE `t_oa_process_step` (
+  `step_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '步骤id（主键）',
+  `step_name` varchar(32) NOT NULL COMMENT '步骤名称',
+  `step_type` tinyint NOT NULL COMMENT '步骤类型，1：审批 2：条件 3：结束 4：备案',
+  `success_to` varchar(32) NOT NULL COMMENT '条件成功去向',
+  `fail_to` varchar(32) NOT NULL COMMENT '条件失败去向',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`step_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程步骤表';
+
 # 流程单操作记录
 CREATE TABLE `t_oa_bill_opera` (
   `bill_opera_id` int(11) NOT NULL AUTO_INCREMENT,
