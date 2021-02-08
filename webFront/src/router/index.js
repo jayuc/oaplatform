@@ -21,6 +21,7 @@ import BillOperaLog from '@/components/setting/bill-opera-log';
 import Doing from '@/components/process/doing';
 
 import CreateProcess from '@/components/custom-process/create-process';
+import ProcessStep from '@/components/custom-process/oa-process-step';
 
 Vue.use(Router);
 
@@ -55,6 +56,7 @@ export default new Router({
             {path: 'billOperaLog', component: BillOperaLog},  // 工单操作日志
 
             {path: 'createProcess', component: CreateProcess},  // 自定义流程创建
+            {path: 'oaProcessStep', component: ProcessStep},  // 自定义流程创建
         ]
     }
   ]
