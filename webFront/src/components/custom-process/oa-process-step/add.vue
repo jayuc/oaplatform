@@ -11,7 +11,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="步骤类型，1：审批 2：条件 3：结束 4：备案：" prop="stepType" :label-width="formLabelWidth">
+                    <el-form-item label="步骤类型：" prop="stepType" :label-width="formLabelWidth">
                         <el-input v-model="formData.stepType" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-col>
@@ -28,12 +28,6 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="创建时间：" prop="createTime" :label-width="formLabelWidth">
-                        <el-input v-model="formData.createTime" autocomplete="off"></el-input>
-                    </el-form-item>
-                </el-col>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="close">取 消</el-button>
@@ -55,7 +49,7 @@
         data(){
             return {
                 visible: false,
-                formLabelWidth: '110px',
+                formLabelWidth: '120px',
                 formData: {},
                 submitBtnDisabled: false,
                 titleMap: {
@@ -130,10 +124,8 @@
                 let propArr = [];
                 for(let i=0; i<propArr.length; i++){
                     let prop = propArr[i];
-                    if(this.$refs
-                                    [prop + 'Select']){
-                        this.$refs
-                                [prop + 'Select'].setInitValue(this.formData[prop]);
+                    if(this.$refs[prop + 'Select']){
+                        this.$refs[prop + 'Select'].setInitValue(this.formData[prop]);
                     }
                 }
             },

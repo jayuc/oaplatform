@@ -72,7 +72,7 @@ function doAjaxByPromise(_url, _data, _options) {
     $.ajax({
       url: handleUrl(options),
       type: options.type,
-      data: options.data,
+      data: handleParam(options.data),
       timeout: 1000000,
       success: function (data) {
         resolve(data);
@@ -113,13 +113,32 @@ function doAjax(_options) {
   $.ajax({
     url: handleUrl(options),
     type: options.type,
-    data: options.data,
+    data: handleParam(options.data),
     timeout: 1000000,
     success: options.success,
     error: (err) => {
       options.error(err);
     }
   });
+}
+
+// 处理参数
+function handleParam(data) {
+    if(typeof data === 'object'){
+        for (let index in data){
+            let d = data[index];
+            if(index.indexOf('Time') > 0){
+                if(d){
+                    if(typeof d === 'string'){
+                        data[index] = new Date(d);
+                    }
+                }else {
+                    delete data[index];
+                }
+            }
+        }
+    }
+    return data;
 }
 
 // 处理options

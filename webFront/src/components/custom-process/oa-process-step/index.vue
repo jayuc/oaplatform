@@ -39,7 +39,7 @@
                     </el-table-column>
                     <el-table-column
                             prop="stepType"
-                            label="步骤类型，1：审批 2：条件 3：结束 4：备案"
+                            label="步骤类型"
                             align="center"
                             minWidth="100">
                     </el-table-column>
@@ -68,10 +68,10 @@
                             minWidth="180"
                             label="操作">
                         <template slot-scope="scope">
-                            <el-button @click="details(scope.row)"
-                                       icon="el-icon-document"
-                                       title="查看详情"
-                                       type="success" size="small"></el-button>
+                            <!--<el-button @click="details(scope.row)"-->
+                                       <!--icon="el-icon-document"-->
+                                       <!--title="查看详情"-->
+                                       <!--type="success" size="small"></el-button>-->
                             <yu-auth name="rowButton" code="040203">
                                 <el-button @click="update(scope.row)"
                                            icon="el-icon-edit"
@@ -144,7 +144,7 @@
                     this.formData.beginTime = this.operaTime[0];
                     this.formData.endTime = this.operaTime[1];
                 }
-                RestUtil.get('oa:oa/process/step/select', this.formData, {
+                RestUtil.get('oa/process/step/select', this.formData, {
                     enableLoading: true,       // 启动请求期间的正在加载
                     loadingStartFun: () => {   // 请求开始前执行
                         this.searchBtnStatus = true;
@@ -176,21 +176,21 @@
             // 新增
             add(){
                 this.$refs.addDialog
-                        .open(null, 'oa:oa/process/step/add', 'add');
+                        .open(null, 'oa/process/step/add', 'add');
             },
             // 编辑
             update(row){
                 this.$refs.addDialog
-                        .open(row, 'oa:oa/process/step/update', 'edit');
+                        .open(row, 'oa/process/step/update', 'edit');
             },
             // 删除一条记录
             deleteOne(row){
-                this.$confirm('确定删除 ' + row.goodsName + ' ?', '警告', {
+                this.$confirm('确定删除 ' + row.stepName + ' ?', '警告', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    RestUtil.post('oa:oa/process/step/delete', {id: row.stepId}, {enableLoading: true}).then((result) => {
+                    RestUtil.post('oa/process/step/delete', {id: row.stepId}, {enableLoading: true}).then((result) => {
                         if(result == 1){
                             TipUtil.success('删除成功!');
                             this.submit();
