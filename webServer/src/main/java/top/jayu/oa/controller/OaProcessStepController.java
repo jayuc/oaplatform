@@ -23,7 +23,7 @@ import top.jayu.oa.util.ResultUtil;
  *
  * @author yujie
  * @email 402842327@qq.com
- * @date 2021-02-08 08:57:55
+ * @date 2021-02-08 16:11:01
  */
 @RestController
 @RequestMapping("/oa/process/step")
@@ -36,9 +36,10 @@ public class OaProcessStepController {
     @GetMapping("/select")
     public Map<String, Object> select(OaProcessStep dto){
         ResultUtil.Result result = ResultUtil.build();
-        List<OaProcessStep> page = oaProcessStepMapper.list(dto);
-        result.total(page.size());
-        result.rows(page);
+        PageHelper.startPage(dto.getPageNumber(), dto.getPageSize());
+        Page<OaProcessStep> page = (Page<OaProcessStep>) oaProcessStepMapper.list(dto);
+        result.rows(page.getResult());
+        result.total(page.getTotal());
         return result.getResult();
     }
 
