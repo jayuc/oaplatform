@@ -136,7 +136,7 @@ CREATE TABLE `t_oa_process_step` (
   `fail_to` varchar(32) NOT NULL COMMENT '条件失败去向',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`step_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程步骤表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程步骤';
 
 # 流程单操作记录
 CREATE TABLE `t_oa_bill_opera` (

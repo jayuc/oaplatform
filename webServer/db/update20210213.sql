@@ -30,6 +30,17 @@ VALUE ('040103','0401','自定义流程编辑',1);
 INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
 VALUE ('040104','0401','自定义流程删除',1);
 
+INSERT INTO t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag)
+VALUE ('0402','04','流程步骤','/main/oaProcessStep','',2,2,1);
+INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
+VALUE ('040201','0402','流程步骤查询',1);
+INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
+VALUE ('040202','0402','流程步骤新增',1);
+INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
+VALUE ('040203','0402','流程步骤编辑',1);
+INSERT t_sys_function (function_code,menu_code,function_name,enable_flag)
+VALUE ('040204','0402','流程步骤删除',1);
+
 CREATE TABLE `t_oa_all_process` (
   `one_process_id` int(11) NOT NULL AUTO_INCREMENT,
   `bill_type` int NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
