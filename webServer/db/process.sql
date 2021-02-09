@@ -187,3 +187,29 @@ INSERT t_oa_process (process_id,bill_type,current_step,parent_step,next_step,nex
 VALUE (68, 5, '00', 'root', '00', 12, '工单申请', 999);
 INSERT t_oa_process (process_id,bill_type,current_step,parent_step,next_step,process_desc,org_priv_len)
 VALUE (69, 5, '0000', '00', 'end', '办公室（马明敏、苗倩）审批', 0);
+
+
+# 流程步骤
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (1,'单位/部门负责人审批','1','00','',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (2,'科级干部','2','00','end',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (3,'市局（公司）分管领导审批','1','00','',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (4,'单位/部门负责人','2','00','end',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (5,'市局（公司）主要负责人审批','1','00','',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (6,'结束','3','end','',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (7,'类别','2','00','01',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (8,'部门负责人（直属）审批','1','00','',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (9,'单位分管领导审批','1','00','',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (10,'单位负责人审批','1','00','',now());
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+VALUE (11,'部门负责人（机关）审批','1','00','',now());
+

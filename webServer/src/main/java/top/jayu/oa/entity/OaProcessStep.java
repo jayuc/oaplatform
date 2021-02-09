@@ -29,7 +29,7 @@ public class OaProcessStep extends BaseParam implements Serializable {
 	/**
 	 * 步骤类型，1：审批 2：条件 3：结束 4：备案
 	 */
-	private Integer stepType;
+	private String stepType;
 	/**
 	 * 条件成功去向
 	 */

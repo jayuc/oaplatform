@@ -12,6 +12,8 @@ INSERT t_sys_code_type (code,name) VALUE (3,'休假标准');
 INSERT t_sys_code_type (code,name) VALUE (4,'性别');
 INSERT t_sys_code_type (code,name) VALUE (5,'业务域');
 INSERT t_sys_code_type (code,name) VALUE (6,'会场类型');
+INSERT t_sys_code_type (code,name) VALUE (7,'流程步骤类型');
+INSERT t_sys_code_type (code,name) VALUE (8,'流程字段');
 
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,1,'公休假',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,2,'出差',1);
@@ -56,3 +58,20 @@ INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,1,'2302会议室',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,2,'2208会议室',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,3,'2207会议室',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (6,4,'2107会议室',1);
+
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (7,'1','审批',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (7,'2','条件',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (7,'3','结束',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (7,'4','备案',1);
+
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'1','开始时间',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'2','结束时间',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'3','工龄',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'4','天数',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'5','人数',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'6','内容',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'7','地点',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'8','出行工具',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'9','金额',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'10','备注',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'11','人员名单',1);

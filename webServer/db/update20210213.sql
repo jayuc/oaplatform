@@ -59,9 +59,40 @@ CREATE TABLE `t_oa_all_process` (
 CREATE TABLE `t_oa_process_step` (
   `step_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '步骤id（主键）',
   `step_name` varchar(32) NOT NULL COMMENT '步骤名称',
-  `step_type` tinyint NOT NULL COMMENT '步骤类型，1：审批 2：条件 3：结束 4：备案',
+  `step_type` varchar(32) NOT NULL COMMENT '步骤类型，1：审批 2：条件 3：结束 4：备案',
   `success_to` varchar(32) NOT NULL COMMENT '条件成功去向',
   `fail_to` varchar(32) NOT NULL COMMENT '条件失败去向',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`step_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程步骤表';
+
+INSERT t_sys_code_type (code,name) VALUE (7,'流程步骤类型');
+INSERT t_sys_code_type (code,name) VALUE (8,'流程字段');
+
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (7,'1','审批',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (7,'2','条件',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (7,'3','结束',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (7,'4','备案',1);
+
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'1','开始时间',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'2','结束时间',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'3','工龄',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'4','天数',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'5','人数',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'6','内容',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'7','地点',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'8','出行工具',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'9','金额',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'10','备注',1);
+INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (8,'11','人员名单',1);
+
+CREATE TABLE `t_oa_bill_customer_field` (
+  `customer_field_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_type` int NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
+  `feild_name` varchar(64) DEFAULT NULL COMMENT '字段名称',
+  `feild_type` varchar(32) DEFAULT NULL COMMENT '字段类型，数据字典：8',
+  `feild_value_type` varchar(32) DEFAULT NULL COMMENT '字段值类型，',
+  `feild_value_value` varchar(32) DEFAULT NULL COMMENT '字段值类型的值',
+  `create_time` datetime DEFAULT NULL COMMENT '审批时间',
+  PRIMARY KEY (`customer_field_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '自定义流程字段';

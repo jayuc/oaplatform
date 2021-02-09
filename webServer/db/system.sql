@@ -118,3 +118,6 @@ CREATE TABLE `t_sys_role_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '角色用户表';
 
+INSERT t_sys_user (user_id,user_name,login_name,password,org_id,role_id)
+values (-1,'超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',-1,-1);
+

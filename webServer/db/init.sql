@@ -131,7 +131,7 @@ CREATE TABLE `t_oa_process_function` (
 CREATE TABLE `t_oa_process_step` (
   `step_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '步骤id（主键）',
   `step_name` varchar(32) NOT NULL COMMENT '步骤名称',
-  `step_type` tinyint NOT NULL COMMENT '步骤类型，1：审批 2：条件 3：结束 4：备案',
+  `step_type` varchar(32) NOT NULL COMMENT '步骤类型，1：审批 2：条件 3：结束 4：备案',
   `success_to` varchar(32) NOT NULL COMMENT '条件成功去向',
   `fail_to` varchar(32) NOT NULL COMMENT '条件失败去向',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -158,47 +158,14 @@ CREATE TABLE `t_oa_bill_opera` (
   PRIMARY KEY (`bill_opera_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程操作记录表';
 
-
-# 模拟数据
-INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('OaBill', 'OaBill', 'orgService', 'findOrgLeader', '部门负责人');
-INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('OaBill', 'OaBill', 'orgService', 'findCompanyDeputy', '市局分管领导');
-INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('OaBill', 'OaBill', 'orgService', 'findCompanyLeader', '市局负责人');
-INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('OaBill', 'OaBill', 'orgService', 'findUnitDeputy', '单位分管领导');
-INSERT t_oa_process_function (input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE ('OaBill', 'OaBill', 'orgService', 'findUnitLeader', '单位负责人');
-
-# 出差
-INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE (6, 'OaBill', 'OaBill', 'orgService', 'findUnitLeader', '单位/部门负责人');
-INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
-VALUE (7, 'applyOrgCodePriv', 'String', 'orgService', 'findCompanyDeputy', '市局分管领导');
-
-INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
-success_approve_function_id,fail_approve_function_id, success_condition_id, fail_condition_id)
-VALUE ('applyOrgId', 'Integer', 'orgService', 'orgIfOffice', '00', '01', '是否是机关', 1, 1, 4, 4);
-INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,success_approve_function_id)
-VALUE ('applyId', 'Integer', 'userService', 'userIfChief', '00', 'end', '是否是科级干部',2);
-INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,success_approve_function_id)
-VALUE ('applyId', 'Integer', 'userService', 'userIfLeader', '00', 'end', '是否是部门/单位负责人',3);
-INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
-success_approve_function_id, fail_approve_function_id, success_condition_id)
-VALUE ('applyId', 'Integer', 'userService', 'userIfLeader', '0000', '00', '是否是部门负责人',2, 1, 6);
-INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc)
-VALUE ('applyId', 'Integer', 'userService', 'userIfCompanyLeader', 'end', 'end', '是否是市局负责人');
-INSERT t_oa_process_condition (input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
-fail_approve_function_id)
-VALUE ('applyId', 'Integer', 'userService', 'userIfCompanyLeader', 'end', '0000', '是否是市局负责人', 2);
-
-# 出差
-INSERT t_oa_process_condition (process_condition_id, input,input_value_type,ioc_entity_name,ioc_entity_method,
-success_to,fail_to,condition_desc,success_approve_function_id)
-VALUE (7, 'applyId', 'Integer', 'userService', 'userIfChief', '00', 'end', '是否是科级干部', 7);
-
-
-
-INSERT t_sys_user (user_id,user_name,login_name,password,org_id,role_id)
-values (9999,'超级管理员','admin','e10adc3949ba59abbe56e057f20f883e',-1,-1);
+# 自定义订单所拥有字段
+CREATE TABLE `t_oa_bill_customer_field` (
+  `customer_field_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bill_type` int NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
+  `feild_name` varchar(64) DEFAULT NULL COMMENT '字段名称',
+  `feild_type` varchar(32) DEFAULT NULL COMMENT '字段类型，数据字典：8',
+  `feild_value_type` varchar(32) DEFAULT NULL COMMENT '字段值类型，',
+  `feild_value_value` varchar(32) DEFAULT NULL COMMENT '字段值类型的值',
+  `create_time` datetime DEFAULT NULL COMMENT '审批时间',
+  PRIMARY KEY (`customer_field_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '自定义流程字段';
