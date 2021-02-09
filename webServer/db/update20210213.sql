@@ -18,6 +18,8 @@ ALTER TABLE t_oa_bill_opera modify COLUMN `bill_type` varchar(32) NOT NULL;
 
 ALTER TABLE t_sys_code modify COLUMN `code_no` varchar(32) NOT NULL;
 
+INSERT t_sys_code_type (code,name) VALUE (9,'自定义流程类型');
+
 INSERT t_sys_menu (menu_code,parent_code,menu_name,menu_path,menu_image,level,sort,enable_flag)
 VALUE ('04','root','自定义流程','customeprocess','el-icon-copy-document',1,3,1);
 

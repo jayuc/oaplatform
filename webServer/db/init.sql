@@ -28,7 +28,7 @@ CREATE TABLE `t_sys_employ` (
 CREATE TABLE `t_oa_bill` (
   `bill_id` int(11) NOT NULL AUTO_INCREMENT,
   `bill_code` varchar(32) UNIQUE DEFAULT NULL COMMENT '编号',
-  `bill_type` int NOT NULL COMMENT '表单类别,数据字典：1',
+  `bill_type` varchar(32) NOT NULL COMMENT '表单类别,数据字典：1',
   `current_step` varchar(32) NOT NULL COMMENT '表单当前步骤，可以动态调整',
   `stop_flag` tinyint DEFAULT NULL COMMENT '终止标记，1表示终止 2表示未终止',
   `apply_id` int(11) DEFAULT NULL COMMENT '申请人id',
@@ -68,7 +68,7 @@ CREATE TABLE `t_oa_bill` (
 # 流程表
 CREATE TABLE `t_oa_all_process` (
   `one_process_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bill_type` int NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
+  `bill_type` varchar(32) NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
   `process_name` varchar(32) DEFAULT NULL COMMENT '流程名称',
   `process_desc` varchar(256) DEFAULT NULL COMMENT '流程描述',
   `create_person_id` int(11) DEFAULT NULL COMMENT '创建人id，对应的用户id',
@@ -84,7 +84,7 @@ CREATE TABLE `t_oa_all_process` (
 # 流程步骤表
 CREATE TABLE `t_oa_process` (
   `process_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bill_type` int NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
+  `bill_type` varchar(32) NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
   `current_step` varchar(32) DEFAULT NULL COMMENT '当前步骤',
   `org_priv_len` FLOAT NOT NULL COMMENT '机构权限长度，通过机构权限长度判断机构所处的层级',
   `next_step` varchar(32) DEFAULT NULL COMMENT '下一步骤名称',
@@ -143,7 +143,7 @@ CREATE TABLE `t_oa_bill_opera` (
   `bill_opera_id` int(11) NOT NULL AUTO_INCREMENT,
   `bill_id` int(11) DEFAULT NULL COMMENT '工单id',
   `bill_code` varchar(32) DEFAULT NULL COMMENT '编号',
-  `bill_type` int NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
+  `bill_type` varchar(32) NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
   `bill_type_name` varchar(64) DEFAULT NULL COMMENT '工单类型名称',
   `bill_step` varchar(32) NOT NULL COMMENT '流程的步骤',
   `step_org_level` FLOAT DEFAULT NULL COMMENT '此次流程在机构中的层级',
@@ -161,7 +161,7 @@ CREATE TABLE `t_oa_bill_opera` (
 # 自定义订单所拥有字段
 CREATE TABLE `t_oa_bill_customer_field` (
   `customer_field_id` int(11) NOT NULL AUTO_INCREMENT,
-  `bill_type` int NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
+  `bill_type` varchar(32) NOT NULL COMMENT '动态表单类别，可与表单类别进行动态匹配',
   `feild_name` varchar(64) DEFAULT NULL COMMENT '字段名称',
   `feild_type` varchar(32) DEFAULT NULL COMMENT '字段类型，数据字典：8',
   `feild_value_type` varchar(32) DEFAULT NULL COMMENT '字段值类型，',

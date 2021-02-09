@@ -43,6 +43,23 @@ public class OaProcessStepController {
         return result.getResult();
     }
 
+    @SaveLog(content = "自定义流程生成")
+    @PostMapping("/generate/process")
+    public Map<String, Object> generateProcess(String jsonStr){
+        return null;
+    }
+
+    @SaveLog(content = "自定义流程编辑")
+    @PostMapping("/update/process")
+    public Map<String, Object> updateProcess(String jsonStr){
+        return null;
+    }
+
+    @GetMapping("/get/customer/process")
+    public Map<String, Object> getCustomerProcess(String type){
+        return null;
+    }
+
     @SaveLog(content = "流程步骤新增")
     @PostMapping("/add")
     public Integer add(OaProcessStep dto){

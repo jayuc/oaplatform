@@ -20,7 +20,7 @@ public interface OaBillCustomerFieldMapper {
             "select t.* ",
             "  from t_oa_bill_customer_field t ",
             "  <where>  ",
-
+            "       <if test='billType != null'> and bill_type = #{billType} </if> ",
             "  </where > ",
             "</script> "
     })

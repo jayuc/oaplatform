@@ -43,6 +43,16 @@ public class OaBillCustomerFieldController {
         return result.getResult();
     }
 
+    @GetMapping("/list")
+    public List<OaBillCustomerField> list(OaBillCustomerField dto){
+        return oaBillCustomerFieldMapper.list(dto);
+    }
+
+    @PostMapping("/addList")
+    public Map<String, Object> addList(String jsonStr){
+        return null;
+    }
+
     @SaveLog(content = "自定义流程字段新增")
     @PostMapping("/add")
     public Integer add(OaBillCustomerField dto){

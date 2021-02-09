@@ -14,6 +14,7 @@ INSERT t_sys_code_type (code,name) VALUE (5,'业务域');
 INSERT t_sys_code_type (code,name) VALUE (6,'会场类型');
 INSERT t_sys_code_type (code,name) VALUE (7,'流程步骤类型');
 INSERT t_sys_code_type (code,name) VALUE (8,'流程字段');
+INSERT t_sys_code_type (code,name) VALUE (9,'自定义流程类型');
 
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,1,'公休假',1);
 INSERT t_sys_code (code,code_no,name,enable_flag) VALUE (1,2,'出差',1);

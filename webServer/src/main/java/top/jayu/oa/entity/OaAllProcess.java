@@ -10,7 +10,7 @@ public class OaAllProcess extends BaseParam {
 
     private Integer oneProcessId;
 
-    private Integer billType;
+    private String billType;
 
     private String processName;
 

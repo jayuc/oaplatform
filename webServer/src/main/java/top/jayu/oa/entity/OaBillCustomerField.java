@@ -25,7 +25,7 @@ public class OaBillCustomerField extends BaseParam implements Serializable {
 	/**
 	 * 动态表单类别，可与表单类别进行动态匹配
 	 */
-	private Integer billType;
+	private String billType;
 	/**
 	 * 字段名称
 	 */
