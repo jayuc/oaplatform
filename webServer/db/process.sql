@@ -215,23 +215,23 @@ VALUE (69, 5, '0000', '00', 'end', '办公室（马明敏、苗倩）审批', 0)
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (1,'单位/部门负责人审批','1','00','',now(),6,3);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (2,'科级干部','2','00','end',now());
+VALUE (2,'科级干部','2','00','end',now(),7,-2);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (3,'市局（公司）分管领导审批','1','00','',now());
+VALUE (3,'市局（公司）分管领导审批','1','00','',now(),7,2);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (4,'单位/部门负责人','2','00','end',now());
+VALUE (4,'单位/部门负责人','2','00','end',now(),3,-2);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (5,'市局（公司）主要负责人审批','1','00','',now());
+VALUE (5,'市局（公司）主要负责人审批','1','00','',now(),3,1);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (6,'结束','3','end','',now());
+VALUE (6,'结束','3','end','',now(),-3,-3);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (7,'类别','2','00','01',now());
+VALUE (7,'类别','2','00','01',now(),9,-2);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (8,'部门负责人（直属）审批','1','00','',now());
+VALUE (8,'部门负责人（直属）审批','1','00','',now(),8,5);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (9,'单位分管领导审批','1','00','',now());
+VALUE (9,'单位分管领导审批','1','00','',now(),4,4);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (10,'单位负责人审批','1','00','',now());
+VALUE (10,'单位负责人审批','1','00','',now(),5,3);
 INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
-VALUE (11,'部门负责人（机关）审批','1','00','',now());
+VALUE (12,'市局（公司）分管领导审批','1','00','',now(),2,2);
 

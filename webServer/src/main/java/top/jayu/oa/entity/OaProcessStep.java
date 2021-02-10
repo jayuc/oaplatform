@@ -30,6 +30,10 @@ public class OaProcessStep extends BaseParam implements Serializable {
 	 * 步骤类型，1：审批 2：条件 3：结束 4：备案
 	 */
 	private String stepType;
+
+	private Integer stepValue;
+
+	private Float orgPrivLen;
 	/**
 	 * 条件成功去向
 	 */
