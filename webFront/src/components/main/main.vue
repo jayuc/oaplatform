@@ -56,9 +56,11 @@
                 this.applyArr = list;
             });
             // 测试
-            RestUtil.get('oa/process/step/get/customer/process', {type: '2'}).then((result) => {
-                console.log(result);
-            });
+            // 获取自定义流程
+//            RestUtil.get('oa/process/step/get/customer/process', {type: '2'}).then((result) => {
+//                console.log(result);
+//            });
+            // 设置自定义流程
         },
         methods: {
             selectRow(path) {
