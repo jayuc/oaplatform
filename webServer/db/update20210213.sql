@@ -58,15 +58,18 @@ CREATE TABLE `t_oa_all_process` (
   PRIMARY KEY (`one_process_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程表';
 
+# 流程步骤
 CREATE TABLE `t_oa_process_step` (
   `step_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '步骤id（主键）',
   `step_name` varchar(32) NOT NULL COMMENT '步骤名称',
   `step_type` varchar(32) NOT NULL COMMENT '步骤类型，1：审批 2：条件 3：结束 4：备案',
+  `step_value` int(11) DEFAULT NULL COMMENT '值',
+  `org_priv_len` FLOAT DEFAULT NULL COMMENT '机构权限长度',
   `success_to` varchar(32) NOT NULL COMMENT '条件成功去向',
   `fail_to` varchar(32) NOT NULL COMMENT '条件失败去向',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`step_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程步骤表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT = '流程步骤';
 
 INSERT t_sys_code_type (code,name) VALUE (7,'流程步骤类型');
 INSERT t_sys_code_type (code,name) VALUE (8,'流程字段');

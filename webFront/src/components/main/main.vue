@@ -55,6 +55,10 @@
                 this.loadingInstance.close();
                 this.applyArr = list;
             });
+            // 测试
+            RestUtil.get('oa/process/step/get/customer/process', {type: '2'}).then((result) => {
+                console.log(result);
+            });
         },
         methods: {
             selectRow(path) {

@@ -9,6 +9,16 @@ SET NAMES utf8mb4;
 
 # 查找上级部门负责人
 INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (6,'OaBill', 'OaBill', 'orgService', 'findOrgLeader', '单位/部门负责人');
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (7,'OaBill', 'OaBill', 'orgService', 'findCompanyDeputy', '市局分管领导');
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (3,'OaBill', 'OaBill', 'orgService', 'findCompanyLeader', '市局负责人');
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (4,'OaBill', 'OaBill', 'orgService', 'findUnitDeputy', '单位分管领导');
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
+VALUE (5,'OaBill', 'OaBill', 'orgService', 'findUnitLeader', '单位负责人');
+INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
 VALUE (8, 'OaBill', 'OaBill', 'orgService', 'findUpOrgLeader', '上级部门负责人');
 INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
 VALUE (9, 'OaBill', 'OaBill', 'orgService', 'findHumanResourceLeader', '人力资源科负责人');
@@ -19,6 +29,18 @@ VALUE (11, 'OaBill', 'OaBill', 'orgService', 'findFinanceLeader', '财务科负�
 INSERT t_oa_process_function (process_function_id,input,input_value_type,ioc_entity_name,ioc_entity_method,function_name)
 VALUE (12, 'OaBill', 'OaBill', 'orgService', 'findMaMIngMin', '办公室（马明敏、苗倩）');
 
+INSERT t_oa_process_condition (process_condition_id,input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,success_approve_function_id)
+VALUE (7,'applyId', 'Integer', 'userService', 'userIfChief', '00', 'end', '是否是科级干部',7);
+INSERT t_oa_process_condition (process_condition_id,input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,success_approve_function_id)
+VALUE (3,'applyId', 'Integer', 'userService', 'userIfLeader', '00', 'end', '是否是部门/单位负责人',3);
+INSERT t_oa_process_condition (process_condition_id,input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
+success_approve_function_id, fail_approve_function_id, success_condition_id)
+VALUE (2,'applyId', 'Integer', 'userService', 'userIfLeader', '0000', '00', '是否是部门负责人',2, 1, 6);
+INSERT t_oa_process_condition (process_condition_id,input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc)
+VALUE (5,'applyId', 'Integer', 'userService', 'userIfCompanyLeader', 'end', 'end', '是否是市局负责人');
+INSERT t_oa_process_condition (process_condition_id,input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc,
+fail_approve_function_id)
+VALUE (6,'applyId', 'Integer', 'userService', 'userIfCompanyLeader', 'end', '0000', '是否是市局负责人', 2);
 
 INSERT t_oa_process_condition (process_condition_id,input,input_value_type,ioc_entity_name,ioc_entity_method,success_to,fail_to,condition_desc)
 VALUE (9, 'applyOrgId', 'Integer', 'orgService', 'orgIfOffice', '00', '01', '是否是机关');
@@ -190,26 +212,26 @@ VALUE (69, 5, '0000', '00', 'end', '办公室（马明敏、苗倩）审批', 0)
 
 
 # 流程步骤
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
-VALUE (1,'单位/部门负责人审批','1','00','',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
+VALUE (1,'单位/部门负责人审批','1','00','',now(),6,3);
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (2,'科级干部','2','00','end',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (3,'市局（公司）分管领导审批','1','00','',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (4,'单位/部门负责人','2','00','end',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (5,'市局（公司）主要负责人审批','1','00','',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (6,'结束','3','end','',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (7,'类别','2','00','01',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (8,'部门负责人（直属）审批','1','00','',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (9,'单位分管领导审批','1','00','',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (10,'单位负责人审批','1','00','',now());
-INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time)
+INSERT INTO t_oa_process_step (step_id,step_name,step_type,success_to,fail_to,create_time,step_value,org_priv_len)
 VALUE (11,'部门负责人（机关）审批','1','00','',now());
 

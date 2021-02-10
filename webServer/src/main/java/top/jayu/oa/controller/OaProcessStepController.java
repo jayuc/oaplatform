@@ -1,5 +1,6 @@
 package top.jayu.oa.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.jayu.oa.entity.OaProcessStep;
 import top.jayu.oa.mapper.OaProcessStepMapper;
 import top.jayu.oa.iter.SaveLog;
+import top.jayu.oa.service.OaProcessStepService;
 import top.jayu.oa.util.ResultUtil;
 
 
@@ -31,6 +33,8 @@ public class OaProcessStepController {
 
     @Autowired
     OaProcessStepMapper oaProcessStepMapper;
+    @Autowired
+    OaProcessStepService oaProcessStepService;
 
     @SaveLog(content = "流程步骤查询")
     @GetMapping("/select")
@@ -57,7 +61,9 @@ public class OaProcessStepController {
 
     @GetMapping("/get/customer/process")
     public Map<String, Object> getCustomerProcess(String type){
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", oaProcessStepService.getProcess(type));
+        return map;
     }
 
     @SaveLog(content = "流程步骤新增")
